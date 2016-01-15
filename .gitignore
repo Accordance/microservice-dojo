@@ -10,3 +10,30 @@
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+webapp/boom/node_modules/
+angular2-tour-of-heroes/node_modules/
+angular2-quickstart/node_modules/
+webapp/node_modules/
+angular2-tour-of-heroes/dist/
+webapp/.idea/
+hystrix-service/.idea/
+hystrix-service/.gradle/
+.gradle/
+accounts-service/.idea/
+accounts-service/build/
+angular2-quickstart/jspm_packages/
+doge-photo/.idea/
+doge-photo/build/
+hystrix-service/build/
+eureka-service/.idea/
+config-service/.idea/
+webapp/bower_components/
+webapp/public/lib/
+zuul-service/gradle/
+zuul-service/build/
+ng-spring-boot/.idea/
+doge-service/.idea/
+spring-flyway/build/
+account-service-zzz/build/
+account-service-zzz/
+.idea/
