@@ -1,0 +1,17 @@
+server:
+  port: ${PORT:8888}
+
+logging:
+    level:
+        com.netflix.discovery: OFF
+
+spring:
+  cloud:
+    config:
+      server:
+        git:
+          uri: ${conf:https://github.com/Accordance/microservice-dojo-configuration}
+#        native:
+#          searchLocations: file:C:/Dev/accordance/microservice-dojo/dojo-configurations
+#       This is where the git repository is cloned. It is ephemeral. By default it's in /tmp
+#        basedir: config
