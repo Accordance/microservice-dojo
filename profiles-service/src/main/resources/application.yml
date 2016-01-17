@@ -1,0 +1,10 @@
+server:
+  port: ${PORT:8101}
+
+mongoserver: localhost
+
+spring:
+  data:
+    mongodb:
+      host: ${mongoserver}
+      port: 27017
