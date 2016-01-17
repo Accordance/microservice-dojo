@@ -1,8 +1,6 @@
 server:
   port: ${PORT:8100}
 
-sqlserver: localhost
-
 spring:
   jpa:
     database: MYSQL
@@ -10,7 +8,7 @@ spring:
       ddl-auto: validate
 
   datasource:
-    url: jdbc:mysql://${sqlserver}:3306/demo
+    url: jdbc:mysql://${sqlserver:localhost}:${sqlport:3306}/demo
     username: demo_user
     password: demo_pass
     driver-class-name: com.mysql.jdbc.Driver

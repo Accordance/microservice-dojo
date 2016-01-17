@@ -37,9 +37,10 @@ public class AccountsServiceApplication {
             Flyway flyway = new Flyway();
             flyway.setDataSource(data_source, user, password);
 
-            switch (args[0]) {
-                case "migrate": flyway.migrate(); break;
-                case "clean": flyway.clean(); break;
+            if ("migrate".equals(args[0])) {
+                flyway.migrate();
+            } else if ("clean".equals(args[0])) {
+                flyway.clean();
             }
 
         } else {
