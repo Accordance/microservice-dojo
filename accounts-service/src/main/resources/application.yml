@@ -1,5 +1,5 @@
 server:
-  port: ${PORT:8122}
+  port: ${PORT:8100}
 
 sqlserver: localhost
 

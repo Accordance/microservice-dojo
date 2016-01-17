@@ -1,4 +1,4 @@
-package com.msvcdojo;
+package msvcdojo;
 
 import org.flywaydb.core.Flyway;
 import org.springframework.boot.SpringApplication;
@@ -12,6 +12,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import java.util.List;
 
+/**
+ * @author Igor Moochnick
+ */
 @SpringBootApplication
 public class AccountsServiceApplication {
 
