@@ -1,11 +1,20 @@
 package msvcdojo;
 
+import com.netflix.appinfo.InstanceInfo;
+import com.netflix.discovery.DiscoveryClient;
 import org.flywaydb.core.Flyway;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
+import org.springframework.hateoas.Link;
+import org.springframework.hateoas.Resource;
+import org.springframework.hateoas.ResourceProcessor;
+import org.springframework.stereotype.Component;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -16,6 +25,7 @@ import java.util.List;
  * @author Igor Moochnick
  */
 @SpringBootApplication
+@EnableEurekaClient
 public class AccountsServiceApplication {
 
     public static void main(String[] args) {
@@ -47,6 +57,52 @@ public class AccountsServiceApplication {
 
             SpringApplication.run(AccountsServiceApplication.class, args);
         }
+    }
+}
+
+@Component
+class AccountResourceProcessor implements ResourceProcessor<Resource<Account>> {
+
+    private final ProfilesClient profilesClient;
+
+    @Autowired
+    public AccountResourceProcessor(ProfilesClient profilesClient) {
+        this.profilesClient = profilesClient;
+    }
+
+    @Override
+    public Resource<Account> process(Resource<Account> accountResource) {
+        Link profileLink = this.profilesClient.buildProfileLink(accountResource.getContent());
+        if (null != profileLink)
+            accountResource.add(profileLink);
+
+        return accountResource;
+    }
+}
+
+@Component
+class ProfilesClient {
+
+    private final DiscoveryClient discoveryClient;
+
+    @Autowired
+    public ProfilesClient(DiscoveryClient discoveryClient) {
+        this.discoveryClient = discoveryClient;
+    }
+
+//    public Link defaultProfileLink(Account account) {
+//        return null;
+//    }
+
+//    @HystrixCommand(fallbackMethod = "defaultProfileLink")
+    public Link buildProfileLink(Account account) {
+
+        InstanceInfo instance = discoveryClient.getNextServerFromEureka(
+                "profiles-service", false);
+        String url = UriComponentsBuilder.fromHttpUrl(
+                instance.getHomePageUrl() + "/profiles/{key}/photos")
+                .buildAndExpand(Long.toString(account.getId())).toUriString();
+        return new Link(url, "profile");
     }
 }
 

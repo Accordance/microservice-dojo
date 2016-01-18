@@ -12,3 +12,8 @@ spring:
     username: demo_user
     password: demo_pass
     driver-class-name: com.mysql.jdbc.Driver
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${service-registry.uri:http://127.0.0.1:8761}/eureka/
