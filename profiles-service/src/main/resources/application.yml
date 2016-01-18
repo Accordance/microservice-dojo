@@ -1,10 +1,15 @@
 server:
   port: ${PORT:8101}
 
-mongoserver: localhost
+#info:
+#  build:
+#    name: ${name}
+#    description: ${description}
+#    version: ${version}
 
 spring:
   data:
     mongodb:
-      host: ${mongoserver}
+      host: ${mongoserver:localhost}
       port: 27017
+
