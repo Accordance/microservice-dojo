@@ -22,6 +22,7 @@ project.ext {
 }
 
 jar {
+    group = 'msvcdojo'
     baseName = 'profiles-service'
     version = '0.0.2'
 }
@@ -66,17 +67,25 @@ dependencies {
     testCompile('org.springframework.boot:spring-boot-starter-test')
 }
 
-//task buildDocker(type: Docker, dependsOn: build) {
-//    push = true
-//    applicationName = jar.baseName
-//    dockerfile = file('docker/Dockerfile')
-//    doFirst {
-//        copy {
-//            from jar
-//            into stageDir
-//        }
-//    }
-//}
+task prepDocker(type: Copy, dependsOn: build) {
+    from 'docker'
+    into "$buildDir/docker"
+    include 'Dockerfile.template'
+    rename { file -> 'Dockerfile' }
+    expand(project: project, jar: jar )
+    doFirst {
+        copy {
+            from jar
+            into "$buildDir/docker"
+        }
+    }
+}
+
+task buildDocker(type: Docker, dependsOn: prepDocker) {
+    tag = "${jar.group}/${jar.baseName}"
+    tagVersion = jar.version
+    dockerfile = file("$buildDir/docker/Dockerfile")
+}
 
 task wrapper(type: org.gradle.api.tasks.wrapper.Wrapper) {
     gradleVersion = '2.9'
