@@ -9,6 +9,7 @@ buildscript {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
         classpath("org.flywaydb:flyway-gradle-plugin:3.2.1")
         classpath("mysql:mysql-connector-java:5.1.38")
+        classpath('se.transmode.gradle:gradle-docker:1.2')
     }
 }
 
@@ -16,6 +17,7 @@ apply plugin: 'java'
 apply plugin: 'idea'
 apply plugin: 'spring-boot'
 apply plugin: 'org.flywaydb.flyway'
+apply plugin: 'docker'
 
 project.ext {
     springBootVersion = '1.3.1.RELEASE'
@@ -23,8 +25,9 @@ project.ext {
 }
 
 jar {
+    group = 'msvcdojo'
     baseName = 'accounts-service'
-    version = '0.0.1'
+    version = '0.0.2'
 }
 
 flyway {
@@ -37,9 +40,9 @@ sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 repositories {
-    mavenLocal()
+//    mavenLocal()
     mavenCentral()
-    maven { url 'http://repo.spring.io/release' }
+//    maven { url 'http://repo.spring.io/release' }
 }
 
 bootRun {
@@ -63,9 +66,31 @@ dependencies {
     compile("org.springframework.boot:spring-boot-starter-data-rest:$springBootVersion")
     compile("org.springframework.boot:spring-boot-starter-actuator:$springBootVersion")
     compile("org.springframework.cloud:spring-cloud-starter-eureka:$springCloudVersion")
+    compile("org.springframework.cloud:spring-cloud-config-client:$springCloudVersion")
     compile("org.flywaydb:flyway-core:3.2.1")
     runtime("mysql:mysql-connector-java:5.1.38")
     testCompile('org.springframework.boot:spring-boot-starter-test')
+}
+
+task prepDocker(type: Copy, dependsOn: assemble) {
+    from 'docker'
+    into "$buildDir/docker"
+    include 'Dockerfile.template'
+    rename { file -> 'Dockerfile' }
+    expand(project: project, jar: jar )
+    doFirst {
+        copy {
+            from jar
+            into "$buildDir/docker"
+        }
+    }
+}
+
+task buildDocker(type: Docker, dependsOn: prepDocker) {
+    useApi = false
+    tag = "${jar.group}/${jar.baseName}"
+    tagVersion = jar.version
+    dockerfile = file("$buildDir/docker/Dockerfile")
 }
 
 task wrapper(type: org.gradle.api.tasks.wrapper.Wrapper) {

@@ -5,6 +5,7 @@ import com.netflix.discovery.DiscoveryClient;
 import org.flywaydb.core.Flyway;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -26,6 +27,7 @@ import java.util.List;
  */
 @SpringBootApplication
 @EnableEurekaClient
+@EnableAutoConfiguration
 public class AccountsServiceApplication {
 
     public static void main(String[] args) {
