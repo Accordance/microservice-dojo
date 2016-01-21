@@ -2,12 +2,14 @@ package msvcdojo;
 
 import com.netflix.appinfo.InstanceInfo;
 import com.netflix.discovery.DiscoveryClient;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import org.flywaydb.core.Flyway;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
+import org.springframework.cloud.netflix.hystrix.EnableHystrix;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
@@ -28,6 +30,7 @@ import java.util.List;
 @SpringBootApplication
 @EnableEurekaClient
 @EnableAutoConfiguration
+@EnableHystrix
 public class AccountsServiceApplication {
 
     public static void main(String[] args) {
@@ -92,11 +95,11 @@ class ProfilesClient {
         this.discoveryClient = discoveryClient;
     }
 
-//    public Link defaultProfileLink(Account account) {
-//        return null;
-//    }
+    public Link defaultProfileLink(Account account) {
+        return null;
+    }
 
-//    @HystrixCommand(fallbackMethod = "defaultProfileLink")
+    @HystrixCommand(fallbackMethod = "defaultProfileLink")
     public Link buildProfileLink(Account account) {
 
         InstanceInfo instance = discoveryClient.getNextServerFromEureka(

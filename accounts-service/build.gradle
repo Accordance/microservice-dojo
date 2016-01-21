@@ -27,7 +27,7 @@ project.ext {
 jar {
     group = 'msvcdojo'
     baseName = 'accounts-service'
-    version = '0.0.2'
+    version = '0.0.3'
 }
 
 flyway {
@@ -67,6 +67,7 @@ dependencies {
     compile("org.springframework.boot:spring-boot-starter-actuator:$springBootVersion")
     compile("org.springframework.cloud:spring-cloud-starter-eureka:$springCloudVersion")
     compile("org.springframework.cloud:spring-cloud-config-client:$springCloudVersion")
+    compile("org.springframework.cloud:spring-cloud-starter-hystrix:$springCloudVersion")
     compile("org.flywaydb:flyway-core:3.2.1")
     runtime("mysql:mysql-connector-java:5.1.38")
     testCompile('org.springframework.boot:spring-boot-starter-test')
