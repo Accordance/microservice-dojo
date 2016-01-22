@@ -3,6 +3,7 @@ package msvcdojo;
 import com.netflix.appinfo.InstanceInfo;
 import com.netflix.discovery.DiscoveryClient;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import org.apache.commons.lang.StringUtils;
 import org.flywaydb.core.Flyway;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -17,11 +18,16 @@ import org.springframework.hateoas.Link;
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.ResourceProcessor;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.servlet.http.HttpServletRequest;
+import java.net.URI;
 import java.util.List;
 
 /**
@@ -77,11 +83,22 @@ class AccountResourceProcessor implements ResourceProcessor<Resource<Account>> {
 
     @Override
     public Resource<Account> process(Resource<Account> accountResource) {
-        Link profileLink = this.profilesClient.buildProfileLink(accountResource.getContent());
+
+        HttpServletRequest currentRequest = getCurrentRequest();
+
+        org.springframework.hateoas.Link profileLink = this.profilesClient.buildProfileLink(
+                accountResource.getContent(), getCurrentRequest());
         if (null != profileLink)
             accountResource.add(profileLink);
 
         return accountResource;
+    }
+
+    private static HttpServletRequest getCurrentRequest() {
+
+        RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
+        HttpServletRequest servletRequest = ((ServletRequestAttributes) requestAttributes).getRequest();
+        return servletRequest;
     }
 }
 
@@ -95,18 +112,32 @@ class ProfilesClient {
         this.discoveryClient = discoveryClient;
     }
 
-    public Link defaultProfileLink(Account account) {
+    public Link defaultProfileLink(Account account, HttpServletRequest currentRequest) {
         return null;
     }
 
     @HystrixCommand(fallbackMethod = "defaultProfileLink")
-    public Link buildProfileLink(Account account) {
+    public Link buildProfileLink(Account account, HttpServletRequest currentRequest) {
 
         InstanceInfo instance = discoveryClient.getNextServerFromEureka(
                 "profiles-service", false);
-        String url = UriComponentsBuilder.fromHttpUrl(
-                instance.getHomePageUrl() + "/profiles/{key}/photos")
-                .buildAndExpand(Long.toString(account.getId())).toUriString();
+
+        URI uri = URI.create(instance.getHomePageUrl());
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUri(uri);
+
+        String forwardHost = currentRequest.getHeader("X-Forwarded-Host");
+        if (StringUtils.isNotEmpty(forwardHost))
+            uriBuilder.host(forwardHost);
+
+        String forwardPrefix = currentRequest.getHeader("X-Forwarded-Prefix");
+        if (StringUtils.isNotEmpty(forwardPrefix)) {
+            uriBuilder.replacePath(forwardPrefix);
+            uriBuilder.path(uri.getPath());
+        }
+
+        uriBuilder.path("/profiles/{key}/photos");
+        String url = uriBuilder.buildAndExpand(Long.toString(account.getId())).toUriString();
+
         return new Link(url, "profile");
     }
 }
