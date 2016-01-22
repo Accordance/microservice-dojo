@@ -126,8 +126,12 @@ class ProfilesClient {
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUri(uri);
 
         String forwardHost = currentRequest.getHeader("X-Forwarded-Host");
-        if (StringUtils.isNotEmpty(forwardHost))
-            uriBuilder.host(forwardHost);
+        if (StringUtils.isNotEmpty(forwardHost)) {
+            String[] parts = forwardHost.split(":");
+            uriBuilder.host(parts[0]);
+            if (parts.length > 1)
+                uriBuilder.port(parts[1]);
+        }
 
         String forwardPrefix = currentRequest.getHeader("X-Forwarded-Prefix");
         if (StringUtils.isNotEmpty(forwardPrefix)) {
