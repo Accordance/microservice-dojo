@@ -119,8 +119,19 @@ class ProfilesClient {
     @HystrixCommand(fallbackMethod = "defaultProfileLink")
     public Link buildProfileLink(Account account, HttpServletRequest currentRequest) {
 
+        String url = uriBuilderWithForward("profiles-service", currentRequest)
+                .path("/profiles/{key}/photos")
+                .buildAndExpand(Long.toString(account.getId())).toUriString();
+
+        return new Link(url, "profile");
+    }
+
+    private UriComponentsBuilder uriBuilderWithForward(String serviceId, HttpServletRequest currentRequest) {
+
+        String[] serviceNameParts = serviceId.split("-"); // Our convention
+
         InstanceInfo instance = discoveryClient.getNextServerFromEureka(
-                "profiles-service", false);
+                serviceId, false);
 
         URI uri = URI.create(instance.getHomePageUrl());
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUri(uri);
@@ -135,14 +146,11 @@ class ProfilesClient {
 
         String forwardPrefix = currentRequest.getHeader("X-Forwarded-Prefix");
         if (StringUtils.isNotEmpty(forwardPrefix)) {
-            uriBuilder.replacePath(forwardPrefix);
+            uriBuilder.replacePath(serviceNameParts[0]); // Our convention
             uriBuilder.path(uri.getPath());
         }
 
-        uriBuilder.path("/profiles/{key}/photos");
-        String url = uriBuilder.buildAndExpand(Long.toString(account.getId())).toUriString();
-
-        return new Link(url, "profile");
+        return uriBuilder;
     }
 }
 
