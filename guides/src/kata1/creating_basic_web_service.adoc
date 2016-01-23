@@ -1,0 +1,138 @@
+// :linkcss:
+:icons: font
+:source-highlighter: coderay
+:sourcedir: ../../../
+
+// include::../header.adoc[]
+
+= Building Simple Web Service with Spring Boot
+
+WARNING: Make sure you have your development environment configured.
+
+In this exercise you are going to create a simple REST web service using Spring Boot.
+
+TIP: You can skip this step if you feel you have a good understanding of Spring Boot.
+The rest of the course assume you have a good knowledge of the principles of Spring Boot.
+
+== Step-by-step instructions to bootstrap the project
+
+. Go to Spring Starter https://start.spring.io/
+. Select the following options:
+.. *Gradle Project*
+.. Spring Boot *1.3.2*
+.. Group: *msvcdojo*
+.. Artifact: *mysvc*
+.. Select in "Search for Dependencies":
+... *Web*
+... *Actuator*
+... *Actuator Docs*
+.. Click button *Generate Project*
+. Download project and expand the archive
+. Open in IntelliJ as a Gradle project
+
+== Let's explore the project and configure
+The project contains an entry point in the _MysvcApplication.java_ file:
+
+[source,java,indent=0]
+.MysvcApplication.java
+----
+include::{sourcedir}kata1/solution/mysvc/src/main/java/msvcdojo/MysvcApplication.java[tags=code]
+----
+
+Going forward we're going to use YAML files to provide properties for our services.
+Rename the *_mysvc/src/main/resources/application.properties_* file into *_mysvc/src/main/resources/application.yml_*.
+Let's expose additional information in our *healthcheck* output. Put the following in the *_application.yml_* file:
+
+[source,yaml,indent=0]
+.application.yml
+----
+include::{sourcedir}kata1/solution/mysvc/src/main/resources/application.yml[]
+----
+
+Let's replace Tomcat, that was provided as a default application container, with Jetty.
+Replace the following line in *_mysvc/build.gradle_*:
+
+[source,groovy,indent=0]
+----
+compile('org.springframework.boot:spring-boot-starter-web')
+----
+
+With the following block:
+[source,groovy,indent=0]
+.build.gradle
+----
+include::{sourcedir}kata1/solution/mysvc/build.gradle[tags=jetty]
+----
+
+== Build and launch
+Build the service:
+----
+$ cd kata1/solution/mysvc
+$ gradlew build
+----
+Note that this command will build the code and run all the necessary tests.
+
+Lauch it the service:
+----
+$ java -jar build\libs\mysvc-0.0.1.jar
+----
+
+The following output you'll on the screen.
+
+[source,text,options="nowrap"]
+----
+include::bootRun.txt[]
+----
+<1> Listening port of the web service
+<2> List of available end-points that Actuator provides for you for free.
+
+== Play time
+
+=== healthcheck
+
+Let's health-check our brand new service:
+
+----
+$ curl http://localhost:8080/health
+----
+
+The output of this CURL command will look like this:
+
+[source,json,indent=0]
+----
+{
+  "status": "UP",
+  "diskSpace": {
+    "status": "UP",
+    "total": 255219200000,
+    "free": 70534836224,
+    "threshold": 10485760
+  }
+}
+----
+
+See that the *status* value is *UP*. This will be our indication that the service is healthy.
+This endpoint can be extended and your application can provide more or less information
+based on the needs of your projects.
+
+=== End-point documentation
+
+The fact that the Actuator-docs package was included in your artifact, your service
+has received an additional end point that provides embedded documentation for the
+other actuator-provided end points.
+
+You can access this documentation by navigating to the following url:
+icon:external-link[link="http://localhost:8080/docs/", window="_blank"]
+http://localhost:8080/docs/
+
+Going forward you will not need this dependency so you can remove this line from the
+*_build.gradle_*:
+
+[source,groovy,indent=0]
+.build.gradle
+----
+include::{sourcedir}kata1/solution/mysvc/build.gradle[tags=actuator-docs]
+----
+
+Note: You can read more about all this in
+http://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#production-ready[Spring Boot Reference Guide^]
