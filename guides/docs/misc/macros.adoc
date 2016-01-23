@@ -1,0 +1,3 @@
+:linkattrs:
+
+ifndef::java_version[:java_version: 1.8]
