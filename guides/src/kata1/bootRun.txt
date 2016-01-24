@@ -13,7 +13,7 @@
 2016-01-23 [...] o.s.b.f.s.DefaultListableBeanFactory     : Overriding bean definition for bean 'managementServletContext' with a different definition: replacing [Root bean: class [null]; scope=; abstract=false; lazyInit=false; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=org.springframework.boot.actuate.autoconfigure.EndpointWebMvcHypermediaManagementContextConfiguration; factoryMethodName=managementServletContext; initMethodName=null; destroyMethodName=(inferred); defined in class path resource [org/springframework/boot/actuate/autoconfigure/EndpointWebMvcHypermediaManagementContextConfiguration.class]] with [Root bean: class [null]; scope=; abstract=false; lazyInit=false; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=org.springframework.boot.actuate.autoconfigure.EndpointWebMvcAutoConfiguration; factoryMethodName=managementServletContext; initMethodName=null; destroyMethodName=(inferred); defined in class path resource [org/springframework/boot/actuate/autoconfigure/EndpointWebMvcAutoConfiguration.class]]
 2016-01-23 [...] org.eclipse.jetty.util.log               : Logging initialized @3152ms
 <1>
-2016-01-23 [...] e.j.JettyEmbeddedServletContainerFactory : Server initialized with port: 8080
+2016-01-23 [...] e.j.JettyEmbeddedServletContainerFactory : Server initialized with port: 8100
 2016-01-23 [...] org.eclipse.jetty.server.Server          : jetty-9.2.14.v20151106
 2016-01-23 [...] application                              : Initializing Spring embedded WebApplicationContext
 2016-01-23 [...] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 2438 ms
@@ -58,6 +58,6 @@
 2016-01-23 [...] o.s.web.servlet.DispatcherServlet        : FrameworkServlet 'dispatcherServlet': initialization started
 2016-01-23 [...] o.s.web.servlet.DispatcherServlet        : FrameworkServlet 'dispatcherServlet': initialization completed in 27 ms
 <1>
-2016-01-23 [...] o.eclipse.jetty.server.ServerConnector   : Started ServerConnector@4f67e3df{HTTP/1.1}{0.0.0.0:8080}
-2016-01-23 [...] .s.b.c.e.j.JettyEmbeddedServletContainer : Jetty started on port(s) 8080 (http/1.1)
+2016-01-23 [...] o.eclipse.jetty.server.ServerConnector   : Started ServerConnector@4f67e3df{HTTP/1.1}{0.0.0.0:8100}
+2016-01-23 [...] .s.b.c.e.j.JettyEmbeddedServletContainer : Jetty started on port(s) 8100 (http/1.1)
 2016-01-23 [...] msvcdojo.MysvcApplication                : Started MysvcApplication in 5.586 seconds (JVM running for 6.144)

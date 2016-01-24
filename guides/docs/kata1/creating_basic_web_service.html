@@ -628,9 +628,14 @@ Let&#8217;s expose additional information in our <strong>healthcheck</strong> ou
 <div class="listingblock">
 <div class="title">application.yml</div>
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">endpoints</span>:
-    <span class="key">health</span>:
-        <span class="key">sensitive</span>: <span class="string"><span class="content">false</span></span></code></pre>
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">server</span>:
+  <span class="key">port</span>: <span class="string"><span class="content">8100</span></span>
+
+<span class="key">endpoints</span>:
+  <span class="key">health</span>:
+    <span class="key">sensitive</span>: <span class="string"><span class="content">false</span></span>
+  <span class="key">shutdown</span>:
+    <span class="key">enabled</span>: <span class="string"><span class="content">true</span></span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -666,7 +671,7 @@ compile (<span class="string"><span class="delimiter">'</span><span class="conte
 </div>
 <div class="listingblock">
 <div class="content">
-<pre>$ cd kata1/solution/mysvc
+<pre>$ cd {kata_dir}/solution/mysvc
 $ gradlew build</pre>
 </div>
 </div>
@@ -701,7 +706,7 @@ $ gradlew build</pre>
 2016-01-23 [...] o.s.b.f.s.DefaultListableBeanFactory     : Overriding bean definition for bean 'managementServletContext' with a different definition: replacing [Root bean: class [null]; scope=; abstract=false; lazyInit=false; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=org.springframework.boot.actuate.autoconfigure.EndpointWebMvcHypermediaManagementContextConfiguration; factoryMethodName=managementServletContext; initMethodName=null; destroyMethodName=(inferred); defined in class path resource [org/springframework/boot/actuate/autoconfigure/EndpointWebMvcHypermediaManagementContextConfiguration.class]] with [Root bean: class [null]; scope=; abstract=false; lazyInit=false; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=org.springframework.boot.actuate.autoconfigure.EndpointWebMvcAutoConfiguration; factoryMethodName=managementServletContext; initMethodName=null; destroyMethodName=(inferred); defined in class path resource [org/springframework/boot/actuate/autoconfigure/EndpointWebMvcAutoConfiguration.class]]
 2016-01-23 [...] org.eclipse.jetty.util.log               : Logging initialized @3152ms
 <i class="conum" data-value="1"></i><b>(1)</b>
-2016-01-23 [...] e.j.JettyEmbeddedServletContainerFactory : Server initialized with port: 8080
+2016-01-23 [...] e.j.JettyEmbeddedServletContainerFactory : Server initialized with port: 8100
 2016-01-23 [...] org.eclipse.jetty.server.Server          : jetty-9.2.14.v20151106
 2016-01-23 [...] application                              : Initializing Spring embedded WebApplicationContext
 2016-01-23 [...] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 2438 ms
@@ -746,8 +751,8 @@ $ gradlew build</pre>
 2016-01-23 [...] o.s.web.servlet.DispatcherServlet        : FrameworkServlet 'dispatcherServlet': initialization started
 2016-01-23 [...] o.s.web.servlet.DispatcherServlet        : FrameworkServlet 'dispatcherServlet': initialization completed in 27 ms
 <i class="conum" data-value="1"></i><b>(1)</b>
-2016-01-23 [...] o.eclipse.jetty.server.ServerConnector   : Started ServerConnector@4f67e3df{HTTP/1.1}{0.0.0.0:8080}
-2016-01-23 [...] .s.b.c.e.j.JettyEmbeddedServletContainer : Jetty started on port(s) 8080 (http/1.1)
+2016-01-23 [...] o.eclipse.jetty.server.ServerConnector   : Started ServerConnector@4f67e3df{HTTP/1.1}{0.0.0.0:8100}
+2016-01-23 [...] .s.b.c.e.j.JettyEmbeddedServletContainer : Jetty started on port(s) 8100 (http/1.1)
 2016-01-23 [...] msvcdojo.MysvcApplication                : Started MysvcApplication in 5.586 seconds (JVM running for 6.144)</code></pre>
 </div>
 </div>
@@ -769,7 +774,7 @@ $ gradlew build</pre>
 <h2 id="_play_time">Play time</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_healthcheck">healthcheck</h3>
+<h3 id="_healthcheck">Healthcheck</h3>
 <div class="paragraph">
 <p>Let&#8217;s health-check our brand new service:</p>
 </div>
@@ -798,6 +803,22 @@ $ gradlew build</pre>
 <p>See that the <strong>status</strong> value is <strong>UP</strong>. This will be our indication that the service is healthy.
 This endpoint can be extended and your application can provide more or less information
 based on the needs of your projects.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_shutdown">Shutdown</h3>
+<div class="paragraph">
+<p>Actuator is not enabling a couple of "dangerous" end-points. One of them is the
+one that the automation infrastructure may use to shutdown the service.</p>
+</div>
+<div class="paragraph">
+<p>You can send an empty POST request to this endpoint for the service gracefully
+shutdown itself.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>$ curl -d {} http://localhost:8080/shutdown</pre>
+</div>
 </div>
 </div>
 <div class="sect2">
@@ -832,7 +853,7 @@ other actuator-provided end points.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2016-01-23 15:34:14 Eastern Standard Time
+Last updated 2016-01-23 20:55:47 Eastern Standard Time
 </div>
 </div>
 </body>

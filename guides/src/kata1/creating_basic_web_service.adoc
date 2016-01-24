@@ -1,7 +1,8 @@
 // :linkcss:
 :icons: font
 :source-highlighter: coderay
-:sourcedir: ../../../
+:kata_dir: kata1
+:sourcedir: ../../../{kata_dir}
 
 // include::../header.adoc[]
 
@@ -36,7 +37,7 @@ The project contains an entry point in the _MysvcApplication.java_ file:
 [source,java,indent=0]
 .MysvcApplication.java
 ----
-include::{sourcedir}kata1/solution/mysvc/src/main/java/msvcdojo/MysvcApplication.java[tags=code]
+include::{sourcedir}/solution/mysvc/src/main/java/msvcdojo/MysvcApplication.java[tags=code]
 ----
 
 Going forward we're going to use YAML files to provide properties for our services.
@@ -46,7 +47,7 @@ Let's expose additional information in our *healthcheck* output. Put the followi
 [source,yaml,indent=0]
 .application.yml
 ----
-include::{sourcedir}kata1/solution/mysvc/src/main/resources/application.yml[]
+include::{sourcedir}/solution/mysvc/src/main/resources/application.yml[]
 ----
 
 Let's replace Tomcat, that was provided as a default application container, with Jetty.
@@ -61,13 +62,13 @@ With the following block:
 [source,groovy,indent=0]
 .build.gradle
 ----
-include::{sourcedir}kata1/solution/mysvc/build.gradle[tags=jetty]
+include::{sourcedir}/solution/mysvc/build.gradle[tags=jetty]
 ----
 
 == Build and launch
 Build the service:
 ----
-$ cd kata1/solution/mysvc
+$ cd {kata_dir}/solution/mysvc
 $ gradlew build
 ----
 Note that this command will build the code and run all the necessary tests.
@@ -88,7 +89,7 @@ include::bootRun.txt[]
 
 == Play time
 
-=== healthcheck
+=== Healthcheck
 
 Let's health-check our brand new service:
 
@@ -115,6 +116,18 @@ See that the *status* value is *UP*. This will be our indication that the servic
 This endpoint can be extended and your application can provide more or less information
 based on the needs of your projects.
 
+=== Shutdown
+
+Actuator is not enabling a couple of "dangerous" end-points. One of them is the
+one that the automation infrastructure may use to shutdown the service.
+
+You can send an empty POST request to this endpoint for the service gracefully
+shutdown itself.
+
+----
+$ curl -d {} http://localhost:8080/shutdown
+----
+
 === End-point documentation
 
 The fact that the Actuator-docs package was included in your artifact, your service
@@ -131,7 +144,7 @@ Going forward you will not need this dependency so you can remove this line from
 [source,groovy,indent=0]
 .build.gradle
 ----
-include::{sourcedir}kata1/solution/mysvc/build.gradle[tags=actuator-docs]
+include::{sourcedir}/solution/mysvc/build.gradle[tags=actuator-docs]
 ----
 
 Note: You can read more about all this in
