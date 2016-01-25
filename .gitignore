@@ -15,6 +15,7 @@ done/
 **/bin/
 **/.idea/
 **/node-modules/
+**/gradle/
 **/.gradle/
 **/build/
 **/bower_components/

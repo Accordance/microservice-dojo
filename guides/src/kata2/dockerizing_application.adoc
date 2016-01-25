@@ -1,0 +1,115 @@
+// :linkcss:
+:icons: font
+:source-highlighter: coderay
+:kata_dir: kata2
+:sourcedir: ../../../{kata_dir}
+
+== "Dockerizing" application
+
+WARNING: Make sure you have Dev Docker-machine running and your session configured
+properly.
+
+In this exercise we're going to learn how to create a Docker image of our REST
+microservice and launch it as a container.
+
+=== Preparing the build automation
+
+We're going to define our new convention: the Dockerfile, needed to build a
+Docker image, will be located in the *docker* folder and will be versioned
+the same way as the microservice itself.
+
+Such convention helps tremendously to manage versions of the Docker images: one
+version of a microservice correlates one-to-one to the one (same) version of
+a Docker container.
+
+Create a *docker* folder and create there a template Dockerfile:
+[source,indent=0]
+.build.gradle
+----
+include::{sourcedir}/solution/mysvc/docker/Dockerfile.template[]
+----
+
+Add the following code to the build script:
+[source,groovy,indent=0]
+.build.gradle
+----
+include::{sourcedir}/solution/mysvc/build.gradle[tags=docker]
+----
+
+This script will generate a final Dockerfile in the build folder.
+
+=== Building a Docker image
+
+Build the project and generate Dockerfile by run the following command:
+----
+$ gradlew prepDocker
+...
+:prepDocker
+Run command: docker build -t build/mysvc:0.0.1 build/docker
+
+BUILD SUCCESSFUL
+----
+
+Everything was prepared for you, so you can just copy the suggested command from
+the console and run it:
+----
+$ docker build -t msvcdojo/mysvc:0.0.1 build/docker
+Sending build context to Docker daemon 12.95 MB
+Step 1 : FROM java:8
+Step 2 : MAINTAINER Igor Moochnick "igor@igorshare.com"
+Step 3 : VOLUME /tmp
+Step 4 : EXPOSE 8100
+Step 5 : ADD mysvc-0.0.1.jar mysvc.jar
+Step 6 : ENTRYPOINT java -Djava.security.egd=file:/dev/./urandom -jar /mysvc.jar
+Successfully built cb55f79088db
+----
+
+This has created a Dockerimage with the tag *msvcdojo/mysvc:0.0.1*. Now let's see
+it in the Docker repository:
+----
+C:\Dev\accordance\microservice-dojo\kata2\solution\mysvc>docker images
+REPOSITORY                  TAG                 IMAGE ID            CREATED             VIRTUAL SIZE
+msvcdojo/mysvc              0.0.1               cb55f79088db        2 minutes ago       655.2 MB
+----
+
+== Start container
+
+Let's start the container and map the service port to the external world by running command:
+----
+$ docker run -d --name=mysvc -p 8100:8100 msvcdojo/mysvc:0.0.1
+----
+
+Let's see if the container is running:
+----
+C:\Dev\accordance\microservice-dojo\kata2\solution\mysvc>docker ps
+CONTAINER ID        IMAGE                  COMMAND                  CREATED             STATUS              PORTS                    NAMES
+f309e203c200        msvcdojo/mysvc:0.0.1   "java -Djava.security"   9 seconds ago       Up 10 seconds       0.0.0.0:8100->8100/tcp   mysvc
+----
+
+You can see what is happening inside the container by asking for its logs:
+----
+$ docker logs mysvc
+...
+2016-01-25 [...] .s.b.c.e.j.JettyEmbeddedServletContainer : Jetty started on port(s) 8100 (http/1.1)
+2016-01-25 [...] msvcdojo.MysvcApplication                : Started MysvcApplication in 9.289 seconds (JVM running for 10.635)
+----
+
+Now it's time to hit our service REST endpoint:
+----
+$ curl http://dockerhost:8100
+Hello World!
+----
+
+== Clean up
+Stop the container:
+----
+$ docker stop mysvc
+----
+
+Delete image:
+----
+$ docker rmi -f msvcdojo/mysvc:0.0.1
+----
+
+== Bonus
+Read more about Docker architecture, commands and ecosystem on the https://docs.docker.com/[Docker website^].

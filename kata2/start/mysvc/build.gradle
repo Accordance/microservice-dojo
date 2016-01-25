@@ -19,6 +19,7 @@ jar {
 	version = '0.0.1'
 	group = 'msvcdojo'
 }
+
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
@@ -27,36 +28,16 @@ repositories {
 }
 
 dependencies {
-// tag::jetty[]
 	compile("org.springframework.boot:spring-boot-starter-web:$springBootVersion") {
 		exclude group: 'org.springframework.boot', module: 'spring-boot-starter-tomcat'
 	}
 	compile ('org.springframework.boot:spring-boot-starter-jetty') {
 		exclude group: 'org.eclipse.jetty.websocket'
 	}
-// end::jetty[]
 	compile('org.springframework.boot:spring-boot-starter-actuator')
-// tag::actuator-docs[]
 	compile('org.springframework.boot:spring-boot-actuator-docs')
-// end::actuator-docs[]
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 }
-
-// tag::test[]
-test {
-    testLogging {
-        afterSuite { desc, result ->
-            if (!desc.parent) {
-                println "Results: ${result.resultType} (${result.testCount} tests, ${result.successfulTestCount} successes, ${result.failedTestCount} failures, ${result.skippedTestCount} skipped)"
-            }
-        }
-    }
-    reports {
-		junitXml.enabled = false
-		html.enabled = true
-	}
-}
-// end::test[]
 
 task wrapper(type: Wrapper) {
 	gradleVersion = '2.9'
