@@ -31,13 +31,21 @@ The rest of the course assume you have a good knowledge of the principles of Spr
 . Download project and expand the archive
 . Open in IntelliJ as a Gradle project
 
-== Let's explore the project and configure
+=== Let's explore. modify and configure
 The project contains an entry point in the _MysvcApplication.java_ file:
 
 [source,java,indent=0]
 .MysvcApplication.java
 ----
 include::{sourcedir}/solution/mysvc/src/main/java/msvcdojo/MysvcApplication.java[tags=code]
+----
+
+We're going to add a basic REST controller by creating the following class in _MysvcApplication.java_ file:
+
+[source,java,indent=0]
+.MysvcApplication.java
+----
+include::{sourcedir}/solution/mysvc/src/main/java/msvcdojo/MysvcApplication.java[tags=controller]
 ----
 
 Going forward we're going to use YAML files to provide properties for our services.
@@ -65,10 +73,48 @@ With the following block:
 include::{sourcedir}/solution/mysvc/build.gradle[tags=jetty]
 ----
 
+=== What about tests?
+
+Let's add a unit test that validates the controller:
+
+[source,java,indent=0]
+.HomeControllerTest.java
+----
+include::{sourcedir}/solution/mysvc/src/test/java/msvcdojo/HomeControllerTest.java[tags=test]
+----
+
+Let's add some integration test:
+
+[source,java,indent=0]
+.HomeControllerIT.java
+----
+include::{sourcedir}/solution/mysvc/src/test/java/msvcdojo/HomeControllerIT.java[tags=test]
+----
+
+We'd like to ask JUnit to generate reports for us. Add the following to *_build.gradle_*:
+
+[source,groovy,indent=0]
+.build.gradle
+----
+include::{sourcedir}/solution/mysvc/build.gradle[tags=jetty]
+----
+
+Now it's time to run the tests:
+----
+$ gradlew test
+...
+Results: SUCCESS (2 tests, 2 successes, 0 failures, 0 skipped)
+----
+
+And, in case you'd like to get a Web report, open the following file in your browser:
+----
+build\reports\tests\index.html
+----
+
 == Build and launch
 Build the service:
 ----
-$ cd {kata_dir}/solution/mysvc
+$ cd mysvc
 $ gradlew build
 ----
 Note that this command will build the code and run all the necessary tests.
@@ -147,5 +193,9 @@ Going forward you will not need this dependency so you can remove this line from
 include::{sourcedir}/solution/mysvc/build.gradle[tags=actuator-docs]
 ----
 
-Note: You can read more about all this in
+== Bonus
+
+You can read more about all this in
 http://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#production-ready[Spring Boot Reference Guide^]
+and in
+https://spring.io/guides/gs/spring-boot/[Building an Application with Spring Boot^] guide.

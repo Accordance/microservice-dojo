@@ -41,6 +41,22 @@ dependencies {
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 }
 
+// tag::test[]
+test {
+    testLogging {
+        afterSuite { desc, result ->
+            if (!desc.parent) {
+                println "Results: ${result.resultType} (${result.testCount} tests, ${result.successfulTestCount} successes, ${result.failedTestCount} failures, ${result.skippedTestCount} skipped)"
+            }
+        }
+    }
+    reports {
+		junitXml.enabled = false
+		html.enabled = true
+	}
+}
+// end::test[]
+
 task wrapper(type: Wrapper) {
 	gradleVersion = '2.9'
 }
