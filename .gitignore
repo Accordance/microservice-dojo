@@ -21,3 +21,4 @@ done/
 **/bower_components/
 **/lib/
 tmp/
+*.iml

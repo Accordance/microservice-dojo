@@ -1,0 +1,6 @@
+server:
+  port: 8100
+
+endpoints:
+  shutdown:
+    enabled: true

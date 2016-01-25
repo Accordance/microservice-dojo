@@ -1,0 +1,78 @@
+buildscript {
+    ext {
+        springBootVersion = '1.3.1.RELEASE'
+    }
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+// tag::flyway-plugin-dep[]
+        classpath("org.flywaydb:flyway-gradle-plugin:3.2.1")
+        classpath("mysql:mysql-connector-java:5.1.38")
+// end::flyway-plugin-dep[]
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'spring-boot'
+// tag::flyway-plugin[]
+apply plugin: 'org.flywaydb.flyway'
+// end::flyway-plugin[]
+
+project.ext {
+    springBootVersion = '1.3.1.RELEASE'
+    springCloudVersion = '1.0.3.RELEASE'
+}
+
+jar {
+    group = 'msvcdojo'
+    baseName = 'accounts-service'
+    version = '0.0.1'
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+bootRun {
+    // support passing -Dsystem.property=value to bootRun task
+    systemProperties = System.properties
+}
+
+test {
+    // support passing -Dsystem.property=value to bootRun task
+    systemProperties = System.properties
+}
+
+dependencies {
+    compile("org.springframework.boot:spring-boot-starter-web:$springBootVersion") {
+        exclude group: 'org.springframework.boot', module: 'spring-boot-starter-tomcat'
+    }
+    compile ('org.springframework.boot:spring-boot-starter-jetty') {
+        exclude group: 'org.eclipse.jetty.websocket'
+    }
+    compile("org.springframework.boot:spring-boot-starter-actuator:$springBootVersion")
+// tag::jpa[]
+    compile("org.springframework.boot:spring-boot-starter-data-jpa:$springBootVersion")
+    compile("org.springframework.boot:spring-boot-starter-data-rest:$springBootVersion")
+    runtime("mysql:mysql-connector-java:5.1.38")
+// end::jpa[]
+    testCompile('org.springframework.boot:spring-boot-starter-test')
+}
+
+// tag::flyway[]
+flyway {
+    url = 'jdbc:mysql://dockerhost:3306/demo'
+    user = 'demo_user'
+    password = 'demo_pass'
+}
+// end::flyway[]
+
+task wrapper(type: org.gradle.api.tasks.wrapper.Wrapper) {
+    gradleVersion = '2.9'
+}

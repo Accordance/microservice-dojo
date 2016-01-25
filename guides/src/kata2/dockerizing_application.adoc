@@ -66,6 +66,7 @@ Successfully built cb55f79088db
 
 This has created a Dockerimage with the tag *msvcdojo/mysvc:0.0.1*. Now let's see
 it in the Docker repository:
+[source,text,options="nowrap"]
 ----
 C:\Dev\accordance\microservice-dojo\kata2\solution\mysvc>docker images
 REPOSITORY                  TAG                 IMAGE ID            CREATED             VIRTUAL SIZE
@@ -80,6 +81,7 @@ $ docker run -d --name=mysvc -p 8100:8100 msvcdojo/mysvc:0.0.1
 ----
 
 Let's see if the container is running:
+[source,text,options="nowrap"]
 ----
 C:\Dev\accordance\microservice-dojo\kata2\solution\mysvc>docker ps
 CONTAINER ID        IMAGE                  COMMAND                  CREATED             STATUS              PORTS                    NAMES
@@ -87,6 +89,7 @@ f309e203c200        msvcdojo/mysvc:0.0.1   "java -Djava.security"   9 seconds ag
 ----
 
 You can see what is happening inside the container by asking for its logs:
+[source,text,options="nowrap"]
 ----
 $ docker logs mysvc
 ...
