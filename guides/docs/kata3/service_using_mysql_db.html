@@ -1057,6 +1057,49 @@ WHERE username = 'john';</code></pre>
 </div>
 </div>
 <div class="sect2">
+<h3 id="_adding_tests">Adding tests</h3>
+<div class="paragraph">
+<p>Don&#8217;t forget about tests.</p>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+tests that use external Database are part of the integration and E2E
+(end-to-end) test suits. They require external infrastructure and data seeding.
+They are prone to failures and hard to maintain.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Here is an example of a test that validates presence of the data in the Database
+after migration:</p>
+</div>
+<div class="listingblock">
+<div class="title">src/test/java/msvcdojo/AccountsServiceApplicationTests.java</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="annotation">@RunWith</span>(SpringJUnit4ClassRunner.class)
+<span class="annotation">@SpringApplicationConfiguration</span>(AccountsServiceApplication.class)
+<span class="directive">public</span> <span class="type">class</span> <span class="class">AccountsServiceApplicationTests</span> {
+
+    <span class="annotation">@Autowired</span>
+    <span class="directive">private</span> JdbcTemplate template;
+
+    <span class="annotation">@Test</span>
+    <span class="directive">public</span> <span class="type">void</span> testDefaultSettings() <span class="directive">throws</span> <span class="exception">Exception</span> {
+        assertEquals(<span class="keyword">new</span> <span class="predefined-type">Integer</span>(<span class="integer">1</span>), <span class="local-variable">this</span>.template
+                .queryForObject(<span class="string"><span class="delimiter">&quot;</span><span class="content">SELECT COUNT(*) from account WHERE username='john'</span><span class="delimiter">&quot;</span></span>, <span class="predefined-type">Integer</span>.class));
+    }
+
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
 <h3 id="_dockerize_accounts_service">Dockerize Accounts Service</h3>
 <div class="literalblock">
 <div class="content">
@@ -1080,7 +1123,7 @@ You can get very crafty with <a href="http://docs.spring.io/spring-boot/docs/cur
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2016-01-25 01:27:33 Eastern Standard Time
+Last updated 2016-01-25 01:55:20 Eastern Standard Time
 </div>
 </div>
 </body>
