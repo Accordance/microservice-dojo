@@ -600,11 +600,8 @@ The rest of the course assume you have a good knowledge of the principles of Spr
 </li>
 </ol>
 </div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_let_s_explore_the_project_and_configure">Let&#8217;s explore the project and configure</h2>
-<div class="sectionbody">
+<div class="sect2">
+<h3 id="_let_s_explore_modify_and_configure">Let&#8217;s explore. modify and configure</h3>
 <div class="paragraph">
 <p>The project contains an entry point in the <em>MysvcApplication.java</em> file:</p>
 </div>
@@ -614,9 +611,25 @@ The rest of the course assume you have a good knowledge of the principles of Spr
 <pre class="CodeRay highlight"><code data-lang="java"><span class="annotation">@SpringBootApplication</span>
 <span class="directive">public</span> <span class="type">class</span> <span class="class">MysvcApplication</span> {
 
-        <span class="directive">public</span> <span class="directive">static</span> <span class="type">void</span> main(<span class="predefined-type">String</span><span class="type">[]</span> args) {
+    <span class="directive">public</span> <span class="directive">static</span> <span class="type">void</span> main(<span class="predefined-type">String</span><span class="type">[]</span> args) {
                 SpringApplication.run(MysvcApplication.class, args);
         }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>We&#8217;re going to add a basic REST controller by creating the following class in <em>MysvcApplication.java</em> file:</p>
+</div>
+<div class="listingblock">
+<div class="title">MysvcApplication.java</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="annotation">@RestController</span>
+<span class="type">class</span> <span class="class">HomeController</span> {
+
+    <span class="annotation">@RequestMapping</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">/</span><span class="delimiter">&quot;</span></span>)
+    <span class="predefined-type">String</span> home() {
+        <span class="keyword">return</span> <span class="string"><span class="delimiter">&quot;</span><span class="content">Hello World!</span><span class="delimiter">&quot;</span></span>;
+    }
 }</code></pre>
 </div>
 </div>
@@ -661,9 +674,100 @@ compile (<span class="string"><span class="delimiter">'</span><span class="conte
 }</code></pre>
 </div>
 </div>
+</div>
+<div class="sect2">
+<h3 id="_what_about_tests">What about tests?</h3>
 <div class="paragraph">
-<p>TODO: Provide more information on building basic Rest controller &amp; tests
-<a href="https://spring.io/guides/gs/spring-boot/" class="bare">https://spring.io/guides/gs/spring-boot/</a></p>
+<p>Let&#8217;s add a unit test that validates the controller:</p>
+</div>
+<div class="listingblock">
+<div class="title">HomeControllerTest.java</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="annotation">@RunWith</span>(SpringJUnit4ClassRunner.class)
+<span class="annotation">@SpringApplicationConfiguration</span>(classes = MockServletContext.class)
+<span class="annotation">@WebAppConfiguration</span>
+<span class="directive">public</span> <span class="type">class</span> <span class="class">HomeControllerTest</span> {
+
+        <span class="directive">private</span> MockMvc mvc;
+
+        <span class="annotation">@Before</span>
+        <span class="directive">public</span> <span class="type">void</span> setUp() <span class="directive">throws</span> <span class="exception">Exception</span> {
+                mvc = MockMvcBuilders.standaloneSetup(<span class="keyword">new</span> HomeController()).build();
+        }
+
+        <span class="annotation">@Test</span>
+        <span class="directive">public</span> <span class="type">void</span> getHello() <span class="directive">throws</span> <span class="exception">Exception</span> {
+                mvc.perform(MockMvcRequestBuilders.get(<span class="string"><span class="delimiter">&quot;</span><span class="content">/</span><span class="delimiter">&quot;</span></span>).accept(MediaType.APPLICATION_JSON))
+                                .andExpect(status().isOk())
+                                .andExpect(content().string(equalTo(<span class="string"><span class="delimiter">&quot;</span><span class="content">Hello World!</span><span class="delimiter">&quot;</span></span>)));
+        }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Let&#8217;s add some integration test:</p>
+</div>
+<div class="listingblock">
+<div class="title">HomeControllerIT.java</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="annotation">@RunWith</span>(SpringJUnit4ClassRunner.class)
+<span class="annotation">@SpringApplicationConfiguration</span>(classes = MysvcApplication.class)
+<span class="annotation">@WebAppConfiguration</span>
+<span class="annotation">@IntegrationTest</span>({<span class="string"><span class="delimiter">&quot;</span><span class="content">server.port=0</span><span class="delimiter">&quot;</span></span>})
+<span class="directive">public</span> <span class="type">class</span> <span class="class">HomeControllerIT</span> {
+
+    <span class="annotation">@Value</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">${local.server.port}</span><span class="delimiter">&quot;</span></span>)
+    <span class="directive">private</span> <span class="type">int</span> port;
+
+    <span class="directive">private</span> <span class="predefined-type">URL</span> base;
+    <span class="directive">private</span> RestTemplate template;
+
+    <span class="annotation">@Before</span>
+    <span class="directive">public</span> <span class="type">void</span> setUp() <span class="directive">throws</span> <span class="exception">Exception</span> {
+        <span class="local-variable">this</span>.base = <span class="keyword">new</span> <span class="predefined-type">URL</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">http://localhost:</span><span class="delimiter">&quot;</span></span> + port + <span class="string"><span class="delimiter">&quot;</span><span class="content">/</span><span class="delimiter">&quot;</span></span>);
+        template = <span class="keyword">new</span> TestRestTemplate();
+    }
+
+    <span class="annotation">@Test</span>
+    <span class="directive">public</span> <span class="type">void</span> getHello() <span class="directive">throws</span> <span class="exception">Exception</span> {
+        ResponseEntity&lt;<span class="predefined-type">String</span>&gt; response = template.getForEntity(base.toString(), <span class="predefined-type">String</span>.class);
+        assertThat(response.getBody(), equalTo(<span class="string"><span class="delimiter">&quot;</span><span class="content">Hello World!</span><span class="delimiter">&quot;</span></span>));
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>We&#8217;d like to ask JUnit to generate reports for us. Add the following to <strong><em>build.gradle</em></strong>:</p>
+</div>
+<div class="listingblock">
+<div class="title">build.gradle</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy">compile(<span class="string"><span class="delimiter">&quot;</span><span class="content">org.springframework.boot:spring-boot-starter-web:</span><span class="inline"><span class="inline-delimiter">$</span>springBootVersion</span><span class="delimiter">&quot;</span></span>) {
+        exclude <span class="key">group</span>: <span class="string"><span class="delimiter">'</span><span class="content">org.springframework.boot</span><span class="delimiter">'</span></span>, <span class="key">module</span>: <span class="string"><span class="delimiter">'</span><span class="content">spring-boot-starter-tomcat</span><span class="delimiter">'</span></span>
+}
+compile (<span class="string"><span class="delimiter">'</span><span class="content">org.springframework.boot:spring-boot-starter-jetty</span><span class="delimiter">'</span></span>) {
+        exclude <span class="key">group</span>: <span class="string"><span class="delimiter">'</span><span class="content">org.eclipse.jetty.websocket</span><span class="delimiter">'</span></span>
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now it&#8217;s time to run the tests:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>$ gradlew test
+...
+Results: SUCCESS (2 tests, 2 successes, 0 failures, 0 skipped)</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>And, in case you&#8217;d like to get a Web report, open the following file in your browser:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>build\reports\tests\index.html</pre>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -675,7 +779,7 @@ compile (<span class="string"><span class="delimiter">'</span><span class="conte
 </div>
 <div class="listingblock">
 <div class="content">
-<pre>$ cd {kata_dir}/solution/mysvc
+<pre>$ cd mysvc
 $ gradlew build</pre>
 </div>
 </div>
@@ -847,17 +951,24 @@ other actuator-provided end points.</p>
 <pre class="CodeRay highlight"><code data-lang="groovy">compile(<span class="string"><span class="delimiter">'</span><span class="content">org.springframework.boot:spring-boot-actuator-docs</span><span class="delimiter">'</span></span>)</code></pre>
 </div>
 </div>
-<div class="paragraph">
-<p>Note: You can read more about all this in
-<a href="http://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#production-ready" target="_blank">Spring Boot Reference Guide</a></p>
 </div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_bonus">Bonus</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>You can read more about all this in
+<a href="http://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#production-ready" target="_blank">Spring Boot Reference Guide</a>
+and in
+<a href="https://spring.io/guides/gs/spring-boot/" target="_blank">Building an Application with Spring Boot</a> guide.</p>
 </div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2016-01-24 11:32:25 Eastern Standard Time
+Last updated 2016-01-24 22:47:10 Eastern Standard Time
 </div>
 </div>
 </body>
