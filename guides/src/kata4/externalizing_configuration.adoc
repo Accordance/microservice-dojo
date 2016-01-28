@@ -1,0 +1,276 @@
+// :linkcss:
+:icons: font
+:source-highlighter: coderay
+:kata_dir: kata4
+:sourcedir: ../../../{kata_dir}
+
+== Externalizing configuration
+
+You may have noticed that over time the configuration of the services becoming
+richer and more complex. Deploying hundreds of services into production environments
+increases such complexity 100 times fold.
+
+This means that we need to provide a consistent way of handling service configuration.
+
+IMPORTANT: You have to work out a convention that works for your organization and
+stick to it. Inconsistency and "snow flakes" increase complexity, introduce
+points of failure and increase troubleshooting time.
+
+Spring Boot uses a very particular PropertySource order that is designed to allow sensible overriding of values, properties are considered in the following order:
+
+. Command line arguments.
+. Properties from `SPRING_APPLICATION_JSON` (inline JSON embedded in an environment variable or system property)
+. JNDI attributes from `java:comp/env`.
+. Java System properties (`System.getProperties()`).
+. OS environment variables.
+. A `RandomValuePropertySource` that only has properties in `random.*`.
+. https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-external-config.html#boot-features-external-config-profile-specific-properties[Profile-specific application properties^] outside of your packaged jar (application-{profile}.properties and YAML variants)
+. https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-external-config.html#boot-features-external-config-profile-specific-properties[Profile-specific application properties^] packaged inside your jar (application-{profile}.properties and YAML variants)
+. Application properties outside of your packaged jar (`application.properties` and YAML variants).
+. Application properties packaged inside your jar (application.properties and YAML variants).
+. http://docs.spring.io/spring/docs/4.2.4.RELEASE/javadoc-api/org/springframework/context/annotation/PropertySource.html[@PropertySource^] annotations on your `@Configuration` classes.
+. Default properties (specified using `SpringApplication.setDefaultProperties`).
+
+== Extracting configuration from code
+
+NOTE: The solution to this exercise part can be found in *solution1* folder.
+
+Let's start with the basic controller:
+
+[source,java,indent=0]
+.src/main/java/msvcdojo/AccountsServiceApplication.java
+----
+include::{sourcedir}/start/mysvc/src/main/java/msvcdojo/MysvcApplication.java[tags=controller]
+----
+
+The variable `name` has a hard-coded value. We're going to externalize it into
+an application.yml file.
+
+Create the `src/main/resouces/application.yml` file add the following code:
+
+.src/main/resouces/application.yml
+----
+include::{sourcedir}/solution1/mysvc/src/main/resources/application.yml[tags=config]
+----
+
+Annotate the variable `name` with the `@Value` attribute. Your controller will look like
+this:
+
+[source,java,indent=0]
+.src/main/java/msvcdojo/AccountsServiceApplication.java
+----
+include::{sourcedir}/solution1/mysvc/src/main/java/msvcdojo/MysvcApplication.java[tags=controller]
+----
+
+Build and start the service:
+....
+$ gradlew assemble
+$ java -jar build\libs\mysvc-0.0.1.jar
+....
+
+=== Play time
+
+Can you guess what will be the result value when we're going to hit the controller
+with the basic request?
+
+....
+$ curl http://localhost:8100
+Hello, World!
+....
+
+That was simple, right?
+
+Now let's up the game, shall we?
+
+Stop the service, set environment variable and start the service again:
+.Windows
+....
+$ set name=John
+$ java -jar build/libs/mysvc-0.0.1.jar
+....
+.Mac
+....
+$ export name=John
+$ java -jar build/libs/mysvc-0.0.1.jar
+....
+
+Start the service and validate the result:
+....
+$ curl http://localhost:8100
+Hello, John!
+....
+
+The OS environment variable takes the precedent over the value provided in
+`application.yml` file.
+
+Let's override the environment variables as well with the command-line parameters:
+....
+$ java -DPORT=8200 -Dname=Alice -jar build/libs/mysvc-0.0.1.jar
+....
+
+Note that the service will start listening on the port *8222*.
+
+....
+$ curl http://localhost:822
+Hello, Alice!
+....
+
+The `-D` parameter will override the OS environment variables values according
+to the order in which the the values are resolved (see the list at the top
+of this guide).
+
+Note the value of `server.port` setting:
+
+.src/main/resouces/application.yml
+----
+include::{sourcedir}/solution1/mysvc/src/main/resources/application.yml[tags=server.port]
+----
+
+The notation of `${PORT:8100}` expands another variable `PORT` but, if the value
+was not resolved, falls over to the default value, provided after *:* sign.
+
+=== Resolution troubleshooting
+
+While the service running hit the *actuator* endpoint */env*:
+....
+$ curl http://localhost:8222/env
+....
+
+The result will look like the following:
+----
+include::env.json[]
+----
+
+If you'll analyze the file, you may notice the 3 different values of `name`
+variable, i.e. `systemProperties`, `systemEnvironment` and `applicationConfig`.
+The configuration resolution will pick the first one it'll find, i.e. the one
+in `systemProperties`.
+
+This allows you to see and understand where the values are coming from.
+
+== Configuration Server
+
+In this section we're going to go one step further. We're going to start preparing
+our service for production deployment.
+
+In production environment, where you're going to have more than one instance
+of each service for scale, there will be a challenge to manage multiple settings
+across a range of hosts for each service. While the settings are not static it'll
+become increasingly complex to keep all the settings consistent across all of the
+instances of the service.
+
+To solve this problem we're going to build a configuration server.
+
+=== Building Configuration Server
+
+Create an empty Spring Boot application.
+
+In the *build.gradle* add additional dependency:
+[source,groovy,indent=0]
+.config-service/build.gradle
+----
+include::{sourcedir}/solution2/config-service/build.gradle[tags=config-server]
+----
+
+Add `@EnableConfigServer` annotation for the application class:
+
+[source,java,indent=0]
+.src/main/java/msvcdojo/ConfigurationServerApplication.java
+----
+include::{sourcedir}/solution2/config-service/src/main/java/msvcdojo/ConfigurationServerApplication.java[tags=annotation]
+----
+
+==== Configuration Location (local file system)
+
+Create `application.yml` file where you can specify location where the service
+configurations can be found:
+
+[source,yml,indent=0]
+.src/main/resources/application.yml
+----
+include::{sourcedir}/solution2/config-service/src/main/resources/application-native.yml[tags=native]
+----
+
+==== Operating Configuration Server (local file system)
+
+Create a `config` folder and move there the `application.yml` configuration file
+from *mysvc* service with the name `my-service.yml`:
+
+[source,yml,indent=0]
+.config-service/config/my-service.yml
+----
+include::{sourcedir}/solution2/config-service/config/my-service.yml[]
+----
+
+Launch the config server and try to get the service configuration:
+....
+$ java -jar build\libs\config-service-0.0.1.jar
+$ curl http://localhost:8888/my-service.yml
+....
+
+If everything configured properly, you're going to see the contents of the
+`my-service.yml` file.
+
+==== Configuration Location (on Git)
+
+Create `application.yml` file where you can specify location where the service
+configurations can be found:
+
+[source,yml,indent=0]
+.config-service/src/main/resources/application.yml
+----
+include::{sourcedir}/solution2/config-service/src/main/resources/application.yml[tags=git]
+----
+
+==== Operating Configuration Server (with Git)
+
+Create an empty GitHub repo. Clone it locally and move there the `application.yml`
+configuration file from *mysvc* service with the name `my-service.yml`:
+
+[source,yml,indent=0]
+.config-service/src/config/my-service.yml
+----
+include::{sourcedir}/solution2/config-service/config/my-service.yml[]
+----
+
+Commit and push to the GitHub.
+
+Launch the config server and try to get the service configuration:
+....
+$ java -jar build\libs\config-service-0.0.1.jar
+$ curl http://localhost:8888/my-service.yml
+....
+
+If everything configured properly, you're going to see the contents of the
+`my-service.yml` file.
+
+== Using Config Server on the Client Side
+
+Delete `application.yml` file (it has been moved to the Config Server).
+
+Create `bootstrap.yml` file, where you specify a service ID as well as the
+location of the config server URI:
+
+[source,yml,indent=0]
+.mysvc/src/main/resources/bootstrap.yml
+----
+include::{sourcedir}/solution2/mysvc/src/main/resources/bootstrap.yml[]
+----
+
+Build and start the service:
+....
+$ gradlew build
+$ java -jar build\libs\mysvc-0.0.1.jar
+....
+
+If everything was done properly, when we hit the REST endpoint, you're going to
+see the following:
+
+....
+$ curl http://localhost:8100
+Hello, World!
+....
+
+== Bonus
+* https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-external-config.html[Externalized Configuration^]
+* http://cloud.spring.io/spring-cloud-config/spring-cloud-config.html[Spring Cloud Config^]

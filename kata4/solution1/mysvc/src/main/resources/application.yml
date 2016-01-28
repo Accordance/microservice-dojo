@@ -1,0 +1,14 @@
+# tag::config[]
+# tag::server.port[]
+server:
+  port: ${PORT:8100}
+# end::server.port[]
+
+name: World
+# end::config[]
+
+endpoints:
+  health:
+    sensitive: false
+  shutdown:
+    enabled: true

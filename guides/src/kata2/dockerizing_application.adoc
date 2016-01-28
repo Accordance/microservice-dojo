@@ -24,7 +24,7 @@ a Docker container.
 
 Create a *docker* folder and create there a template Dockerfile:
 [source,indent=0]
-.build.gradle
+.docker/Dockerfile.template
 ----
 include::{sourcedir}/solution/mysvc/docker/Dockerfile.template[]
 ----
@@ -115,4 +115,5 @@ $ docker rmi -f msvcdojo/mysvc:0.0.1
 ----
 
 == Bonus
-Read more about Docker architecture, commands and ecosystem on the https://docs.docker.com/[Docker website^].
+* Read more about Docker architecture, commands and ecosystem on the https://docs.docker.com/[Docker website^].
+* https://spring.io/guides/gs/spring-boot-docker/[Spring Boot with Docker^]

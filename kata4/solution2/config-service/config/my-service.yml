@@ -1,0 +1,10 @@
+server:
+  port: ${PORT:8100}
+
+name: World
+
+endpoints:
+  health:
+    sensitive: false
+  shutdown:
+    enabled: true

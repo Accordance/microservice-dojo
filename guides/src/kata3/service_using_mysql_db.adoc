@@ -338,6 +338,6 @@ $ docker build -t msvcdojo/accounts-service:0.0.1 build/docker
 
 == Bonus
 
-Read more on this topic in https://spring.io/guides/gs/accessing-data-rest/[Accessing JPA Data with REST^] guide.
-More on Flyway and http://flywaydb.org/getstarted/why.html[Why database migrations?^]
-You can get very crafty with http://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html[Flyway parameters^] in YAML config
+* Read more on this topic in https://spring.io/guides/gs/accessing-data-rest/[Accessing JPA Data with REST^] guide.
+* More on Flyway and http://flywaydb.org/getstarted/why.html[Why database migrations?^]
+* You can get very crafty with http://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html[Flyway parameters^] in YAML config
