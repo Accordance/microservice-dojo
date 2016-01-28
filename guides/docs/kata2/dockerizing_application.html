@@ -549,7 +549,7 @@ a Docker container.</p>
 <p>Create a <strong>docker</strong> folder and create there a template Dockerfile:</p>
 </div>
 <div class="listingblock">
-<div class="title">build.gradle</div>
+<div class="title">docker/Dockerfile.template</div>
 <div class="content">
 <pre class="CodeRay highlight"><code>FROM java:8
 MAINTAINER Igor Moochnick "igor@igorshare.com"
@@ -626,9 +626,9 @@ it in the Docker repository:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre>C:\Dev\accordance\microservice-dojo\kata2\solution\mysvc&gt;docker images
+<pre class="CodeRay highlight nowrap"><code data-lang="text">C:\Dev\accordance\microservice-dojo\kata2\solution\mysvc&gt;docker images
 REPOSITORY                  TAG                 IMAGE ID            CREATED             VIRTUAL SIZE
-msvcdojo/mysvc              0.0.1               cb55f79088db        2 minutes ago       655.2 MB</pre>
+msvcdojo/mysvc              0.0.1               cb55f79088db        2 minutes ago       655.2 MB</code></pre>
 </div>
 </div>
 </div>
@@ -650,9 +650,9 @@ msvcdojo/mysvc              0.0.1               cb55f79088db        2 minutes ag
 </div>
 <div class="listingblock">
 <div class="content">
-<pre>C:\Dev\accordance\microservice-dojo\kata2\solution\mysvc&gt;docker ps
+<pre class="CodeRay highlight nowrap"><code data-lang="text">C:\Dev\accordance\microservice-dojo\kata2\solution\mysvc&gt;docker ps
 CONTAINER ID        IMAGE                  COMMAND                  CREATED             STATUS              PORTS                    NAMES
-f309e203c200        msvcdojo/mysvc:0.0.1   "java -Djava.security"   9 seconds ago       Up 10 seconds       0.0.0.0:8100-&gt;8100/tcp   mysvc</pre>
+f309e203c200        msvcdojo/mysvc:0.0.1   &quot;java -Djava.security&quot;   9 seconds ago       Up 10 seconds       0.0.0.0:8100-&gt;8100/tcp   mysvc</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -660,10 +660,10 @@ f309e203c200        msvcdojo/mysvc:0.0.1   "java -Djava.security"   9 seconds ag
 </div>
 <div class="listingblock">
 <div class="content">
-<pre>$ docker logs mysvc
+<pre class="CodeRay highlight nowrap"><code data-lang="text">$ docker logs mysvc
 ...
 2016-01-25 [...] .s.b.c.e.j.JettyEmbeddedServletContainer : Jetty started on port(s) 8100 (http/1.1)
-2016-01-25 [...] msvcdojo.MysvcApplication                : Started MysvcApplication in 9.289 seconds (JVM running for 10.635)</pre>
+2016-01-25 [...] msvcdojo.MysvcApplication                : Started MysvcApplication in 9.289 seconds (JVM running for 10.635)</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -701,15 +701,22 @@ Hello World!</pre>
 <div class="sect1">
 <h2 id="_bonus">Bonus</h2>
 <div class="sectionbody">
-<div class="paragraph">
+<div class="ulist">
+<ul>
+<li>
 <p>Read more about Docker architecture, commands and ecosystem on the <a href="https://docs.docker.com/" target="_blank">Docker website</a>.</p>
+</li>
+<li>
+<p><a href="https://spring.io/guides/gs/spring-boot-docker/" target="_blank">Spring Boot with Docker</a></p>
+</li>
+</ul>
 </div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2016-01-24 23:28:54 Eastern Standard Time
+Last updated 2016-01-27 21:06:58 Eastern Standard Time
 </div>
 </div>
 </body>
