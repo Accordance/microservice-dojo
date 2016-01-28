@@ -271,6 +271,23 @@ $ curl http://localhost:8100
 Hello, World!
 ....
 
+== Running Config Server in Docker
+
+Follow the instructions for building docker image for Config Server:
+....
+$ gradlew clean prepDocker
+$ docker build -t msvcdojo/config-service:0.0.1 build/docker
+....
+
+Launch Config Server as docker container and see if you get MySvc configuraiton:
+....
+$ docker run -d --name=config-service -p 8888:8888 msvcdojo/config-service:0.0.1
+$ curl http://dockerhost:8888/my-svc.yml
+....
+
+Optional: Push Config Server image to your Docker Registry and now you can always
+get it with the docker run command.
+
 == Bonus
 * https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-external-config.html[Externalized Configuration^]
 * http://cloud.spring.io/spring-cloud-config/spring-cloud-config.html[Spring Cloud Config^]
