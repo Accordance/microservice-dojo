@@ -556,8 +556,156 @@ compile(<span class="string"><span class="delimiter">&quot;</span><span class="c
 compile(<span class="string"><span class="delimiter">&quot;</span><span class="content">org.springframework.hateoas:spring-hateoas</span><span class="delimiter">&quot;</span></span>)</code></pre>
 </div>
 </div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+Under construction
+</td>
+</tr>
+</table>
+</div>
 <div class="paragraph">
-<p>Follow the solution &#8230;&#8203;</p>
+<p>Add a ProfilePhoto entity describing a document</p>
+</div>
+<div class="listingblock">
+<div class="title">src/main/java/msvcdojo/ProfilesServiceApplication.java</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="type">class</span> <span class="class">ProfilePhoto</span> {
+
+    <span class="directive">public</span> ProfilePhoto() {
+    }
+
+    <span class="directive">public</span> ProfilePhoto(<span class="predefined-type">String</span> key) {
+        <span class="local-variable">this</span>.key = key;
+    }
+
+    <span class="directive">public</span> <span class="type">void</span> setId(<span class="predefined-type">String</span> id) {
+        <span class="local-variable">this</span>.id = id;
+    }
+
+    <span class="directive">public</span> <span class="type">void</span> setKey(<span class="predefined-type">String</span> key) {
+        <span class="local-variable">this</span>.key = key;
+    }
+
+    <span class="annotation">@Id</span>
+    <span class="directive">private</span> <span class="predefined-type">String</span> id;
+    <span class="directive">private</span> <span class="predefined-type">String</span> key;
+
+    <span class="directive">public</span> <span class="predefined-type">String</span> getId() {
+        <span class="keyword">return</span> id;
+    }
+
+    <span class="directive">public</span> <span class="predefined-type">String</span> getKey() {
+        <span class="keyword">return</span> key;
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Add a PhotoResource. We&#8217;re going to store binary data in the "files" section
+of MongoDB.</p>
+</div>
+<div class="listingblock">
+<div class="title">src/main/java/msvcdojo/ProfilesServiceApplication.java</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="type">class</span> <span class="class">PhotoResource</span> <span class="directive">extends</span> AbstractResource {
+
+    <span class="directive">private</span> <span class="directive">final</span> Photo photo;
+
+    <span class="directive">public</span> PhotoResource(Photo photo) {
+        Assert.notNull(photo, <span class="string"><span class="delimiter">&quot;</span><span class="content">Photo must not be null</span><span class="delimiter">&quot;</span></span>);
+        <span class="local-variable">this</span>.photo = photo;
+    }
+
+    <span class="annotation">@Override</span>
+    <span class="directive">public</span> <span class="predefined-type">String</span> getDescription() {
+        <span class="keyword">return</span> <span class="predefined-constant">null</span>;
+    }
+
+    <span class="annotation">@Override</span>
+    <span class="directive">public</span> <span class="predefined-type">InputStream</span> getInputStream() <span class="directive">throws</span> <span class="exception">IOException</span> {
+        <span class="keyword">return</span> <span class="local-variable">this</span>.photo.getInputStream();
+    }
+
+    <span class="annotation">@Override</span>
+    <span class="directive">public</span> <span class="type">long</span> contentLength() <span class="directive">throws</span> <span class="exception">IOException</span> {
+        <span class="keyword">return</span> -<span class="integer">1</span>;
+    }
+
+}
+
+<span class="type">interface</span> <span class="class">Photo</span> {
+
+    <span class="comment">/**
+     * @return a new {@link InputStream} containing photo data as a JPEG. The caller is
+     * responsible for closing the stream.
+     * @throws IOException
+     */</span>
+    <span class="directive">public</span> <span class="predefined-type">InputStream</span> getInputStream() <span class="directive">throws</span> <span class="exception">IOException</span>;
+
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now it&#8217;s time to add a data repository description with it&#8217;s "verbs":</p>
+</div>
+<div class="listingblock">
+<div class="title">src/main/java/msvcdojo/ProfilesServiceApplication.java</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="type">interface</span> <span class="class">ProfilePhotoRepository</span> <span class="directive">extends</span> MongoRepository&lt;ProfilePhoto, <span class="predefined-type">String</span>&gt; {
+
+    <span class="predefined-type">Collection</span>&lt;ProfilePhoto&gt; findByKey(<span class="predefined-type">String</span> key);
+
+    ProfilePhoto findByKeyAndId(<span class="predefined-type">String</span> key, <span class="predefined-type">String</span> id);
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>We&#8217;re going to add a REST controller that will allow us to insert a photo (large
+binary file) with any arbitrary key by posting data into the URL that looks like
+this: <code><a href="http://host/profiles/{key}/photos" class="bare">http://host/profiles/{key}/photos</a></code></p>
+</div>
+<div class="paragraph">
+<p>Create a rest controller with the mapping <code>/profiles/{key}/photos</code>:</p>
+</div>
+<div class="listingblock">
+<div class="title">src/main/java/msvcdojo/ProfilesServiceApplication.java</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="annotation">@RestController</span>
+<span class="annotation">@RequestMapping</span>(value = <span class="string"><span class="delimiter">&quot;</span><span class="content">/profiles/{key}/photos</span><span class="delimiter">&quot;</span></span>, produces = MediaType.APPLICATION_JSON_VALUE)
+<span class="type">class</span> <span class="class">ProfilePhotoController</span> {</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Add a handler that will process POST requests:</p>
+</div>
+<div class="listingblock">
+<div class="title">src/main/java/msvcdojo/ProfilesServiceApplication.java</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="annotation">@RequestMapping</span>(method = {RequestMethod.POST, RequestMethod.PUT})
+ResponseEntity&lt;Resource&lt;ProfilePhoto&gt;&gt; insertPhoto(<span class="annotation">@PathVariable</span> <span class="predefined-type">String</span> key,
+                                                   <span class="annotation">@RequestParam</span> MultipartFile file) <span class="directive">throws</span> <span class="exception">IOException</span> {
+    Photo photo = file::getInputStream;
+    ProfilePhoto profilePhoto = <span class="local-variable">this</span>.profilePhotoRepository.save(<span class="keyword">new</span> ProfilePhoto(key));
+    <span class="predefined-type">String</span> id = profilePhoto.getId();
+    <span class="keyword">try</span> (<span class="predefined-type">InputStream</span> inputStream = photo.getInputStream()) {
+        <span class="local-variable">this</span>.fs.store(inputStream, id);
+    }
+    <span class="predefined-type">URI</span> uri = ServletUriComponentsBuilder.fromCurrentRequest()
+            .path(<span class="string"><span class="delimiter">&quot;</span><span class="content">/{id}/photo</span><span class="delimiter">&quot;</span></span>).buildAndExpand(id).toUri();
+    HttpHeaders headers = <span class="keyword">new</span> HttpHeaders();
+    headers.setLocation(uri);
+    <span class="keyword">return</span> <span class="keyword">new</span> ResponseEntity&lt;&gt;(
+            <span class="local-variable">this</span>.readPhoto(key, id), headers, HttpStatus.CREATED);
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Follow the solution further &#8230;&#8203;</p>
 </div>
 </div>
 <div class="sect2">
@@ -605,7 +753,7 @@ and navigating to <code><a href="http://dockerhost:8081" class="bare">http://doc
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2016-01-28 02:07:34 Eastern Standard Time
+Last updated 2016-01-29 00:03:04 Eastern Standard Time
 </div>
 </div>
 </body>

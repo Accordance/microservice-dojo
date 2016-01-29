@@ -578,9 +578,9 @@ ENTRYPOINT ["java", "-Djava.security.egd=file:/dev/./urandom" ,"-jar", "/${proje
                         into <span class="string"><span class="delimiter">&quot;</span><span class="inline"><span class="inline-delimiter">$</span>buildDir</span><span class="content">/docker</span><span class="delimiter">&quot;</span></span>
                 }
         }
-    doLast {
-        println <span class="string"><span class="delimiter">&quot;</span><span class="content">Docker command: docker build -t </span><span class="inline"><span class="inline-delimiter">${</span>jar.group<span class="inline-delimiter">}</span></span><span class="content">/</span><span class="inline"><span class="inline-delimiter">${</span>jar.baseName<span class="inline-delimiter">}</span></span><span class="content">:</span><span class="inline"><span class="inline-delimiter">${</span>jar.version<span class="inline-delimiter">}</span></span><span class="content"> build/docker</span><span class="delimiter">&quot;</span></span>
-    }
+  doLast {
+      println <span class="string"><span class="delimiter">&quot;</span><span class="content">Docker command: docker build -t </span><span class="inline"><span class="inline-delimiter">${</span>jar.group<span class="inline-delimiter">}</span></span><span class="content">/</span><span class="inline"><span class="inline-delimiter">${</span>jar.baseName<span class="inline-delimiter">}</span></span><span class="content">:</span><span class="inline"><span class="inline-delimiter">${</span>jar.version<span class="inline-delimiter">}</span></span><span class="content"> build/docker</span><span class="delimiter">&quot;</span></span>
+  }
 }</code></pre>
 </div>
 </div>
@@ -716,7 +716,7 @@ Hello World!</pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2016-01-27 21:06:58 Eastern Standard Time
+Last updated 2016-01-28 13:10:54 Eastern Standard Time
 </div>
 </div>
 </body>

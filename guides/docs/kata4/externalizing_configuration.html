@@ -1002,6 +1002,33 @@ Hello, World!</pre>
 </div>
 </div>
 <div class="sect1">
+<h2 id="_running_config_server_in_docker">Running Config Server in Docker</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Follow the instructions for building docker image for Config Server:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>$ gradlew clean prepDocker
+$ docker build -t msvcdojo/config-service:0.0.1 build/docker</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Launch Config Server as docker container and see if you get MySvc configuraiton:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>$ docker run -d --name=config-service -p 8888:8888 msvcdojo/config-service:0.0.1
+$ curl http://dockerhost:8888/my-svc.yml</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Optional: Push Config Server image to your Docker Registry and now you can always
+get it with the docker run command.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
 <h2 id="_bonus">Bonus</h2>
 <div class="sectionbody">
 <div class="ulist">
@@ -1019,7 +1046,7 @@ Hello, World!</pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2016-01-28 00:50:28 Eastern Standard Time
+Last updated 2016-01-28 13:10:54 Eastern Standard Time
 </div>
 </div>
 </body>
