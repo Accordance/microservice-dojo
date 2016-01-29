@@ -47,16 +47,20 @@ public class ProfilesServiceApplication {
     }
 }
 
+// tag::ProfilePhotoRepository[]
 interface ProfilePhotoRepository extends MongoRepository<ProfilePhoto, String> {
 
     Collection<ProfilePhoto> findByKey(String key);
 
     ProfilePhoto findByKeyAndId(String key, String id);
 }
+// end::ProfilePhotoRepository[]
 
+// tag::controller[]
 @RestController
 @RequestMapping(value = "/profiles/{key}/photos", produces = MediaType.APPLICATION_JSON_VALUE)
 class ProfilePhotoController {
+// end::controller[]
 
     private final ProfilePhotoRepository profilePhotoRepository;
     private final GridFsTemplate fs;
@@ -90,6 +94,7 @@ class ProfilePhotoController {
         return new ResponseEntity<>(new PhotoResource(photo), httpHeaders, HttpStatus.OK);
     }
 
+    // tag::insertPhoto[]
     @RequestMapping(method = {RequestMethod.POST, RequestMethod.PUT})
     ResponseEntity<Resource<ProfilePhoto>> insertPhoto(@PathVariable String key,
                                                        @RequestParam MultipartFile file) throws IOException {
@@ -106,6 +111,7 @@ class ProfilePhotoController {
         return new ResponseEntity<>(
                 this.readPhoto(key, id), headers, HttpStatus.CREATED);
     }
+    // end::insertPhoto[]
 
     @Autowired
     public ProfilePhotoController(ProfilePhotoRepository repository, GridFsTemplate gridFileSystem) {
@@ -115,32 +121,7 @@ class ProfilePhotoController {
 
 }
 
-class PhotoResource extends AbstractResource {
-
-    private final Photo photo;
-
-    public PhotoResource(Photo photo) {
-        Assert.notNull(photo, "Photo must not be null");
-        this.photo = photo;
-    }
-
-    @Override
-    public String getDescription() {
-        return null;
-    }
-
-    @Override
-    public InputStream getInputStream() throws IOException {
-        return this.photo.getInputStream();
-    }
-
-    @Override
-    public long contentLength() throws IOException {
-        return -1;
-    }
-
-}
-
+// tag::ProfilePhoto[]
 class ProfilePhoto {
 
     public ProfilePhoto() {
@@ -170,6 +151,34 @@ class ProfilePhoto {
         return key;
     }
 }
+// end::ProfilePhoto[]
+
+// tag::PhotoResource[]
+class PhotoResource extends AbstractResource {
+
+    private final Photo photo;
+
+    public PhotoResource(Photo photo) {
+        Assert.notNull(photo, "Photo must not be null");
+        this.photo = photo;
+    }
+
+    @Override
+    public String getDescription() {
+        return null;
+    }
+
+    @Override
+    public InputStream getInputStream() throws IOException {
+        return this.photo.getInputStream();
+    }
+
+    @Override
+    public long contentLength() throws IOException {
+        return -1;
+    }
+
+}
 
 interface Photo {
 
@@ -181,3 +190,4 @@ interface Photo {
     public InputStream getInputStream() throws IOException;
 
 }
+// end::PhotoResource[]
