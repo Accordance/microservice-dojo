@@ -1,0 +1,177 @@
+include::https://raw.githubusercontent.com/Accordance/microservice-dojo/master/guides/docs/misc/macros.adoc[]
+
+== Dojo Story
+
+First we have a simple web service:
+
+[ditaa, "dojo-story-1", png]
+....
+       +-------------+
+       |   Accounts  |
+       |   Service   |
+       +-------------+
+....
+
+Then we add a database:
+
+[ditaa, "dojo-story-2", png]
+....
+       +-------------+
+       |   Accounts  |
+       |   Service   |
+       +------+------+
+              |
+              v
+       +-------------+
+       |    DB  cBLU |
+       |    mySql{s} |
+       +-------------+
+....
+
+Then we create another service with it's own data store:
+
+[ditaa, "dojo-story-3", png]
+....
+                                   +-------------+
+                                   |   Profiles  |
+                                   |   Service   |
+                                   +------+------+
+                                          |
+                                          v
+                                   +-------------+
+                                   |    DB  cBLU |
+                                   |    Mongo{s} |
+                                   +-------------+
+....
+
+We teach the Accounts service to look for profile photos:
+
+[ditaa, "dojo-story-4", png]
+....
+       +-------------+            +-------------+
+       |   Accounts  |            |   Profiles  |
+       |   Service   +----------->|   Service   |
+       +------+------+            +------+------+
+              |                          |
+              v                          v
+       +-------------+            +-------------+
+       |    DB  cBLU |            |    DB  cBLU |
+       |    mySql{s} |            |    Mongo{s} |
+       +-------------+            +-------------+
+....
+
+We externalize the configuration:
+
+[ditaa, "dojo-story-5", png]
+....
+                                                          +------------------+
+                                                          |   Configuration  |
+                                                          |   Service        |
+                                                          +----^-------------+
+                                                               |
+                                                               |
+                   +--------------------------+----------------+
+                   |                          |
+       +-----------+-+            +-----------+-+
+       |   Accounts  |            |   Profiles  |
+       |   Service   +----------->|   Service   |
+       +------+------+            +------+------+
+              |                          |
+              v                          v
+       +-------------+            +-------------+
+       |    DB cBLU  |            |    DB cBLU  |
+       |    mySql{s} |            |    Mongo{s} |
+       +-------------+            +-------------+
+....
+
+Adding service catalog and scaling service-instances:
+
+[ditaa, "dojo-story-6", png]
+....
+                                                          +------------------+
+                                                          |     Eureka cPNK  |
+                                                          |  ( Discovery     |
+                                                          |     Service )    |
+                                                          +--------+---------+
+                                                               ^   |
+                                                               |   |
+                +--------------------------+-------------------+   |
+                |  +-----------------------|--+--------------------+
+                |  |                       |  |                    |
+                |  |                       |  |                    v
+       +--------+--+-+            +--------+--+-+         +--------+---------+
+       |   Accounts  + |          |   Profiles  | |       |   Configuration  |
+       |   Service   | |--------->|   Service   | |       |   Service  cPNK  |
+       +-+-----------+ |          +-+-----------+ |       +--------+---------+
+         +----+--------+            +----+--------+                |
+              |                          |                         |
+              v                          v                         v
+       +-------------+            +-------------+             +----------+
+       |             |            |             |             | {d} cBLU |
+       |    DB cBLU  |            |    DB cBLU  |             | External |
+       |    mySql{s} |            |    Mongo{s} |             | config   |
+       +-------------+            +-------------+             +----------+
+....
+
+After a couple of Katas we're going to get a working and operationally-ready
+micro-services environment:
+
+[ditaa, "dojo-story-7", png]
+....
+                      +-------------+
+                      |     Web     |
+                      | Application |
+                      +------+------+
+                             |
+                             v
+                      +-------------+    /----------\     +------------------+
+                      |    Zuul cPNK|    |  SSO     |     |     Eureka cPNK  |
+                      |     API     |<---*  Service |     |    Discovery     |
+                      |   Gateway   |    |   cGRE   |     |     Service      |
+                      +------+------+    \----------/     +--------+---------+
+                             |                                 ^   |
+            +----------------+---------+                       |   |
+            |   +----------------------|---+-------------------+   |
+            |   |  +-------------------|---|--+--------------------+
+            |   |  |                   |   |  |                    |
+            v   |  |                   v   |  |                    v
+       +--------+--+-+            +--------+--+-+         +--------+---------+
+       |   Accounts  |            |   Profiles  |         |   Configuration  |
+       |   Service   +----------->|   Service   |         |   Service cPNK   |
+       +------+------+            +------+------+         +--------+---------+
+              |                          |                         |
+              v                          v                         v
+       +-------------+            +-------------+             +----------+
+       |             |            |             |             | {d} cBLU |
+       |    DB cBLU  |            |    DB cBLU  |             | External |
+       |    mySql{s} |            |    Mongo{s} |             | config   |
+       +-------------+            +-------------+             +----------+
+
+       +--------------+   +--------------+   +----------------+  +-------------+
+       |  Hystrix cPNK|   |  Turbine cPNK|   |  Kibana (ELK)  |  | Zipkin cPNK |
+       |  Dashboard   |   |  Dashboard   |   |  Dashboard cPNK|  | Tracing     |
+       +--------------+   +--------------+   +----------------+  +-------------+
+
+       +-----------------------------------------------------------------------+
+       |  cPNK                                                                 |
+       |                             Mesos / Cloud Foundry                     |
+       |                                                                       |
+       +-----------------------------------------------------------------------+
+
+....
+
+
+
+Services and their ports roster:
+[format="csv", options="header"]
+|===
+Service ID,Port
+Accounts Service,8100
+mySql DB, 3306
+Profiles Service,8101
+Mongo DB, 27017
+Config Service, 8888
+Eureka, 8761
+Hystrix dashboard, 8110
+Gateway, 8111
+|===
