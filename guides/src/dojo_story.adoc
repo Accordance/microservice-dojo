@@ -101,7 +101,7 @@ Adding service catalog and scaling service-instances:
                 |  |                       |  |                    v
        +--------+--+-+            +--------+--+-+         +--------+---------+
        |   Accounts  + |          |   Profiles  | |       |   Configuration  |
-       |   Service   | |--------->|   Service   | |       |   Service  cPNK  |
+       |   Service   | +--------->|   Service   | |       |   Service  cPNK  |
        +-+-----------+ |          +-+-----------+ |       +--------+---------+
          +----+--------+            +----+--------+                |
               |                          |                         |
