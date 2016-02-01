@@ -728,6 +728,19 @@ classpath(<span class="string"><span class="delimiter">&quot;</span><span class=
 INSERT INTO account (username) VALUES ('john');</code></pre>
 </div>
 </div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+Avoid putting data and configuration in the schema migrations at
+all costs. This example is for demo purposes only.
+</td>
+</tr>
+</table>
+</div>
 <div class="paragraph">
 <p>_5. Apply V1 migration</p>
 </div>
@@ -872,6 +885,32 @@ Read more on HATEOAS in <a href="https://spring.io/understanding/HATEOAS" target
 </div>
 </div>
 <div class="paragraph">
+<p>To get information about a single <strong>account</strong> you navigate to the item&#8217;s resource URI:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>$ curl http://localhost:8100/accounts/1</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The result will look like this:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>{
+  "username" : "john",
+  "_links" : {
+    "self" : {
+      "href" : "http://localhost:8100/accounts/1"
+    },
+    "account" : {
+      "href" : "http://localhost:8100/accounts/1"
+    }
+  }
+}</pre>
+</div>
+</div>
+<div class="paragraph">
 <p>Now let&#8217;s, in fact, try to use this service for some real work by adding
 more records to the database:</p>
 </div>
@@ -943,8 +982,8 @@ result:</p>
 multiple times and will have a need to migrate the database alongside.</p>
 </div>
 <div class="paragraph">
-<p>Here we&#8217;re going to add a new field <strong>full_name</strong> to the <strong>account</strong> table so our
-users can add their full name to their accounts.</p>
+<p>Here we&#8217;re going to add a new field <strong>role</strong> to the <strong>account</strong> table where we&#8217;re
+going to track their roles.</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -962,23 +1001,23 @@ The solution to this exercise part can be found in <strong>solution2</strong> fo
 <p>Add a second migration (to V2):</p>
 </div>
 <div class="listingblock">
-<div class="title">src/main/resources/db/migration/V2__add_full_name.sql</div>
+<div class="title">src/main/resources/db/migration/V2__add_role.sql</div>
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="text">ALTER TABLE account
-ADD full_name varchar(255);
+ADD role varchar(255);
 
-UPDATE account SET full_name = 'John Doe'
+UPDATE account SET role = 'admin'
 WHERE username = 'john';</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Add the <strong>fullName</strong> mapping to the data model:</p>
+<p>Add the <strong>role</strong> mapping to the data model:</p>
 </div>
 <div class="listingblock">
 <div class="title">src/main/java/msvcdojo/AccountsServiceApplication.java</div>
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="java"><span class="directive">private</span> <span class="predefined-type">String</span> fullName;
-<span class="directive">public</span> <span class="predefined-type">String</span> getFullName() { <span class="keyword">return</span> fullName; }</code></pre>
+<pre class="CodeRay highlight"><code data-lang="java"><span class="directive">private</span> <span class="predefined-type">String</span> role;
+<span class="directive">public</span> <span class="predefined-type">String</span> getRole() { <span class="keyword">return</span> role; }</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -987,7 +1026,7 @@ WHERE username = 'john';</code></pre>
 <div class="listingblock">
 <div class="title">src/main/java/msvcdojo/AccountsServiceApplication.java</div>
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="java"><span class="predefined-type">List</span>&lt;Account&gt; findByFullName(<span class="annotation">@Param</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">fullName</span><span class="delimiter">&quot;</span></span>) <span class="predefined-type">String</span> fullName);</code></pre>
+<pre class="CodeRay highlight"><code data-lang="java"><span class="predefined-type">List</span>&lt;Account&gt; findByRole(<span class="annotation">@Param</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">role</span><span class="delimiter">&quot;</span></span>) <span class="predefined-type">String</span> role);</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1003,14 +1042,14 @@ WHERE username = 'john';</code></pre>
 <tr>
 <th class="tableblock halign-left valign-top">id</th>
 <th class="tableblock halign-left valign-top">username</th>
-<th class="tableblock halign-left valign-top">full_name</th>
+<th class="tableblock halign-left valign-top">role</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">john</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">John Doe</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">admin</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
@@ -1024,7 +1063,7 @@ WHERE username = 'john';</code></pre>
 </div>
 <div class="literalblock">
 <div class="content">
-<pre>$ curl http://localhost:8100/accounts/search/findByFullName?fullName=John%20Doe</pre>
+<pre>$ curl http://localhost:8100/accounts/search/findByRole?role=admin</pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1036,7 +1075,7 @@ WHERE username = 'john';</code></pre>
   <span class="key"><span class="delimiter">&quot;</span><span class="content">_embedded</span><span class="delimiter">&quot;</span></span> : {
     <span class="key"><span class="delimiter">&quot;</span><span class="content">accounts</span><span class="delimiter">&quot;</span></span> : [ {
       <span class="key"><span class="delimiter">&quot;</span><span class="content">username</span><span class="delimiter">&quot;</span></span> : <span class="string"><span class="delimiter">&quot;</span><span class="content">john</span><span class="delimiter">&quot;</span></span>,
-      <span class="key"><span class="delimiter">&quot;</span><span class="content">fullName</span><span class="delimiter">&quot;</span></span> : <span class="string"><span class="delimiter">&quot;</span><span class="content">John Doe</span><span class="delimiter">&quot;</span></span>,
+      <span class="key"><span class="delimiter">&quot;</span><span class="content">role</span><span class="delimiter">&quot;</span></span>     : <span class="string"><span class="delimiter">&quot;</span><span class="content">admin</span><span class="delimiter">&quot;</span></span>,
       <span class="key"><span class="delimiter">&quot;</span><span class="content">_links</span><span class="delimiter">&quot;</span></span> : {
         <span class="key"><span class="delimiter">&quot;</span><span class="content">self</span><span class="delimiter">&quot;</span></span> : {
           <span class="key"><span class="delimiter">&quot;</span><span class="content">href</span><span class="delimiter">&quot;</span></span> : <span class="string"><span class="delimiter">&quot;</span><span class="content">http://localhost:8100/accounts/1</span><span class="delimiter">&quot;</span></span>
@@ -1049,7 +1088,7 @@ WHERE username = 'john';</code></pre>
   },
   <span class="key"><span class="delimiter">&quot;</span><span class="content">_links</span><span class="delimiter">&quot;</span></span> : {
     <span class="key"><span class="delimiter">&quot;</span><span class="content">self</span><span class="delimiter">&quot;</span></span> : {
-      <span class="key"><span class="delimiter">&quot;</span><span class="content">href</span><span class="delimiter">&quot;</span></span> : <span class="string"><span class="delimiter">&quot;</span><span class="content">http://localhost:8100/accounts/search/findByFullName?fullName=John%20Doe</span><span class="delimiter">&quot;</span></span>
+      <span class="key"><span class="delimiter">&quot;</span><span class="content">href</span><span class="delimiter">&quot;</span></span> : <span class="string"><span class="delimiter">&quot;</span><span class="content">http://localhost:8100/accounts/search/findByRole?role=admin</span><span class="delimiter">&quot;</span></span>
     }
   }
 }</code></pre>
@@ -1131,7 +1170,7 @@ $ docker build -t msvcdojo/accounts-service:0.0.1 build/docker</pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2016-01-27 21:07:11 Eastern Standard Time
+Last updated 2016-01-31 23:32:34 Eastern Standard Time
 </div>
 </div>
 </body>
