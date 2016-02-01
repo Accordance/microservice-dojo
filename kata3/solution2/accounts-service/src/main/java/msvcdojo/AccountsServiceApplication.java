@@ -26,9 +26,9 @@ public class AccountsServiceApplication {
 interface AccountRepository extends JpaRepository<Account, Long> {
     List<Account> findByUsername(@Param("username") String username);
 
-// tag::findByFullName[]
-    List<Account> findByFullName(@Param("fullName") String fullName);
-// end::findByFullName[]
+// tag::findByRole[]
+    List<Account> findByRole(@Param("role") String role);
+// end::findByRole[]
 }
 
 
@@ -49,8 +49,8 @@ class Account {
     private String username;
 
 // tag::data-model[]
-    private String fullName;
-    public String getFullName() { return fullName; }
+    private String role;
+    public String getRole() { return role; }
 // end::data-model[]
 
     Account() { // JPA only
@@ -65,7 +65,7 @@ class Account {
         final StringBuilder sb = new StringBuilder("User{");
         sb.append("id=").append(id);
         sb.append(", username='").append(username).append('\'');
-        sb.append(", fullName='").append(fullName).append('\'');
+        sb.append(", role='").append(role).append('\'');
         sb.append('}');
         return sb.toString();
     }
