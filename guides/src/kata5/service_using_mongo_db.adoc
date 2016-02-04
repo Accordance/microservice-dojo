@@ -1,0 +1,104 @@
+// :linkcss:
+:icons: font
+:source-highlighter: coderay
+:kata_dir: kata5
+:sourcedir: ../../../{kata_dir}
+
+== Web Service using Mongo DB
+
+WARNING: Under construction
+
+=== Preparing Environment
+
+Launch Mongo and Config Server:
+....
+$ docker run --name mongo -d -p 27017:27017 mongo
+$ docker run -d --name=config-service -p 8888:8888 msvcdojo/config-service:0.0.1
+....
+
+=== Building Service
+Create a basic web Service with the name *profiles-service*.
+
+In the *build.gradle* add additional dependency:
+[source,groovy,indent=0]
+.profiles-service/build.gradle
+----
+include::{sourcedir}/solution/profiles-service/build.gradle[tags=mongo]
+----
+
+WARNING: Under construction
+
+Add a ProfilePhoto entity describing a document
+
+[source,java,indent=0]
+.src/main/java/msvcdojo/ProfilesServiceApplication.java
+----
+include::{sourcedir}/solution/profiles-service/src/main/java/msvcdojo/ProfilesServiceApplication.java[tags=ProfilePhoto]
+----
+
+Add a PhotoResource. We're going to store binary data in the "files" section
+of MongoDB.
+
+[source,java,indent=0]
+.src/main/java/msvcdojo/ProfilesServiceApplication.java
+----
+include::{sourcedir}/solution/profiles-service/src/main/java/msvcdojo/ProfilesServiceApplication.java[tags=PhotoResource]
+----
+
+Now it's time to add a data repository description with it's "verbs":
+
+[source,java,indent=0]
+.src/main/java/msvcdojo/ProfilesServiceApplication.java
+----
+include::{sourcedir}/solution/profiles-service/src/main/java/msvcdojo/ProfilesServiceApplication.java[tags=ProfilePhotoRepository]
+----
+
+We're going to add a REST controller that will allow us to insert a photo (large
+binary file) with any arbitrary key by posting data into the URL that looks like
+this: `http://host/profiles/{key}/photos`
+
+Create a rest controller with the mapping `/profiles/{key}/photos`:
+
+[source,java,indent=0]
+.src/main/java/msvcdojo/ProfilesServiceApplication.java
+----
+include::{sourcedir}/solution/profiles-service/src/main/java/msvcdojo/ProfilesServiceApplication.java[tags=controller]
+----
+
+Add a handler that will process POST requests:
+
+[source,java,indent=0]
+.src/main/java/msvcdojo/ProfilesServiceApplication.java
+----
+include::{sourcedir}/solution/profiles-service/src/main/java/msvcdojo/ProfilesServiceApplication.java[tags=insertPhoto]
+----
+
+Follow the solution further ...
+
+=== Play time
+
+[source,text,options="nowrap"]
+....
+$ gradlew clean prepDocker
+$ java -jar -Dconfig-service.uri=http://dockerhost:8888 -Dmongoserver=dockerhost build\libs\profiles-service-0.0.1.jar
+$ curl -F "file=@../../../misc/face.png" http://localhost:8101/profiles/1/photos
+$ curl http://localhost:8101/profiles/1/photos
+[ {
+  "key" : "1",
+  "links" : [ {
+    "rel" : "photo",
+    "href" : "http://localhost:8101/profiles/1/photos/56a9b9065d6731a5ac16962b/photo"
+  } ]
+} ]
+....
+
+Navigate in your browser of choice to the URL provided by the last response and you
+should see the uploaded picture.
+
+== Bonus
+
+* Explore the contents of MongoDB by launching Mongo Express web client in docker
+and navigating to `http://dockerhost:8081`:
+....
+$ docker run -d -p 8081:8081 --link mongo:mongo knickers/mongo-express
+....
