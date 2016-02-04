@@ -1,6 +1,6 @@
 # Micro-services Dojo
 
-<img src="https://raw.githubusercontent.com/Accordance/microservice-dojo/master/misc/dojo.jpg" width="150">
+<img src="https://raw.githubusercontent.com/Accordance/microservice-dojo/master/misc/dojo.jpg" width="300">
 
 This Dojo is a play ground that helps to bootstrap teams and individuals to
 the point when they understand basics of the micro-services and operational
