@@ -509,8 +509,28 @@ table.CodeRay td.code>pre{padding:0}
 .CodeRay .head .head{color:#f4f}
 </style>
 </head>
-<body class="article">
+<body class="article toc2 toc-left">
 <div id="header">
+<div id="toc" class="toc2">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_externalizing_configuration">Externalizing configuration</a></li>
+<li><a href="#_extracting_configuration_from_code">Extracting configuration from code</a>
+<ul class="sectlevel2">
+<li><a href="#_play_time">Play time</a></li>
+<li><a href="#_resolution_troubleshooting">Resolution troubleshooting</a></li>
+</ul>
+</li>
+<li><a href="#_configuration_server">Configuration Server</a>
+<ul class="sectlevel2">
+<li><a href="#_building_configuration_server">Building Configuration Server</a></li>
+</ul>
+</li>
+<li><a href="#_using_config_server_on_the_client_side">Using Config Server on the Client Side</a></li>
+<li><a href="#_running_config_server_in_docker">Running Config Server in Docker</a></li>
+<li><a href="#_bonus">Bonus</a></li>
+</ul>
+</div>
 </div>
 <div id="content">
 <div class="sect1">
@@ -626,10 +646,10 @@ an application.yml file.</p>
 <div class="listingblock">
 <div class="title">src/main/resouces/application.yml</div>
 <div class="content">
-<pre>server:
-  port: ${PORT:8100}
+<pre class="CodeRay highlight"><code data-lang="yml"><span class="key">server</span>:
+  <span class="key">port</span>: <span class="string"><span class="content">${PORT:8100}</span></span>
 
-name: World</pre>
+<span class="key">name</span>: <span class="string"><span class="content">World</span></span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -737,8 +757,8 @@ of this guide).</p>
 <div class="listingblock">
 <div class="title">src/main/resouces/application.yml</div>
 <div class="content">
-<pre>server:
-  port: ${PORT:8100}</pre>
+<pre class="CodeRay highlight"><code data-lang="yml"><span class="key">server</span>:
+  <span class="key">port</span>: <span class="string"><span class="content">${PORT:8100}</span></span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1046,7 +1066,7 @@ get it with the docker run command.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2016-01-28 13:10:54 Eastern Standard Time
+Last updated 2016-02-04 09:02:51 Eastern Standard Time
 </div>
 </div>
 </body>
