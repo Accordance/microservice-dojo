@@ -1,0 +1,5 @@
+# tag::feign-logging[]
+logging:
+  level:
+    msvcdojo.ProfilesServiceProxy: DEBUG
+# tag::feign-logging[]
