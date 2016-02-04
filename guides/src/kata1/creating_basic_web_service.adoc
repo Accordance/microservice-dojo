@@ -1,3 +1,4 @@
+:toc: left
 // :linkcss:
 :icons: font
 :source-highlighter: coderay

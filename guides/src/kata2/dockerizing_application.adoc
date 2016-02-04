@@ -1,4 +1,4 @@
-// :linkcss:
+:toc: left
 :icons: font
 :source-highlighter: coderay
 :kata_dir: kata2

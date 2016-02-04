@@ -1,4 +1,4 @@
-// :linkcss:
+:toc: left
 :icons: font
 :source-highlighter: coderay
 :kata_dir: kata4
@@ -48,6 +48,7 @@ an application.yml file.
 
 Create the `src/main/resouces/application.yml` file add the following code:
 
+[source,yml,indent=0]
 .src/main/resouces/application.yml
 ----
 include::{sourcedir}/solution1/mysvc/src/main/resources/application.yml[tags=config]
@@ -121,6 +122,7 @@ of this guide).
 
 Note the value of `server.port` setting:
 
+[source,yml,indent=0]
 .src/main/resouces/application.yml
 ----
 include::{sourcedir}/solution1/mysvc/src/main/resources/application.yml[tags=server.port]
