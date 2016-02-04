@@ -1,0 +1,63 @@
+:toc: left
+:icons: font
+:source-highlighter: coderay
+:kata_dir: kata-web-client
+:sourcedir: ../../../{kata_dir}
+
+== Basics of Web Client
+
+We're going to use https://angularjs.org/[AngularJS^] to build our web client.
+
+IMPORTANT: We're in the JavaScript world. Make sure you have appropriate
+tools installed to work with JavaScript, i.e.: https://nodejs.org/en/[node.js^],
+npm
+
+=== Getting Started
+
+Clone a quick-start project for AngularJS client.
+
+....
+$ git clone https://github.com/Accordance/angular2-quickstart
+....
+
+Bring all the required dependencies:
+....
+$ npm install
+....
+
+Compile the code (here we're using TypeScript) and launch light web server:
+[source,text,options="nowrap"]
+....
+$ npm start
+
+> angular2-quickstart@0.1.0 start /angular2-quickstart
+> concurrent "npm run tsc:w" "npm run lite"
+
+[0]
+[0] > angular2-quickstart@0.1.0 tsc:w /angular2-quickstart
+[0] > tsc -w
+[0]
+[1]
+[1] > angular2-quickstart@0.1.0 lite /angular2-quickstart
+[1] > lite-server
+[1]
+[0] 5:31:10 PM - Compilation complete. Watching for file changes.
+[1] [BS] Access URLs:
+[1]  -------------------------------------
+[1]        Local: http://localhost:3000
+[1]     External: http://192.168.99.1:3000
+[1]  -------------------------------------
+[1]           UI: http://localhost:3001
+[1]  UI External: http://192.168.99.1:3001
+[1]  -------------------------------------
+[1] [BS] Serving files from: ./
+[1] [BS] Watching files...
+....
+
+At this moment your web browser will pop up with a "home" page of the Web client.
+
+=== Play time
+
+. Navigate to 'Page 1' and edit the text field
+. On 'Page 1' click on 'Say Hello' button
+. Navigate to 'Page 2' and select any item from the list
