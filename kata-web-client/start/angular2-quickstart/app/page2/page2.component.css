@@ -1,0 +1,3 @@
+.characters {list-style-type: none; margin-left: 1em; padding: 0; width: 14em;}
+.characters li { cursor: pointer; }
+.characters li:hover {color: #369; background-color: #EEE; }

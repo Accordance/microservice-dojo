@@ -1,0 +1,62 @@
+[
+  {
+    "id": 11,
+    "name": "General Hux"
+  },
+  {
+    "id": 12,
+    "name": "Rey"
+  },
+  {
+    "id": 13,
+    "name": "Finn (FN2187)"
+  },
+  {
+    "id": 14,
+    "name": "Han Solo"
+  },
+  {
+    "id": 15,
+    "name": "Leia Organa"
+  },
+  {
+    "id": 16,
+    "name": "Luke Skywalker"
+  },
+  {
+    "id": 17,
+    "name": "Poe Dameron"
+  },
+  {
+    "id": 18,
+    "name": "Kylo Ren"
+  },
+  {
+    "id": 19,
+    "name": "Supreme Commander Snoke"
+  },
+  {
+    "id": 20,
+    "name": "R2-D2"
+  },
+  {
+    "id": 21,
+    "name": "BB8"
+  },
+  {
+    "id": 22,
+    "name": "C-3PO"
+  },
+  {
+    "id": 23,
+    "name": "Maz Kanata"
+  },
+  {
+    "id": 24,
+    "name": "Captain Phasma"
+  },
+  {
+    "id": 25,
+    "name": "Chewbacca"
+  }
+]

@@ -1,0 +1,9 @@
+<h2>Select a Character</h2>
+<ul class="characters">
+  <li *ngFor="#character of characters" (click)="onSelect(character)">
+    <span class="badge">{{character.id}}</span> {{character.name}}
+  </li>
+</ul>
+<h2 *ngIf="currentCharacter">
+  {{currentCharacter.name | uppercase}} is my character
+</h2>
