@@ -1,0 +1,217 @@
+:toc: left
+:icons: font
+:source-highlighter: coderay
+:kata_dir: kata8
+:sourcedir: ../../../{kata_dir}
+
+== Edge Service pattern
+
+TIP: This Kata is based on the assumption that you're running the Config service,
+Eureka service (Kata6), Profiles Service (Kata6) and Acounts service (Kata6) in Docker.
+
+[source,text,options="nowrap"]
+....
+$ docker run -d --name="config-service" --add-host="dockerhost:192.168.99.100" -p 8888:8888 msvcdojo/config-service:0.0.1
+$ docker run -d --name="eureka-service" --add-host="dockerhost:192.168.99.100" -e config-service.uri="http://192.168.99.100:8888" -e LOG_LEVEL="DEBUG" -p 8761:8761 msvcdojo/eureka-service:0.0.2
+$ docker run -d --name="demo-mongo" --add-host="dockerhost:192.168.99.100" -p 27017:27017 mongo:2.2.7
+$ docker run -d --name="profiles-service" --add-host="dockerhost:192.168.99.100" -e mongoserver="192.168.99.100" -e config-service.uri="http://192.168.99.100:8888" -e service-registry.uri="http://192.168.99.100:8761" -e external.ip="192.168.99.100" -e LOG_LEVEL="DEBUG" -p 8101:8101 msvcdojo/profiles-service:0.0.2
+$ docker run -d --name="demo-mysql" --add-host="dockerhost:192.168.99.100" -e MYSQL_ROOT_PASSWORD="password" -e MYSQL_DATABASE="demo" -e MYSQL_USER="demo_user" -e MYSQL_PASSWORD="demo_pass" -e LOG_LEVEL="DEBUG" -p 3306:3306 mysql:5.6
+$ docker run -d --name="accounts-service" --add-host="dockerhost:192.168.99.100" -e PORT="8122" -e sqlserver="192.168.99.100" -e config-service.uri="http://192.168.99.100:8888" -e service-registry.uri="http://192.168.99.100:8761" -e external.ip="192.168.99.100" -e LOG_LEVEL="DEBUG" -p 8122:8122 msvcdojo/accounts-service:0.0.3
+....
+
+By this time the architecture of our simple application looks like this:
+
+[ditaa, "start-architecture", png]
+....
+                                                          +------------------+
+                                                          |     Eureka cPNK  |
+                                                          |  ( Discovery     |
+                                                          |     Service )    |
+                                                          +--------+---------+
+                                                               ^   |
+                                                               |   |
+                +--------------------------+-------------------+   |
+                |  +-----------------------|--+--------------------+
+                |  |                       |  |                    |
+                |  |                       |  |                    v
+       +--------+--+-+            +--------+--+-+         +--------+---------+
+       |   Accounts  |            |   Profiles  |         |   Configuration  |
+       |   Service   +----------->|   Service   |         |   Service  cPNK  |
+       +-------------+            +-------------+         +--------+---------+
+              |                          |                         |
+              v                          v                         v
+       +-------------+            +-------------+             +----------+
+       |             |            |             |             | {d} cBLU |
+       |    DB cBLU  |            |    DB cBLU  |             | External |
+       |    mySql{s} |            |    Mongo{s} |             | config   |
+       +-------------+            +-------------+             +----------+
+....
+
+So far we were not exposing any services to the external clients. External clients
+may include but not limited to:
+
+* Web applications
+* External customers and businesses
+* etc...
+
+External connections should not be allowed to have direct access to our internal
+services without any control, load balancing, sanitization, routing, etc...
+
+We don't want to expose our internal architecture to the rest of the world so
+we need to bring in an Edge service (API Gateway service).
+
+Netflix has solved this problem and open sourced Zuul - their
+
+After adding a Zuul API Gateway our architecture will look like this:
+
+[ditaa, "end-architecture", png]
+....
+                      +-------------+                     +------------------+
+                      |    Zuul cPNK|                     |     Eureka cPNK  |
+                      |     API     |                     |    Discovery     |
+                      |   Gateway   |                     |     Service      |
+                      +------+------+                     +--------+---------+
+                             |                                 ^   |
+            +----------------+---------+                       |   |
+            |   +----------------------|---+-------------------+   |
+            |   |  +-------------------|---|--+--------------------+
+            |   |  |                   |   |  |                    |
+            v   |  |                   v   |  |                    v
+       +--------+--+-+            +--------+--+-+         +--------+---------+
+       |   Accounts  |            |   Profiles  |         |   Configuration  |
+       |   Service   +----------->|   Service   |         |   Service cPNK   |
+       +------+------+            +------+------+         +--------+---------+
+              |                          |                         |
+              v                          v                         v
+       +-------------+            +-------------+             +----------+
+       |             |            |             |             | {d} cBLU |
+       |    DB cBLU  |            |    DB cBLU  |             | External |
+       |    mySql{s} |            |    Mongo{s} |             | config   |
+       +-------------+            +-------------+             +----------+
+....
+
+=== Building Zuul Edge Service
+
+Start with a basic SpringBoot application. Add Zuul compile dependency:
+
+[source,groovy,indent=0]
+.gateway-service/build.gradle
+----
+include::{sourcedir}/solution1/gateway-service/build.gradle[tags=zuul]
+----
+
+Annotate application class with `@EnableZuulProxy` attribute:
+
+[source,java,indent=0]
+.src/main/java/msvcdojo/GatewayServiceApplication.java
+----
+include::{sourcedir}/solution1/gateway-service/src/main/java/msvcdojo/GatewayServiceApplication.java[tags=enable-zuul]
+----
+
+It's time to create routes. See in the following block how `serviceId` is mapped
+to an externally-accessible proxy path:
+[source,yml,indent=0]
+.https://github.com/Accordance/microservice-dojo-configuration/blob/master/gateway-service.yml
+----
+include::https://raw.githubusercontent.com/Accordance/microservice-dojo-configuration/master/gateway-service.yml[tags=zuul]
+----
+
+IMPORTANT: Make sure to expose ONLY services that are intended for consumption
+by external clients. Note the `ignoredServices: '*'` setting - it blocks
+access to the services that have no mapping in the configuration.
+
+Build and launch gateway service:
+[source,text,options="nowrap"]
+....
+$ gradlew clean prepDocker
+...
+$ java -jar -Dconfig-service.uri=http://192.168.99.100:8888 -Dservice-registry.uri=http://192.168.99.100:8761 build\libs\gateway-service-0.0.1.jar
+....
+
+=== Play time
+
+Now let's see how Zuul routes our requests.
+....
+$ curl http://localhost:8111/profiles/profiles
+{
+  "_embedded" : {
+    "profiles" : [ {
+      "fullName" : null,
+      "key" : "john",
+      "photoCount" : 0,
+      "_links" : {
+        "self" : {
+          "href" : "http://localhost:8111/profiles/profiles/john"
+        },
+        "profile" : {
+          "href" : "http://localhost:8111/profiles/profiles/john"
+        },
+        "photos" : {
+          "href" : "http://localhost:8111/profiles/profiles/john/photos"
+        }
+      }
+    } ]
+  },
+  "_links" : {
+    "self" : {
+      "href" : "http://localhost:8111/profiles/profiles"
+    },
+    "profile" : {
+      "href" : "http://localhost:8111/profiles/profile/profiles"
+    },
+    "search" : {
+      "href" : "http://localhost:8111/profiles/profiles/search"
+    }
+  },
+  "page" : {
+    "size" : 20,
+    "totalElements" : 1,
+    "totalPages" : 1,
+    "number" : 0
+  }
+}
+....
+
+NOTE: Take a note on how all the URIs look like. They've all been modified
+to hide the internal information and now all of them point to Zuul.
+
+Now what about our Accounts service?
+[source,text,options="nowrap"]
+....
+$ curl http://localhost:8111/accounts/accounts
+{
+  "_embedded" : {
+    "accounts" : [ {
+      "username" : "igor",
+      "_links" : {
+        "self" : {
+          "href" : "http://localhost:8111/accounts/accounts/1"
+        },
+        "account" : {
+          "href" : "http://localhost:8111/accounts/accounts/1"
+        },
+        "profile" : {
+          "href" : "http://localhost:8111/profiles/profiles/1/photos"
+        }
+      }
+    } ]
+  },
+  "_links" : {
+    "self" : {
+      "href" : "http://localhost:8111/accounts/accounts"
+    },
+    "profile" : {
+      "href" : "http://localhost:8111/accounts/profile/accounts"
+    },
+    "search" : {
+      "href" : "http://localhost:8111/accounts/accounts/search"
+    }
+  },
+  "page" : {
+    "size" : 20,
+    "totalElements" : 1,
+    "totalPages" : 1,
+    "number" : 0
+  }
+}
+....

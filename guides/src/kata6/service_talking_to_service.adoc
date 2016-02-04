@@ -364,6 +364,7 @@ include::{sourcedir}/solution2/accounts-service/src/main/resources/application.y
 
 Now if you'll rerun your service and when you'll hit it with a REST request,
 the similar to the following lines will appear in your logs:
+[source,text,options="nowrap"]
 ....
 2016-02-04 DEBUG [...] [ProfilesServiceProxy#getProfile] ---> GET http://profiles-service/profiles/john HTTP/1.1
 2016-02-04 DEBUG [...] [ProfilesServiceProxy#getProfile] ---> END HTTP (0-byte body)

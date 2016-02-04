@@ -10,8 +10,6 @@
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
-todo/
-done/
 **/bin/
 **/.idea/
 **/node-modules/
@@ -20,5 +18,9 @@ done/
 **/build/
 **/bower_components/
 **/lib/
-tmp/
 *.iml
+tmp/
+todo/
+done/
+microservice-dojo-configuration/
+angular2-quickstart/

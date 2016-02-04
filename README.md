@@ -12,3 +12,5 @@ complexity.
   * Kata5 guide: [Web Service using Mongo DB](http://accordance.github.io/microservice-dojo/guides/docs/kata5/service_using_mongo_db.html)
   * Kata6 guide: [Service talking to another Service](http://accordance.github.io/microservice-dojo/guides/docs/kata6/service_talking_to_service.html) -
   explains Eureka, Ribbon and Feign
+  * Kata8 guide: [Edge Service](http://accordance.github.io/microservice-dojo/guides/docs/kata8/edge_service.html) -
+  Zuul

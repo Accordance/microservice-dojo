@@ -67,7 +67,7 @@ include::{sourcedir}/solution/profiles-service/src/main/java/msvcdojo/ProfilesSe
 
 Add a handler that will process POST requests:
 
-[source,java,indent=0]
+[source,java,indent=0,options="nowrap"]
 .src/main/java/msvcdojo/ProfilesServiceApplication.java
 ----
 include::{sourcedir}/solution/profiles-service/src/main/java/msvcdojo/ProfilesServiceApplication.java[tags=insertPhoto]
@@ -81,8 +81,25 @@ Follow the solution further ...
 ....
 $ gradlew clean prepDocker
 $ java -jar -Dconfig-service.uri=http://dockerhost:8888 -Dmongoserver=dockerhost build\libs\profiles-service-0.0.1.jar
-$ curl -F "file=@../../../misc/face.png" http://localhost:8101/profiles/1/photos
-$ curl http://localhost:8101/profiles/1/photos
+$ echo { "key":"john" } | curl -H "Content-Type: application/json" -d @- http://localhost:8101/profiles
+{
+  "fullName" : null,
+  "key" : "john",
+  "photoCount" : 0,
+  "_links" : {
+    "self" : {
+      "href" : "http://dockerhost:8101/profiles/john"
+    },
+    "profile" : {
+      "href" : "http://dockerhost:8101/profiles/john"
+    },
+    "photos" : {
+      "href" : "http://dockerhost:8101/profiles/john/photos"
+    }
+  }
+}
+$ curl -F "file=@../../../misc/face.png" http://localhost:8101/profiles/john/photos
+$ curl http://localhost:8101/profiles/john/photos
 [ {
   "key" : "1",
   "links" : [ {
