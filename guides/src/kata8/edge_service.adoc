@@ -11,12 +11,12 @@ Eureka service (Kata6), Profiles Service (Kata6) and Acounts service (Kata6) in 
 
 [source,text,options="nowrap"]
 ....
-$ docker run -d --name="config-service" --add-host="dockerhost:192.168.99.100" -p 8888:8888 msvcdojo/config-service:0.0.1
-$ docker run -d --name="eureka-service" --add-host="dockerhost:192.168.99.100" -e config-service.uri="http://192.168.99.100:8888" -e LOG_LEVEL="DEBUG" -p 8761:8761 msvcdojo/eureka-service:0.0.2
-$ docker run -d --name="demo-mongo" --add-host="dockerhost:192.168.99.100" -p 27017:27017 mongo:2.2.7
-$ docker run -d --name="profiles-service" --add-host="dockerhost:192.168.99.100" -e mongoserver="192.168.99.100" -e config-service.uri="http://192.168.99.100:8888" -e service-registry.uri="http://192.168.99.100:8761" -e external.ip="192.168.99.100" -e LOG_LEVEL="DEBUG" -p 8101:8101 msvcdojo/profiles-service:0.0.2
-$ docker run -d --name="demo-mysql" --add-host="dockerhost:192.168.99.100" -e MYSQL_ROOT_PASSWORD="password" -e MYSQL_DATABASE="demo" -e MYSQL_USER="demo_user" -e MYSQL_PASSWORD="demo_pass" -e LOG_LEVEL="DEBUG" -p 3306:3306 mysql:5.6
-$ docker run -d --name="accounts-service" --add-host="dockerhost:192.168.99.100" -e PORT="8122" -e sqlserver="192.168.99.100" -e config-service.uri="http://192.168.99.100:8888" -e service-registry.uri="http://192.168.99.100:8761" -e external.ip="192.168.99.100" -e LOG_LEVEL="DEBUG" -p 8122:8122 msvcdojo/accounts-service:0.0.3
+$ docker run -d --name="config-service" -p 8888:8888 msvcdojo/config-service:0.0.1
+$ docker run -d --name="eureka-service" -e config-service.uri="http://192.168.99.100:8888" -p 8761:8761 msvcdojo/eureka-service:0.0.1
+$ docker run -d --name="demo-mongo" -p 27017:27017 mongo:2.2.7
+$ docker run -d --name="profiles-service" -e mongoserver="192.168.99.100" -e config-service.uri="http://192.168.99.100:8888" -e service-registry.uri="http://192.168.99.100:8761" -e external.ip="192.168.99.100" -p 8101:8101 msvcdojo/profiles-service:0.0.2
+$ docker run -d --name="demo-mysql" -e MYSQL_ROOT_PASSWORD="password" -e MYSQL_DATABASE="demo" -e MYSQL_USER="demo_user" -e MYSQL_PASSWORD="demo_pass" -p 3306:3306 mysql:5.6
+$ docker run -d --name="accounts-service" -e sqlserver="192.168.99.100" -e config-service.uri="http://192.168.99.100:8888" -e service-registry.uri="http://192.168.99.100:8761" -e external.ip="192.168.99.100" -p 8122:8122 msvcdojo/accounts-service:0.0.2
 ....
 
 By this time the architecture of our simple application looks like this:

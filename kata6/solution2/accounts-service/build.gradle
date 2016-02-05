@@ -83,6 +83,9 @@ task prepDocker(type: Copy, dependsOn: assemble) {
             into "$buildDir/docker"
         }
     }
+    doLast {
+        println "Docker command: docker build -t ${jar.group}/${jar.baseName}:${jar.version} build/docker"
+    }
 }
 
 task wrapper(type: org.gradle.api.tasks.wrapper.Wrapper) {
