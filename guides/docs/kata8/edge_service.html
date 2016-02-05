@@ -542,12 +542,12 @@ Eureka service (Kata6), Profiles Service (Kata6) and Acounts service (Kata6) in 
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code data-lang="text">$ docker run -d --name=&quot;config-service&quot; --add-host=&quot;dockerhost:192.168.99.100&quot; -p 8888:8888 msvcdojo/config-service:0.0.1
-$ docker run -d --name=&quot;eureka-service&quot; --add-host=&quot;dockerhost:192.168.99.100&quot; -e config-service.uri=&quot;http://192.168.99.100:8888&quot; -e LOG_LEVEL=&quot;DEBUG&quot; -p 8761:8761 msvcdojo/eureka-service:0.0.2
-$ docker run -d --name=&quot;demo-mongo&quot; --add-host=&quot;dockerhost:192.168.99.100&quot; -p 27017:27017 mongo:2.2.7
-$ docker run -d --name=&quot;profiles-service&quot; --add-host=&quot;dockerhost:192.168.99.100&quot; -e mongoserver=&quot;192.168.99.100&quot; -e config-service.uri=&quot;http://192.168.99.100:8888&quot; -e service-registry.uri=&quot;http://192.168.99.100:8761&quot; -e external.ip=&quot;192.168.99.100&quot; -e LOG_LEVEL=&quot;DEBUG&quot; -p 8101:8101 msvcdojo/profiles-service:0.0.2
-$ docker run -d --name=&quot;demo-mysql&quot; --add-host=&quot;dockerhost:192.168.99.100&quot; -e MYSQL_ROOT_PASSWORD=&quot;password&quot; -e MYSQL_DATABASE=&quot;demo&quot; -e MYSQL_USER=&quot;demo_user&quot; -e MYSQL_PASSWORD=&quot;demo_pass&quot; -e LOG_LEVEL=&quot;DEBUG&quot; -p 3306:3306 mysql:5.6
-$ docker run -d --name=&quot;accounts-service&quot; --add-host=&quot;dockerhost:192.168.99.100&quot; -e PORT=&quot;8122&quot; -e sqlserver=&quot;192.168.99.100&quot; -e config-service.uri=&quot;http://192.168.99.100:8888&quot; -e service-registry.uri=&quot;http://192.168.99.100:8761&quot; -e external.ip=&quot;192.168.99.100&quot; -e LOG_LEVEL=&quot;DEBUG&quot; -p 8122:8122 msvcdojo/accounts-service:0.0.3</code></pre>
+<pre class="CodeRay highlight nowrap"><code data-lang="text">$ docker run -d --name=&quot;config-service&quot; -p 8888:8888 msvcdojo/config-service:0.0.1
+$ docker run -d --name=&quot;eureka-service&quot; -e config-service.uri=&quot;http://192.168.99.100:8888&quot; -p 8761:8761 msvcdojo/eureka-service:0.0.1
+$ docker run -d --name=&quot;demo-mongo&quot; -p 27017:27017 mongo:2.2.7
+$ docker run -d --name=&quot;profiles-service&quot; -e mongoserver=&quot;192.168.99.100&quot; -e config-service.uri=&quot;http://192.168.99.100:8888&quot; -e service-registry.uri=&quot;http://192.168.99.100:8761&quot; -e external.ip=&quot;192.168.99.100&quot; -p 8101:8101 msvcdojo/profiles-service:0.0.2
+$ docker run -d --name=&quot;demo-mysql&quot; -e MYSQL_ROOT_PASSWORD=&quot;password&quot; -e MYSQL_DATABASE=&quot;demo&quot; -e MYSQL_USER=&quot;demo_user&quot; -e MYSQL_PASSWORD=&quot;demo_pass&quot; -p 3306:3306 mysql:5.6
+$ docker run -d --name=&quot;accounts-service&quot; -e sqlserver=&quot;192.168.99.100&quot; -e config-service.uri=&quot;http://192.168.99.100:8888&quot; -e service-registry.uri=&quot;http://192.168.99.100:8761&quot; -e external.ip=&quot;192.168.99.100&quot; -p 8122:8122 msvcdojo/accounts-service:0.0.2</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -774,7 +774,7 @@ to hide the internal information and now all of them point to Zuul.
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2016-02-04 16:55:51 Eastern Standard Time
+Last updated 2016-02-05 01:06:20 Eastern Standard Time
 </div>
 </div>
 </body>
