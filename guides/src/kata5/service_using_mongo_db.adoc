@@ -16,7 +16,7 @@ $ docker run --name mongo -d -p 27017:27017 mongo
 $ docker run -d --name=config-service -p 8888:8888 msvcdojo/config-service:0.0.1
 ....
 
-=== Building Service
+=== Building Profiles Service
 Create a basic web Service with the name *profiles-service*.
 
 In the *build.gradle* add additional dependency:
@@ -28,7 +28,7 @@ include::{sourcedir}/solution/profiles-service/build.gradle[tags=mongo]
 
 WARNING: Under construction
 
-Add a ProfilePhoto entity describing a document
+Add a `Profile` entity describing a document that will be stored in the Database:
 
 [source,java,indent=0]
 .src/main/java/msvcdojo/ProfilesServiceApplication.java
@@ -53,6 +53,10 @@ Now it's time to add a data repository description with it's "verbs":
 include::{sourcedir}/solution/profiles-service/src/main/java/msvcdojo/ProfilesServiceApplication.java[tags=ProfilePhotoRepository]
 ----
 
+The repository is annotated with `@RepositoryRestResource` making it a REST controller
+out of the box. This exposes, in part, GET method to retrieve a list of stored items and
+a POST method to insert new items.
+
 We're going to add a REST controller that will allow us to insert a photo (large
 binary file) with any arbitrary key by posting data into the URL that looks like
 this: `http://host/profiles/{key}/photos`
@@ -75,36 +79,56 @@ include::{sourcedir}/solution/profiles-service/src/main/java/msvcdojo/ProfilesSe
 
 Follow the solution further ...
 
+WARNING: For demo purposes only our service is going to clean up data on start.
+
+The cleanup is executed by `CommandLineRunner` lambda:
+
+[source,java,indent=0,options="nowrap"]
+.src/main/java/msvcdojo/ProfilesServiceApplication.java
+----
+include::{sourcedir}/solution/profiles-service/src/main/java/msvcdojo/ProfilesServiceApplication.java[tags=cleanup]
+----
+
 === Play time
 
+Let's add some data. One profile and one photo for that profile:
 [source,text,options="nowrap"]
 ....
 $ gradlew clean prepDocker
 $ java -jar -Dconfig-service.uri=http://dockerhost:8888 -Dmongoserver=dockerhost build\libs\profiles-service-0.0.1.jar
 $ echo { "key":"john" } | curl -H "Content-Type: application/json" -d @- http://localhost:8101/profiles
-{
+{{
   "fullName" : null,
   "key" : "john",
   "photoCount" : 0,
   "_links" : {
     "self" : {
-      "href" : "http://dockerhost:8101/profiles/john"
+      "href" : "http://localhost:8101/profiles/john"
     },
     "profile" : {
-      "href" : "http://dockerhost:8101/profiles/john"
+      "href" : "http://localhost:8101/profiles/john"
     },
     "photos" : {
-      "href" : "http://dockerhost:8101/profiles/john/photos"
+      "href" : "http://localhost:8101/profiles/john/photos"
     }
   }
 }
 $ curl -F "file=@../../../misc/face.png" http://localhost:8101/profiles/john/photos
+{
+  "fullName" : null,
+  "key" : "john",
+  "photoCount" : 1
+}
+....
+
+Let's check what photos are stored for a profile:
+....
 $ curl http://localhost:8101/profiles/john/photos
 [ {
-  "key" : "1",
+  "content" : "john0",
   "links" : [ {
-    "rel" : "photo",
-    "href" : "http://localhost:8101/profiles/1/photos/56a9b9065d6731a5ac16962b/photo"
+    "rel" : "john0",
+    "href" : "http://localhost:8101/profiles/john/photos/john0/photo"
   } ]
 } ]
 ....
