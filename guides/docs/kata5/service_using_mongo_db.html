@@ -517,7 +517,7 @@ table.CodeRay td.code>pre{padding:0}
 <li><a href="#_web_service_using_mongo_db">Web Service using Mongo DB</a>
 <ul class="sectlevel2">
 <li><a href="#_preparing_environment">Preparing Environment</a></li>
-<li><a href="#_building_service">Building Service</a></li>
+<li><a href="#_building_profiles_service">Building Profiles Service</a></li>
 <li><a href="#_play_time">Play time</a></li>
 </ul>
 </li>
@@ -554,7 +554,7 @@ $ docker run -d --name=config-service -p 8888:8888 msvcdojo/config-service:0.0.1
 </div>
 </div>
 <div class="sect2">
-<h3 id="_building_service">Building Service</h3>
+<h3 id="_building_profiles_service">Building Profiles Service</h3>
 <div class="paragraph">
 <p>Create a basic web Service with the name <strong>profiles-service</strong>.</p>
 </div>
@@ -582,38 +582,53 @@ Under construction
 </table>
 </div>
 <div class="paragraph">
-<p>Add a ProfilePhoto entity describing a document</p>
+<p>Add a <code>Profile</code> entity describing a document that will be stored in the Database:</p>
 </div>
 <div class="listingblock">
 <div class="title">src/main/java/msvcdojo/ProfilesServiceApplication.java</div>
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="java"><span class="type">class</span> <span class="class">ProfilePhoto</span> {
-
-    <span class="directive">public</span> ProfilePhoto() {
-    }
-
-    <span class="directive">public</span> ProfilePhoto(<span class="predefined-type">String</span> key) {
-        <span class="local-variable">this</span>.key = key;
-    }
-
-    <span class="directive">public</span> <span class="type">void</span> setId(<span class="predefined-type">String</span> id) {
-        <span class="local-variable">this</span>.id = id;
-    }
-
-    <span class="directive">public</span> <span class="type">void</span> setKey(<span class="predefined-type">String</span> key) {
-        <span class="local-variable">this</span>.key = key;
+<pre class="CodeRay highlight"><code data-lang="java"><span class="annotation">@Document</span>(collection=<span class="string"><span class="delimiter">&quot;</span><span class="content">profiles</span><span class="delimiter">&quot;</span></span>)
+<span class="type">class</span> <span class="class">Profile</span> {
+    <span class="directive">public</span> Profile() {
     }
 
     <span class="annotation">@Id</span>
     <span class="directive">private</span> <span class="predefined-type">String</span> id;
-    <span class="directive">private</span> <span class="predefined-type">String</span> key;
+    <span class="annotation">@Indexed</span>
+    <span class="directive">private</span> <span class="predefined-type">String</span> fullName;
+    <span class="directive">private</span> <span class="predefined-type">List</span>&lt;<span class="predefined-type">String</span>&gt; photos;
 
-    <span class="directive">public</span> <span class="predefined-type">String</span> getId() {
-        <span class="keyword">return</span> id;
+    <span class="directive">public</span> <span class="type">void</span> setId(<span class="predefined-type">String</span> id) {
+        <span class="local-variable">this</span>.id = id;
+    }
+    <span class="directive">public</span> <span class="type">void</span> setKey(<span class="predefined-type">String</span> key) {
+        <span class="local-variable">this</span>.id = key;
+    }
+    <span class="directive">public</span> <span class="type">void</span> setFullName(<span class="predefined-type">String</span> fullName) {
+        <span class="local-variable">this</span>.fullName = fullName;
+    }
+    <span class="directive">public</span> <span class="type">void</span> addPhotoReference(<span class="predefined-type">String</span> photoId) {
+        <span class="local-variable">this</span>.photosList().add(photoId);
     }
 
     <span class="directive">public</span> <span class="predefined-type">String</span> getKey() {
-        <span class="keyword">return</span> key;
+        <span class="keyword">return</span> id;
+    }
+    <span class="directive">public</span> <span class="predefined-type">String</span> getFullName() {
+        <span class="keyword">return</span> fullName;
+    }
+    <span class="directive">public</span> <span class="predefined-type">Integer</span> getPhotoCount() { <span class="keyword">return</span> <span class="local-variable">this</span>.photosList().size(); }
+    <span class="directive">public</span> <span class="predefined-type">List</span>&lt;<span class="predefined-type">String</span>&gt; photosList() {
+        <span class="keyword">if</span> (<span class="local-variable">this</span>.photos == <span class="predefined-constant">null</span>)
+            <span class="local-variable">this</span>.photos = <span class="keyword">new</span> <span class="predefined-type">ArrayList</span>&lt;&gt;();
+        <span class="keyword">return</span> <span class="local-variable">this</span>.photos;
+    }
+
+    <span class="annotation">@Override</span>
+    <span class="directive">public</span> <span class="predefined-type">String</span> toString() {
+        <span class="keyword">return</span> <span class="predefined-type">String</span>.format(
+                <span class="string"><span class="delimiter">&quot;</span><span class="content">Customer[id=%s, fullName='%s']</span><span class="delimiter">&quot;</span></span>,
+                id, fullName);
     }
 }</code></pre>
 </div>
@@ -669,13 +684,21 @@ of MongoDB.</p>
 <div class="listingblock">
 <div class="title">src/main/java/msvcdojo/ProfilesServiceApplication.java</div>
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="java"><span class="type">interface</span> <span class="class">ProfilePhotoRepository</span> <span class="directive">extends</span> MongoRepository&lt;ProfilePhoto, <span class="predefined-type">String</span>&gt; {
+<pre class="CodeRay highlight"><code data-lang="java"><span class="annotation">@RepositoryRestResource</span>
+<span class="type">interface</span> <span class="class">ProfilesRepository</span> <span class="directive">extends</span> MongoRepository&lt;Profile, <span class="predefined-type">String</span>&gt; {
 
-    <span class="predefined-type">Collection</span>&lt;ProfilePhoto&gt; findByKey(<span class="predefined-type">String</span> key);
+    <span class="annotation">@Query</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">{ '_id' : ?0 }</span><span class="delimiter">&quot;</span></span>)
+    Profile findByKey(<span class="annotation">@Param</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">key</span><span class="delimiter">&quot;</span></span>) <span class="predefined-type">String</span> key);
 
-    ProfilePhoto findByKeyAndId(<span class="predefined-type">String</span> key, <span class="predefined-type">String</span> id);
+    Profile findByFullName(<span class="annotation">@Param</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">address</span><span class="delimiter">&quot;</span></span>) <span class="predefined-type">String</span> address);
+
 }</code></pre>
 </div>
+</div>
+<div class="paragraph">
+<p>The repository is annotated with <code>@RepositoryRestResource</code> making it a REST controller
+out of the box. This exposes, in part, GET method to retrieve a list of stored items and
+a POST method to insert new items.</p>
 </div>
 <div class="paragraph">
 <p>We&#8217;re going to add a REST controller that will allow us to insert a photo (large
@@ -699,43 +722,101 @@ this: <code><a href="http://host/profiles/{key}/photos" class="bare">http://host
 <div class="listingblock">
 <div class="title">src/main/java/msvcdojo/ProfilesServiceApplication.java</div>
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="java"><span class="annotation">@RequestMapping</span>(method = {RequestMethod.POST, RequestMethod.PUT})
-ResponseEntity&lt;Resource&lt;ProfilePhoto&gt;&gt; insertPhoto(<span class="annotation">@PathVariable</span> <span class="predefined-type">String</span> key,
+<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="annotation">@RequestMapping</span>(method = {RequestMethod.POST, RequestMethod.PUT})
+ResponseEntity&lt;Resource&lt;Profile&gt;&gt; insertPhoto(<span class="annotation">@PathVariable</span> <span class="predefined-type">String</span> key,
                                                    <span class="annotation">@RequestParam</span> MultipartFile file) <span class="directive">throws</span> <span class="exception">IOException</span> {
     Photo photo = file::getInputStream;
-    ProfilePhoto profilePhoto = <span class="local-variable">this</span>.profilePhotoRepository.save(<span class="keyword">new</span> ProfilePhoto(key));
-    <span class="predefined-type">String</span> id = profilePhoto.getId();
+    Profile profile = <span class="local-variable">this</span>.profilesRepository.findOne(key);
+    <span class="predefined-type">String</span> id = key + profile.getPhotoCount();
     <span class="keyword">try</span> (<span class="predefined-type">InputStream</span> inputStream = photo.getInputStream()) {
         <span class="local-variable">this</span>.fs.store(inputStream, id);
     }
+    profile.addPhotoReference(id);
+    <span class="local-variable">this</span>.profilesRepository.save(profile);
     <span class="predefined-type">URI</span> uri = ServletUriComponentsBuilder.fromCurrentRequest()
             .path(<span class="string"><span class="delimiter">&quot;</span><span class="content">/{id}/photo</span><span class="delimiter">&quot;</span></span>).buildAndExpand(id).toUri();
     HttpHeaders headers = <span class="keyword">new</span> HttpHeaders();
     headers.setLocation(uri);
     <span class="keyword">return</span> <span class="keyword">new</span> ResponseEntity&lt;&gt;(
-            <span class="local-variable">this</span>.readPhoto(key, id), headers, HttpStatus.CREATED);
+            <span class="local-variable">this</span>.readPhoto(key), headers, HttpStatus.CREATED);
 }</code></pre>
 </div>
 </div>
 <div class="paragraph">
 <p>Follow the solution further &#8230;&#8203;</p>
 </div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+For demo purposes only our service is going to clean up data on start.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>The cleanup is executed by <code>CommandLineRunner</code> lambda:</p>
+</div>
+<div class="listingblock">
+<div class="title">src/main/java/msvcdojo/ProfilesServiceApplication.java</div>
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="annotation">@Bean</span>
+CommandLineRunner init(ProfilesRepository profilesRepository) {
+    <span class="keyword">return</span> a -&gt; profilesRepository.deleteAll();
+}</code></pre>
+</div>
+</div>
 </div>
 <div class="sect2">
 <h3 id="_play_time">Play time</h3>
+<div class="paragraph">
+<p>Let&#8217;s add some data. One profile and one photo for that profile:</p>
+</div>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight nowrap"><code data-lang="text">$ gradlew clean prepDocker
 $ java -jar -Dconfig-service.uri=http://dockerhost:8888 -Dmongoserver=dockerhost build\libs\profiles-service-0.0.1.jar
-$ curl -F &quot;file=@../../../misc/face.png&quot; http://localhost:8101/profiles/1/photos
-$ curl http://localhost:8101/profiles/1/photos
+$ echo { &quot;key&quot;:&quot;john&quot; } | curl -H &quot;Content-Type: application/json&quot; -d @- http://localhost:8101/profiles
+{{
+  &quot;fullName&quot; : null,
+  &quot;key&quot; : &quot;john&quot;,
+  &quot;photoCount&quot; : 0,
+  &quot;_links&quot; : {
+    &quot;self&quot; : {
+      &quot;href&quot; : &quot;http://localhost:8101/profiles/john&quot;
+    },
+    &quot;profile&quot; : {
+      &quot;href&quot; : &quot;http://localhost:8101/profiles/john&quot;
+    },
+    &quot;photos&quot; : {
+      &quot;href&quot; : &quot;http://localhost:8101/profiles/john/photos&quot;
+    }
+  }
+}
+$ curl -F &quot;file=@../../../misc/face.png&quot; http://localhost:8101/profiles/john/photos
+{
+  &quot;fullName&quot; : null,
+  &quot;key&quot; : &quot;john&quot;,
+  &quot;photoCount&quot; : 1
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Let&#8217;s check what photos are stored for a profile:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>$ curl http://localhost:8101/profiles/john/photos
 [ {
-  &quot;key&quot; : &quot;1&quot;,
-  &quot;links&quot; : [ {
-    &quot;rel&quot; : &quot;photo&quot;,
-    &quot;href&quot; : &quot;http://localhost:8101/profiles/1/photos/56a9b9065d6731a5ac16962b/photo&quot;
+  "content" : "john0",
+  "links" : [ {
+    "rel" : "john0",
+    "href" : "http://localhost:8101/profiles/john/photos/john0/photo"
   } ]
-} ]</code></pre>
+} ]</pre>
 </div>
 </div>
 <div class="paragraph">
@@ -766,7 +847,7 @@ and navigating to <code><a href="http://dockerhost:8081" class="bare">http://doc
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2016-02-04 07:39:24 Eastern Standard Time
+Last updated 2016-02-05 00:32:49 Eastern Standard Time
 </div>
 </div>
 </body>
