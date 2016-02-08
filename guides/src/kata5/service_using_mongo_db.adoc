@@ -96,9 +96,9 @@ Let's add some data. One profile and one photo for that profile:
 ....
 $ gradlew clean prepDocker
 $ java -jar -Dconfig-service.uri=http://dockerhost:8888 -Dmongoserver=dockerhost build\libs\profiles-service-0.0.1.jar
-$ echo { "key":"john" } | curl -H "Content-Type: application/json" -d @- http://localhost:8101/profiles
+$ echo { "key":"john", "fullName":"John Smith" } | curl -H "Content-Type: application/json" -d @- http://localhost:8101/profiles
 {{
-  "fullName" : null,
+  "fullName" : "John Smith",
   "key" : "john",
   "photoCount" : 0,
   "_links" : {
@@ -115,7 +115,7 @@ $ echo { "key":"john" } | curl -H "Content-Type: application/json" -d @- http://
 }
 $ curl -F "file=@../../../misc/face.png" http://localhost:8101/profiles/john/photos
 {
-  "fullName" : null,
+  "fullName" : "John Smith",
   "key" : "john",
   "photoCount" : 1
 }
