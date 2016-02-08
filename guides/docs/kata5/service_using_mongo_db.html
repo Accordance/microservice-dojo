@@ -779,9 +779,9 @@ CommandLineRunner init(ProfilesRepository profilesRepository) {
 <div class="content">
 <pre class="CodeRay highlight nowrap"><code data-lang="text">$ gradlew clean prepDocker
 $ java -jar -Dconfig-service.uri=http://dockerhost:8888 -Dmongoserver=dockerhost build\libs\profiles-service-0.0.1.jar
-$ echo { &quot;key&quot;:&quot;john&quot; } | curl -H &quot;Content-Type: application/json&quot; -d @- http://localhost:8101/profiles
+$ echo { &quot;key&quot;:&quot;john&quot;, &quot;fullName&quot;:&quot;John Smith&quot; } | curl -H &quot;Content-Type: application/json&quot; -d @- http://localhost:8101/profiles
 {{
-  &quot;fullName&quot; : null,
+  &quot;fullName&quot; : &quot;John Smith&quot;,
   &quot;key&quot; : &quot;john&quot;,
   &quot;photoCount&quot; : 0,
   &quot;_links&quot; : {
@@ -798,7 +798,7 @@ $ echo { &quot;key&quot;:&quot;john&quot; } | curl -H &quot;Content-Type: applic
 }
 $ curl -F &quot;file=@../../../misc/face.png&quot; http://localhost:8101/profiles/john/photos
 {
-  &quot;fullName&quot; : null,
+  &quot;fullName&quot; : &quot;John Smith&quot;,
   &quot;key&quot; : &quot;john&quot;,
   &quot;photoCount&quot; : 1
 }</code></pre>
@@ -847,7 +847,7 @@ and navigating to <code><a href="http://dockerhost:8081" class="bare">http://doc
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2016-02-05 00:32:49 Eastern Standard Time
+Last updated 2016-02-08 11:23:53 Eastern Standard Time
 </div>
 </div>
 </body>
