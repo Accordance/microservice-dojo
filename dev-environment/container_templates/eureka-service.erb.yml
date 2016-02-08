@@ -1,0 +1,12 @@
+eureka-service:
+  image: msvcdojo/eureka-service:0.0.1
+  ports:
+    - 8761
+  environment:
+    config-service.uri: http://<%= dockerhost %>:8888
+  checks:
+    - port: 8761
+      retry: 15
+    - uri: http://<%= dockerhost %>:8761/eureka/apps
+  depends:
+    - config-service

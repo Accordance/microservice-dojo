@@ -18,3 +18,4 @@ complexity.
   Zuul
 * Getting started:
   * Kata [Getting Started with Web client](http://accordance.github.io/microservice-dojo/guides/docs/kata-web-client/web-client-basics.html) - covers beginning of AngularJS
+  * Kata [Simple Orchestration](http://accordance.github.io/microservice-dojo/guides/docs/kata-dev-environment/simple-orchestration.html)

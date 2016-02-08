@@ -1,0 +1,16 @@
+profiles-service:
+  image: msvcdojo/profiles-service:0.0.2
+  ports:
+    - 8101
+  environment:
+    mongoserver: <%= dockerhost %>
+    config-service.uri: http://<%= dockerhost %>:8888
+    service-registry.uri: http://<%= dockerhost %>:8761
+    external.ip: <%= dockerhost %>
+  checks:
+    - uri: http://<%= dockerhost %>:8101/health
+      retry: 15
+  depends:
+    - demo-mongo
+    - eureka-service
+    - config-service

@@ -1,0 +1,18 @@
+accounts-service:
+  image: msvcdojo/accounts-service:0.0.2
+  ports:
+    - 8100
+  environment:
+    PORT: 8100
+    sqlserver: <%= dockerhost %>
+    config-service.uri: http://<%= dockerhost %>:8888
+    service-registry.uri: http://<%= dockerhost %>:8761
+    external.ip: <%= dockerhost %>
+  checks:
+    - uri: http://<%= dockerhost %>:8100/health
+      retry: 15
+  depends:
+    - demo-mysql
+    - profiles-service
+    - eureka-service
+    - config-service
