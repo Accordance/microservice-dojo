@@ -74,6 +74,13 @@ With the following block:
 include::{sourcedir}/solution/mysvc/build.gradle[tags=jetty]
 ----
 
+And add the Actuator and the Actuator Docs lines:
+[source,groovy,indent=0]
+.build.gradle
+----
+include::{sourcedir}/solution/mysvc/build.gradle[tags=actuator]
+----
+
 === What about tests?
 
 Let's add a unit test that validates the controller:
