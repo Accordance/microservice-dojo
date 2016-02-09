@@ -1,0 +1,10 @@
+config-service:
+  image: msvcdojo/config-service:0.0.1
+  ports:
+    - 8888
+  # log-driver: gelf
+  # log-opt:
+  #   gelf-address: udp://<%= dockerhost %>:12201
+  checks:
+    - uri: http://<%= dockerhost %>:8888/health
+      retry: 10

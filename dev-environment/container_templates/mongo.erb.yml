@@ -1,0 +1,7 @@
+demo-mongo:
+  image: mongo:2.2.7
+  ports:
+    - 27017
+  checks:
+    - port: 27017
+      retry: 10

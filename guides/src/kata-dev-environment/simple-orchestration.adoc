@@ -1,0 +1,83 @@
+:toc: left
+:icons: font
+:source-highlighter: coderay
+:kata_dir: dev-environment
+:sourcedir: ../../../{kata_dir}
+
+== Simple Local Orchestration
+
+=== Using Docker_Rack Gem
+
+To start a bunch of containerized web services manually requires a lot of work.
+We can simplify it by using `docker_rack` gem.
+
+=== Preparing for Docker_Rack
+
+* Install latest ruby (>= ruby 2.2.3p173)
+* Run `bundle install` in the `dev-environment` folder. This will install `docker_rack`
+gem and all it's prerequisites
+
+=== Discovering available tasks
+
+[source,text,options="nowrap"]
+----
+$ docker_rack list
+container:accounts-service:help          # Tasks help for container:accounts-service
+container:config-service:help            # Tasks help for container:config-service
+container:demo-mongo:help                # Tasks help for container:demo-mongo
+container:demo-mysql:help                # Tasks help for container:demo-mysql
+container:eureka-service:help            # Tasks help for container:eureka-service
+container:gateway-service:help           # Tasks help for container:gateway-service
+container:profiles-service:help          # Tasks help for container:profiles-service
+env:create_profile                       # Populate Profiles-Service with Test data
+env:start                                # Start Environment
+env:stop                                 # Stop Environment
+----
+
+=== A task anatomy
+
+Let's look at one of the container templates:
+
+[source,yml,indent=0]
+.dev-environment/container_templates/eureka-service.erb.yml
+----
+include::{sourcedir}/container_templates/eureka-service.erb.yml[]
+----
+
+Here is the explanation of the sections of this template:
+
+[format="csv", options="header"]
+|===
+Name,Description
+image,ID of a docker image
+ports,Array of port mappings in the form `- port` or `- port1:port2`
+environment, Array of environment variables and their values
+checks, Array of post-start checks. Supported `port` and `uri`
+depends, Array of dependencies on other containers
+|===
+
+=== Launching Orchestration
+
+[source,text,options="nowrap"]
+....
+$ docker_rack exec env:start
+Executing 'env:start'
+Starting: /microservice-dojo/dev-environment/container_templates/mysql.yml
+...
+Starting: /microservice-dojo/dev-environment/container_templates/mongo.erb.yml
+.
+Starting: /microservice-dojo/dev-environment/container_templates/config-service.erb.yml
+...
+Starting: /microservice-dojo/dev-environment/container_templates/eureka-service.erb.yml
+...
+.
+Starting: /microservice-dojo/dev-environment/container_templates/profiles-service.erb.yml
+...
+Starting: /microservice-dojo/dev-environment/container_templates/accounts-service.erb.yml
+...
+Starting: /microservice-dojo/dev-environment/container_templates/gateway-service.erb.yml
+...
+....
+
+NOTE: A single '.' (dot) represents an attempt to run a requested check after
+the launch of command. One line per each check separately.
