@@ -97,7 +97,7 @@ We'd like to ask JUnit to generate reports for us. Add the following to *_build.
 [source,groovy,indent=0]
 .build.gradle
 ----
-include::{sourcedir}/solution/mysvc/build.gradle[tags=jetty]
+include::{sourcedir}/solution/mysvc/build.gradle[tags=test]
 ----
 
 Now it's time to run the tests:
