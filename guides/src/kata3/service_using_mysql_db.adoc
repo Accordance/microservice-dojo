@@ -65,7 +65,7 @@ We can not yet run the application because the database doesn't exist yet.
 So we're going to use a best-practice of Continuous Delivery - DB schema versioning
 and migrations.
 
-NOTE: In real life you may want to mange DB migrations separately from the
+NOTE: In real life you may want to manage DB migrations separately from the
 source code of the service. Mostly make sure that the DB migrations are not
 happening on the service launch but as a separate *intentionnal* process.
 
@@ -211,11 +211,11 @@ The result will look like this:
 ....
 
 Now let's, in fact, try to use this service for some real work by adding
-more records to the database:
+more records to the database - you have to escape the double quotes in the echo command:
 
 [source,text,options="nowrap"]
 ....
-$ echo {"username" : "dave"} | curl -H "Content-type:application/json" -d @- http://localhost:8100/accounts
+$ echo {\"username\" : \"dave\"} | curl -H "Content-type:application/json" -d @- http://localhost:8100/accounts
 ....
 
 This produces the following output:
