@@ -26,6 +26,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
@@ -36,14 +37,14 @@ import java.util.List;
 
 // tag::code[]
 @SpringBootApplication
-@EnableSwagger2
+@EnableSwagger2 //<1>
 public class MysvcApplication {
 
   public static void main(String[] args) {
     SpringApplication.run(MysvcApplication.class, args);
   }
 
-  @Bean
+  @Bean //<2>
   public Docket api() {
     return new Docket(DocumentationType.SWAGGER_2).apiInfo(apiInfo()).select().paths(regex("/mysvc.*")).build();
   }
@@ -60,7 +61,7 @@ public class MysvcApplication {
 // tag::controller[]
 @RestController
 // tag::api[]
-@Api(value = "mysvc", description = "Endpoint for account management")
+@Api(value = "mysvc", description = "Endpoint for account management") //<1>
 @RequestMapping(value = "/mysvc")
 class AccountController {
   // end::api[]
@@ -74,15 +75,15 @@ class AccountController {
   }
 
   // tag::doc[]
-  @ApiOperation(value = "list accounts", notes = "Lists all accounts. Account informtion contains id, name and email.", produces = "application/json")
-  @ApiResponses(value = { @ApiResponse(code = 200, message = "Success", response = Account.class) })
+  @ApiOperation(value = "list accounts", notes = "Lists all accounts. Account informtion contains id, name and email.", produces = "application/json") //<2>
+  @ApiResponses(value = { @ApiResponse(code = 200, message = "Success", response = Account.class) }) //<3>
   @RequestMapping(method = GET, path = "/accounts", produces = "application/json")
   ResponseEntity<List<Account>> get() {
     return new ResponseEntity<List<Account>>(account, OK);
   }
 
   @ApiOperation(value = "look up  account by id", notes = "Looks up account by id.")
-  @ApiImplicitParams({ @ApiImplicitParam(name = "id", value = "Account id", required = true, dataType = "int", paramType = "path", defaultValue = "1") })
+  @ApiImplicitParams({ @ApiImplicitParam(name = "id", value = "Account id", required = true, dataType = "int", paramType = "path", defaultValue = "1") }) //<4>
   @ApiResponses(value = { @ApiResponse(code = 200, message = "Success", response = Account.class) })
   @RequestMapping(method = GET, path = "/accounts/{id}", produces = "application/json")
   ResponseEntity<Account> getById(@PathVariable int id) throws Exception {
@@ -92,7 +93,7 @@ class AccountController {
   @ApiOperation(value = "add new account", nickname = "Add a new account", response = Void.class)
   @ApiResponses(value = { @ApiResponse(code = 201, message = "Success", response = Account.class) })
   @RequestMapping(value = "/accounts", method = POST, produces = "application/json", consumes = "application/json")
-  ResponseEntity<Account> post(@ApiParam(value = "Created Account object") @RequestBody Account body) {
+  ResponseEntity<Account> post(@ApiParam(value = "Created Account object") @RequestBody Account body) { //<5>
     account.add(body);
     return new ResponseEntity<Account>(body, CREATED);
   }
@@ -111,7 +112,7 @@ class AccountController {
   @RequestMapping(value = "/accounts/{id}", method = DELETE)
   @ApiResponses(value = { @ApiResponse(code = 400, message = "Account not found", response = void.class) })
   void delete(@PathVariable int id) throws Exception {
-    if (id < account.size()) {
+    if (id <= account.size()) {
       account.remove(id - 1);
     } else {
       throw new MyException("Account not found");
@@ -122,12 +123,15 @@ class AccountController {
 
 // end::controller[]
 // tag::model[]
-@ApiModel
+@ApiModel( value = "Account", description = "Account resource representation" ) //<6>
 class Account {
+  @ApiModelProperty( value = "Account id", required = true )
   private int id;
 
+  @ApiModelProperty( value = "Account name", required = true )
   private String name;
 
+  @ApiModelProperty( value = "Account email", required = false )
   private String email;
 
   public Account() {
