@@ -1,0 +1,13 @@
+hystrix-service:
+  image: msvcdojo/hystrix-service:0.0.1
+  ports:
+    - 7980
+  environment:
+    config-service.uri: http://<%= dockerhost %>:8888
+    service-registry.uri: http://<%= dockerhost %>:8761
+    external.ip: <%= dockerhost %>
+  checks:
+    - uri: http://<%= dockerhost %>:7980/health
+      retry: 15
+  depends:
+    - config-service

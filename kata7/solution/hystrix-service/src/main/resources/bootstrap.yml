@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: hystrix-service
+  cloud:
+    config:
+      uri: ${config-service.uri:http://localhost:8888}
