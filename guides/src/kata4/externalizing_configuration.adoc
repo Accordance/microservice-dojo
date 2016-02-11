@@ -84,6 +84,7 @@ That was simple, right?
 Now let's up the game, shall we?
 
 Stop the service, set environment variable and start the service again:
+
 .Windows
 ....
 $ set name=John
@@ -106,13 +107,13 @@ The OS environment variable takes the precedent over the value provided in
 
 Let's override the environment variables as well with the command-line parameters:
 ....
-$ java -DPORT=8200 -Dname=Alice -jar build/libs/mysvc-0.0.1.jar
+$ java -DPORT=8222 -Dname=Alice -jar build/libs/mysvc-0.0.1.jar
 ....
 
 Note that the service will start listening on the port *8222*.
 
 ....
-$ curl http://localhost:822
+$ curl http://localhost:8222
 Hello, Alice!
 ....
 
@@ -167,7 +168,14 @@ To solve this problem we're going to build a configuration server.
 
 Create an empty Spring Boot application.
 
-In the *build.gradle* add additional dependency:
+In the *build.gradle* file add the following project variables:
+[source,groovy,indent=0]
+.config-service/build.gradle
+----
+include::{sourcedir}/solution2/config-service/build.gradle[tags=config-vars]
+----
+
+Update the spring-boot-starter-actuator dependency and add the spring-cloud-config-server dependency, so we get:
 [source,groovy,indent=0]
 .config-service/build.gradle
 ----
@@ -206,7 +214,7 @@ include::{sourcedir}/solution2/config-service/config/my-service.yml[]
 
 Launch the config server and try to get the service configuration:
 ....
-$ java -jar build\libs\config-service-0.0.1.jar
+$ java -DPORT=8888 -jar build\libs\config-service-0.0.1.jar
 $ curl http://localhost:8888/my-service.yml
 ....
 
@@ -226,7 +234,9 @@ include::{sourcedir}/solution2/config-service/src/main/resources/application.yml
 
 ==== Operating Configuration Server (with Git)
 
-Create an empty GitHub repo. Clone it locally and move there the `application.yml`
+For this exercise the uri in the application.yml file above has to be replaced with your GitHub repo's uri.
+
+Create an empty GitHub repo. Clone it locally, and move there the `application.yml`
 configuration file from *mysvc* service with the name `my-service.yml`:
 
 [source,yml,indent=0]
@@ -237,9 +247,11 @@ include::{sourcedir}/solution2/config-service/config/my-service.yml[]
 
 Commit and push to the GitHub.
 
+Remember to set the uri in the config-service's application.yml to your GitHub repo's uri.
+
 Launch the config server and try to get the service configuration:
 ....
-$ java -jar build\libs\config-service-0.0.1.jar
+$ java -DPORT=8888 -jar build\libs\config-service-0.0.1.jar
 $ curl http://localhost:8888/my-service.yml
 ....
 
@@ -248,9 +260,31 @@ If everything configured properly, you're going to see the contents of the
 
 == Using Config Server on the Client Side
 
-Delete `application.yml` file (it has been moved to the Config Server).
+=== Prepare the Configuration Service
 
-Create `bootstrap.yml` file, where you specify a service ID as well as the
+Update the config-service `application.yml`.
+
+First set the default port:
+[source,yml,indent=0]
+.config-service/src/main/resources/application.yml
+----
+include::{sourcedir}/solution2/config-service/src/main/resources/application.yml[tags=port]
+----
+
+Then revert the uri to the standard GitHub location:
+[source,yml,indent=0]
+.config-service/src/main/resources/application.yml
+----
+include::{sourcedir}/solution2/config-service/src/main/resources/application.yml[tags=git]
+----
+
+And launch the config server.
+
+=== Prepare MySvc
+
+Delete the `mysvc/src/main/resources/application.yml` file (it has been moved to the Config Server).
+
+Create a `mysvc/src/main/resources/bootstrap.yml` file, where you specify a service ID as well as the
 location of the config server URI:
 
 [source,yml,indent=0]
@@ -284,8 +318,10 @@ $ docker build -t msvcdojo/config-service:0.0.1 build/docker
 Launch Config Server as docker container and see if you get MySvc configuraiton:
 ....
 $ docker run -d --name=config-service -p 8888:8888 msvcdojo/config-service:0.0.1
-$ curl http://dockerhost:8888/my-svc.yml
+$ curl http://dockerhost:8888/my-service.yml
 ....
+
+Remember that on Windows, the `mysvc/src/main/resources/bootstrap.yml` file has to be updated, so the URI now points to `http://dockerhost:8888`.
 
 Optional: Push Config Server image to your Docker Registry and now you can always
 get it with the docker run command.

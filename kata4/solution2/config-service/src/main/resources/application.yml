@@ -1,6 +1,7 @@
 server:
+# tag::port[]
   port: ${PORT:8888}
-
+# end::port[]
 # tag::native[]
 #spring:
 #  profiles:
