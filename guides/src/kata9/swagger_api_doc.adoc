@@ -46,9 +46,9 @@ The project contains an entry point in the _MysvcApplication.java_ file:
 ----
 include::{sourcedir}/solution/mysvc/src/main/java/msvcdojo/MysvcApplication.java[tags=code]
 ----
-We have added @EnableSwagger2 annotation to enable this application to use Swagger.
+<1> We have added @EnableSwagger2 annotation to enable this application to use Swagger.
 
-The api() method creates a bean which contains the general information about the API and an inventory of the available resources.
+<2> The api() method creates a bean which contains the general information about the API and an inventory of the available resources.
 
 We're going to rename HomeController we created in Kata1 guide to AccountController and add a get API and describe it with swagger annotation.
 
@@ -68,17 +68,17 @@ include::{sourcedir}/solution/mysvc/src/main/java/msvcdojo/MysvcApplication.java
 include::{sourcedir}/solution/mysvc/src/main/java/msvcdojo/MysvcApplication.java[tags=model]
 ----
 
-*@Api annotation* describes a top-level api. In order to make Swagger aware of your endpoint, you need to annotate your class with @Api annotation.
+<1> @Api annotation describes a top-level api. In order to make Swagger aware of your endpoint, you need to annotate your class with @Api annotation.
 
-*@ApiOperation annotation* provides detailed description of what a certain method does.
+<2> @ApiOperation annotation provides detailed description of what a certain method does.
 
-*@ApiResponses annotation* represents a type of response from a server. This can be used to describe both success codes as well as errors. If your Api has different response classes, you can describe them here by associating a response class with a response code.
+<3> @ApiResponses annotation represents a type of response from a server. This can be used to describe both success codes as well as errors. If your Api has different response classes, you can describe them here by associating a response class with a response code.
 
-*@ApiImplicitParams annotation* represents a single parameter in an API Operation.This allows you to manually define a parameter in a fine-tuned manner.
+<4> @ApiImplicitParams annotation represents a single parameter in an API Operation.This allows you to manually define a parameter in a fine-tuned manner.
 
-*@ApiParam annotation* represents a single parameter in an Api Operation. A parameter is an input to the operation.When working with path or query parameter, you should always provide clarification of what this parameter represents.
+<5> @ApiParam annotation represents a single parameter in an Api Operation. A parameter is an input to the operation.When working with path or query parameter, you should always provide clarification of what this parameter represents.
 
-*@ApiModel annotation* models classes to provide the model schema, which helps in understanding/documenting the request response structure using the specific annotation using @ApiModel annotations.
+<6> @ApiModel annotation models classes to provide the model schema, which helps in understanding/documenting the request response structure using the specific annotation using @ApiModel annotations.
 
 [source,yaml,indent=0]
 .application.yml
@@ -178,20 +178,5 @@ shutdown itself.
 $ curl -d {} http://localhost:8080/shutdown
 ----
 
-=== End-point documentation
-
-The fact that the Actuator-docs package was included in your artifact, your service
-has received an additional end point that provides embedded documentation for the
-other actuator-provided end points.
-
-You can access this documentation by navigating to the following url:
-icon:external-link[link="http://localhost:8080/docs/", window="_blank"]
-http://localhost:8080/docs/
-
-
 == Bonus
-
-You can read more about all this in
-http://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#production-ready[Spring Boot Reference Guide^]
-and in
-https://spring.io/guides/gs/spring-boot/[Building an Application with Spring Boot^] guide.
+You can read more about all this in http://swagger.io/.
