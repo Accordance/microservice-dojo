@@ -44,6 +44,23 @@ dependencies {
     // end::swagger[]
 }
 
+task prepDocker(type: Copy, dependsOn: assemble) {
+        from 'docker'
+        into "$buildDir/docker"
+        include 'Dockerfile.template'
+        rename { file -> 'Dockerfile' }
+        expand(project: project, jar: jar )
+        doFirst {
+                copy {
+                        from jar
+                        into "$buildDir/docker"
+                }
+        }
+  doLast {
+      println "Docker command: docker build -t ${jar.group}/${jar.baseName}:${jar.version} build/docker"
+  }
+}
+
 task wrapper(type: Wrapper) {
 	gradleVersion = '2.9'
 }
