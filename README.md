@@ -16,8 +16,7 @@ complexity.
   explains Eureka, Ribbon and Feign
   * Kata8 guide: [Edge Service](http://accordance.github.io/microservice-dojo/guides/docs/kata8/edge_service.html) -
   Zuul
-  * Kata9 guide: [Swagger Documentation](http://accordance.github.io/microservice-dojo/guides/docs/kata9/swagger_api_doc.html) -
-  Zuul
+  * Kata9 guide: [Swagger Documentation](http://accordance.github.io/microservice-dojo/guides/docs/kata9/swagger_api_doc.html)
 * Getting started:
   * Kata [Getting Started with Web client](http://accordance.github.io/microservice-dojo/guides/docs/kata-web-client/web-client-basics.html) - covers beginning of AngularJS
   * Kata [Simple Orchestration](http://accordance.github.io/microservice-dojo/guides/docs/kata-dev-environment/simple-orchestration.html)

@@ -73,7 +73,7 @@ REPOSITORY                  TAG                 IMAGE ID            CREATED     
 msvcdojo/mysvc              0.0.1               cb55f79088db        2 minutes ago       655.2 MB
 ----
 
-== Start container
+=== Start container
 
 Let's start the container and map the service port to the external world by running command:
 ----
