@@ -5,7 +5,7 @@
 <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 1.5.4">
-<title>Dojo Story</title>
+<title>Microservices-Dojo</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /* Asciidoctor default stylesheet | MIT License | http://asciidoctor.org */
@@ -416,127 +416,134 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 .hide-for-print{display:none!important}
 .show-for-print{display:inherit!important}}
 </style>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
 </head>
-<body class="article toc2 toc-left">
+<body class="article">
 <div id="header">
-<div id="toc" class="toc2">
-<div id="toctitle">Table of Contents</div>
-<ul class="sectlevel1">
-<li><a href="#_dojo_story">Dojo Story</a></li>
-</ul>
-</div>
 </div>
 <div id="content">
-<div class="paragraph">
-<p><a href="index.html"><span class="icon"><i class="fa fa-home"></i></span> Home</a></p>
-</div>
 <div class="sect1">
-<h2 id="_dojo_story">Dojo Story</h2>
+<h2 id="_microservices_dojo">Microservices-Dojo</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>First we have a simple web service:</p>
+<p>This is the comprehensive follow-step-by-step guide that will teach you to build
+12 Factor Cloud-native applications and get educated on the surrounding ecosystem.</p>
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="dojo-story-1.png" alt="dojo story 1" width="260" height="112">
+<img src="images/dojo.jpg" alt="Dojo" width="300" height="200">
 </div>
 </div>
 <div class="paragraph">
-<p>Then we add a database:</p>
+<p>This Dojo is a play ground that helps to bootstrap teams and individuals to
+the point when they understand basics of the micro-services and operational
+complexity.</p>
+</div>
+<div class="paragraph">
+<p>This block of Katas (exercises) walk you through a Step-by-step process of
+connecting 2 web services and exposing their functionality to the rest of
+the world.</p>
+</div>
+<div class="paragraph">
+<p>Read the whole <a href="dojo_story.html">Dojo Story</a> for more details. This Story
+can be represented with this technology logo collage:</p>
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="dojo-story-2.png" alt="dojo story 2" width="260" height="196">
+<img src="images/dojo-logo-collage.png" alt="Dojo Logo Collage">
 </div>
-</div>
-<div class="paragraph">
-<p>Then we create another service with it&#8217;s own data store:</p>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="dojo-story-3.png" alt="dojo story 3" width="540" height="196">
-</div>
-</div>
-<div class="paragraph">
-<p>We teach the Accounts service to look for profile photos:</p>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="dojo-story-4.png" alt="dojo story 4" width="530" height="196">
-</div>
-</div>
-<div class="paragraph">
-<p>We externalize the configuration:</p>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="dojo-story-5.png" alt="dojo story 5" width="820" height="308">
-</div>
-</div>
-<div class="paragraph">
-<p>Adding service catalog and scaling service-instances:</p>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="dojo-story-6.png" alt="dojo story 6" width="820" height="378">
-</div>
-</div>
-<div class="paragraph">
-<p>After a couple of Katas we&#8217;re going to get a working and operationally-ready
-micro-services environment:</p>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="dojo-story-7.png" alt="dojo story 7" width="840" height="602">
-</div>
-</div>
-<div class="paragraph">
-<p>Services and their ports roster:</p>
 </div>
 <table class="tableblock frame-all grid-all spread">
 <colgroup>
-<col style="width: 50%;">
-<col style="width: 50%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
 </colgroup>
 <thead>
 <tr>
-<th class="tableblock halign-left valign-top">Service ID</th>
-<th class="tableblock halign-left valign-top">Port</th>
+<th class="tableblock halign-left valign-top">Kata #</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Tech Stack</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Accounts Service</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">8100</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="kata1/creating_basic_web_service.html">Creating Basic Web Service</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Spring Cloud</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">mySql DB</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">3306</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="kata2/dockerizing_application.html">Dockerizing Application</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Docker</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Profiles Service</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">8101</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="kata3/service_using_mysql_db.html">Microservice with personal DB and database migrations</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Flyway</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Mongo DB</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">27017</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">4</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="kata4/externalizing_configuration.html">Externalizing configuration</a></p></td>
+<td class="tableblock halign-left valign-top"></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Config Service</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">8888</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">5</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="kata5/service_using_mongo_db.html">Web Service using Mongo DB</a></p></td>
+<td class="tableblock halign-left valign-top"></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Eureka</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">8761</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">6</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="kata6/service_talking_to_service.html">Service talking to another Service</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Eureka, Ribbon and Feign</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Hystrix dashboard</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">8110</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">7</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Circuit Breakers</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Hystrix</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Gateway</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">8111</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">8</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="kata8/edge_service.html">Edge Service</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Zuul</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>Complimentary Katas:</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Kata #</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Tech Stack</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">a</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#kata-web-client/web-client-basics.adoc">Getting Started with Web client</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">covers beginning of AngularJS</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">b</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#kata-dev-environment/simple-orchestration.adoc">Simple Orchestration</a></p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">c</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Distributed Logging</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ELK Stack</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">d</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Distributed Tracing</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Zipkin</p></td>
 </tr>
 </tbody>
 </table>
@@ -545,7 +552,7 @@ micro-services environment:</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2016-02-11 20:16:46 Eastern Standard Time
+Last updated 2016-02-11 20:18:25 Eastern Standard Time
 </div>
 </div>
 </body>
