@@ -781,30 +781,30 @@ was not resolved, falls over to the default value, provided after <strong>:</str
 </div>
 <div class="listingblock">
 <div class="content">
-<pre>{
-  "profiles": [],
-  "server.ports": {
-    "local.server.port": 8222
+<pre class="CodeRay highlight"><code data-lang="json">{
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">profiles</span><span class="delimiter">&quot;</span></span>: [],
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">server.ports</span><span class="delimiter">&quot;</span></span>: {
+    <span class="key"><span class="delimiter">&quot;</span><span class="content">local.server.port</span><span class="delimiter">&quot;</span></span>: <span class="integer">8222</span>
   },
-  "servletContextInitParams": {},
-  "systemProperties": {
-    "java.runtime.name": "Java(TM) SE Runtime Environment",
-    "PORT": "8222",
-    "name": "Alice",
-...
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">servletContextInitParams</span><span class="delimiter">&quot;</span></span>: {},
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">systemProperties</span><span class="delimiter">&quot;</span></span>: {
+    <span class="key"><span class="delimiter">&quot;</span><span class="content">java.runtime.name</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Java(TM) SE Runtime Environment</span><span class="delimiter">&quot;</span></span>,
+    <span class="key"><span class="delimiter">&quot;</span><span class="content">PORT</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">8222</span><span class="delimiter">&quot;</span></span>,
+    <span class="key"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Alice</span><span class="delimiter">&quot;</span></span>,
+<span class="error">.</span><span class="error">.</span><span class="error">.</span>
   },
-  "systemEnvironment": {
-    "NUMBER_OF_PROCESSORS": "4",
-    "name": "John",
-...
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">systemEnvironment</span><span class="delimiter">&quot;</span></span>: {
+    <span class="key"><span class="delimiter">&quot;</span><span class="content">NUMBER_OF_PROCESSORS</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">4</span><span class="delimiter">&quot;</span></span>,
+    <span class="key"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">John</span><span class="delimiter">&quot;</span></span>,
+<span class="error">.</span><span class="error">.</span><span class="error">.</span>
   },
-  "applicationConfig: [classpath:/application.yml]": {
-    "server.port": "${PORT:8100}",
-    "name": "World",
-    "endpoints.health.sensitive": false,
-    "endpoints.shutdown.enabled": true
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">applicationConfig: [classpath:/application.yml]</span><span class="delimiter">&quot;</span></span>: {
+    <span class="key"><span class="delimiter">&quot;</span><span class="content">server.port</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">${PORT:8100}</span><span class="delimiter">&quot;</span></span>,
+    <span class="key"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">World</span><span class="delimiter">&quot;</span></span>,
+    <span class="key"><span class="delimiter">&quot;</span><span class="content">endpoints.health.sensitive</span><span class="delimiter">&quot;</span></span>: <span class="value">false</span>,
+    <span class="key"><span class="delimiter">&quot;</span><span class="content">endpoints.shutdown.enabled</span><span class="delimiter">&quot;</span></span>: <span class="value">true</span>
   }
-}</pre>
+}</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1066,7 +1066,7 @@ get it with the docker run command.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2016-02-04 09:02:51 Eastern Standard Time
+Last updated 2016-02-16 21:06:19 Eastern Standard Time
 </div>
 </div>
 </body>

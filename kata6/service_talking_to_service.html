@@ -1186,9 +1186,9 @@ to see everything):</p>
 <p>Now if you&#8217;ll rerun your service and when you&#8217;ll hit it with a REST request,
 the similar to the following lines will appear in your logs:</p>
 </div>
-<div class="literalblock">
+<div class="listingblock">
 <div class="content">
-<pre>2016-02-04 DEBUG [...] [ProfilesServiceProxy#getProfile] ---&gt; GET http://profiles-service/profiles/john HTTP/1.1
+<pre class="CodeRay highlight nowrap"><code data-lang="text">2016-02-04 DEBUG [...] [ProfilesServiceProxy#getProfile] ---&gt; GET http://profiles-service/profiles/john HTTP/1.1
 2016-02-04 DEBUG [...] [ProfilesServiceProxy#getProfile] ---&gt; END HTTP (0-byte body)
 2016-02-04 DEBUG [...] [ProfilesServiceProxy#getProfile] &lt;--- HTTP/1.1 200 OK (139ms)
 2016-02-04 DEBUG [...] [ProfilesServiceProxy#getProfile] Transfer-Encoding: chunked
@@ -1198,22 +1198,22 @@ the similar to the following lines will appear in your logs:</p>
 2016-02-04 DEBUG [...] [ProfilesServiceProxy#getProfile] Content-Type: application/hal+json; charset=UTF-8
 2016-02-04 DEBUG [...] [ProfilesServiceProxy#getProfile]
 2016-02-04 DEBUG [...] [ProfilesServiceProxy#getProfile] {
-  "fullName" : "John Smith",
-  "photoCount" : 0,
-  "key" : "john",
-  "_links" : {
-    "self" : {
-      "href" : "http://192.168.99.100:8101/profiles/john"
+  &quot;fullName&quot; : &quot;John Smith&quot;,
+  &quot;photoCount&quot; : 0,
+  &quot;key&quot; : &quot;john&quot;,
+  &quot;_links&quot; : {
+    &quot;self&quot; : {
+      &quot;href&quot; : &quot;http://192.168.99.100:8101/profiles/john&quot;
     },
-    "profile" : {
-      "href" : "http://192.168.99.100:8101/profiles/john"
+    &quot;profile&quot; : {
+      &quot;href&quot; : &quot;http://192.168.99.100:8101/profiles/john&quot;
     },
-    "photos" : {
-      "href" : "http://192.168.99.100:8101/profiles/john/photos"
+    &quot;photos&quot; : {
+      &quot;href&quot; : &quot;http://192.168.99.100:8101/profiles/john/photos&quot;
     }
   }
 }
-2016-02-04 DEBUG [...] [ProfilesServiceProxy#getProfile] &lt;--- END HTTP (340-byte body)</pre>
+2016-02-04 DEBUG [...] [ProfilesServiceProxy#getProfile] &lt;--- END HTTP (340-byte body)</code></pre>
 </div>
 </div>
 </div>
@@ -1221,7 +1221,7 @@ the similar to the following lines will appear in your logs:</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2016-02-04 12:50:24 Eastern Standard Time
+Last updated 2016-02-04 16:14:22 Eastern Standard Time
 </div>
 </div>
 </body>
