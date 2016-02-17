@@ -531,6 +531,21 @@ table.CodeRay td.code>pre{padding:0}
 <div class="sect1">
 <h2 id="_scheduling_application_in_mesos_with_marathon">Scheduling Application in Mesos with Marathon</h2>
 <div class="sectionbody">
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+In this Kata we&#8217;re going to use single-machine Mesos deployment to
+learn about Mesos platform. This type of a deployment provides full Mesos
+functionality without resiliency for platform failures. Do not use single-machine
+deployment in production!
+</td>
+</tr>
+</table>
+</div>
 <div class="sect2">
 <h3 id="_launching_mesos_cluster_with_marathon_framework">Launching Mesos Cluster with Marathon framework</h3>
 <div class="paragraph">
@@ -591,13 +606,27 @@ dd487551c190        jplock/zookeeper:3.4.6         zookeeper</pre>
 <iframe width="800" height="600" src="https://www.youtube.com/embed/gEgH96Wq034?rel=0" frameborder="0" allowfullscreen></iframe>
 </div>
 </div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+Now you can go a try to kill a running application - Mesos will notify
+Marathon about an instance loss and Marathon will reschedule the task. This
+"dance" ensures that your application instance will always be running.
+</td>
+</tr>
+</table>
+</div>
 </div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2016-02-16 20:31:04 Eastern Standard Time
+Last updated 2016-02-16 20:50:50 Eastern Standard Time
 </div>
 </div>
 </body>
