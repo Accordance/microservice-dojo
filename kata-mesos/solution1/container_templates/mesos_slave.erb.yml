@@ -1,0 +1,33 @@
+mesos_slave:
+  image: redjack/mesos-slave:0.21.0
+  net: host
+  privileged: true
+  pid: host
+  ports:
+    - 5051
+  environment:
+    MESOS_CONTAINERIZERS: docker,mesos
+    MESOS_DOCKER_SOCK: /var/run/docker.sock
+    MESOS_DOCKER_MESOS_IMAGE: redjack/mesos-slave:0.21.0
+    MESOS_EXECUTOR_REGISTRATION_TIMEOUT: 10mins
+    MESOS_ISOLATOR: cgroups/cpu,cgroups/mem
+    MESOS_LOG_DIR: /var/log/mesos/slave
+    # MESOS_LOGGING_LEVEL: INFO
+    MESOS_MASTER: zk://<%= dockerhost %>:2181/mesos
+    MESOS_PORT: 5051
+    MESOS_WORK_DIR: /var/lib/mesos/slave
+    MESOS_IP: <%= dockerhost %>
+    MESOS_HOSTNAME: <%= dockerhost %>
+    MESOS_RESOURCES: ports(*):[31000-32000]
+    MESOS_DOCKER: /usr/bin/docker
+    GLOG_v: 1
+  volumes:
+    # - /usr/local/bin/docker:/usr/bin/docker:ro
+    - /var/run/docker.sock:/var/run/docker.sock
+    - /sys:/sys
+    - /proc:/host/proc:ro
+  depends:
+    - mesos_master
+  checks:
+    - uri: http://<%= dockerhost %>:5050/metrics/snapshot
+      retry: 5

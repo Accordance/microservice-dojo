@@ -1,0 +1,19 @@
+mesos_marathon:
+  image: mesosphere/marathon:v0.11.1
+  command: --checkpoint --task_launch_timeout 300000
+  net: host
+  ports:
+    - 8282
+    - 9090
+  environment:
+    LIBPROCESS_PORT: 9090
+    MARATHON_HOSTNAME: <%= dockerhost %>
+    MARATHON_HTTP_PORT: 8282
+    MARATHON_MASTER: zk://<%= dockerhost %>:2181/mesos
+    # MARATHON_WEBUI_URL: http://<%= dockerhost %>:8282
+    MARATHON_ZK: zk://<%= dockerhost %>:2181/marathon
+  checks:
+    - uri: http://<%= dockerhost %>:8282/ping
+      retry: 5
+  depends:
+    - mesos_slave

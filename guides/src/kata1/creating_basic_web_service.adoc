@@ -1,13 +1,10 @@
-:toc: left
-// :linkcss:
-:icons: font
-:source-highlighter: coderay
 :kata_dir: kata1
 :sourcedir: ../../../{kata_dir}
+include::../header.adoc[]
 
 // include::../header.adoc[]
 
-= Building Simple Web Service with Spring Boot
+== Building Simple Web Service with Spring Boot
 
 WARNING: Make sure you have your development environment configured.
 
