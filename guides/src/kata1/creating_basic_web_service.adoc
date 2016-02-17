@@ -193,7 +193,7 @@ include::{sourcedir}/solution/mysvc/build.gradle[tags=actuator-docs]
 
 == Bonus
 
-You can read more about all this in
-http://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#production-ready[Spring Boot Reference Guide^]
-and in
-https://spring.io/guides/gs/spring-boot/[Building an Application with Spring Boot^] guide.
+You can read more about all this:
+
+* http://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#production-ready[Spring Boot Reference Guide^]
+* https://spring.io/guides/gs/spring-boot/[Building an Application with Spring Boot^] guide.

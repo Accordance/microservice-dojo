@@ -11,7 +11,16 @@ deployment in production!
 
 === Launching Mesos Cluster with Marathon framework
 
+TIP: Make sure that the Docker machine has enough resources to run Mesos
+
+It can help to add more resources to your Docker-machine
+[source,text,options="nowrap"]
+....
+$ docker-machine create -d virtualbox --virtualbox-memory2048--virtualbox-cpu-count2dev
+....
+
 In the `kata-mesos/solution1` directory run:
+[source,text,options="nowrap"]
 ....
 $ C:\Dev\accordance\microservice-dojo\kata-mesos\solution1>docker_rack exec mesos:start
 Executing 'mesos:start'
@@ -22,6 +31,7 @@ Starting: /kata-mesos/solution1/container_templates/mesos_marathon.erb.yml
 ....
 
 Validate that you have all the containers running:
+[source,text,options="nowrap"]
 ....
 $ docker ps
 CONTAINER ID        IMAGE                          NAMES
@@ -45,8 +55,90 @@ video::OHf-NFVL1ps[youtube,height=600,width=800]
 
 === Scheduling a Job using Marathon
 
+Scheduling an application with Marathon:
+
+[source,json,indent=0]
+----
+POST /v2/apps/mysvcdojo/staging/hello
+include::{sourcedir}/solution1/hello.json[]
+----
+
+This is how you can do it from command line:
+[source,text,options="nowrap"]
+....
+$ curl -X POST -H "Content-Type: application/json" --data @hello.json http://dockerhost:8282/v2/apps
+....
+
 video::gEgH96Wq034[youtube,height=600,width=800]
+
+==== Adding Healthcheck
+
+It is possible to have Mesos to execute health-checks against your application and
+restart it automatically in case the your application will not respond properly
+to the health-checks.
+
+You can add the following block to your application descriptor:
+
+[source,json,indent=0]
+....
+"healthChecks": [
+  {
+     "path": "/health",
+     "protocol": "HTTP",
+     "portIndex": 0,
+     "gracePeriodSeconds": 300,
+     "intervalSeconds": 60,
+     "timeoutSeconds": 20,
+     "maxConsecutiveFailures": 3
+  }
+]
+....
+
+The health-checks should return:
+* 200 - to indicate that everything is OK
+* 503 - if there is something wrong
+
+==== Scale the application
+
+Increase a number of instances:
+....
+PUT /v2/apps/{app_id}
+{
+  "instances": 3
+}
+....
+
+==== Idempotent requests
+
+NOTE: Marathon will ignore multiple POST request to launch the same application
+
+==== Upgrading an application
+
+Marathon uses BLUE/GREEN approach during application upgrade sequence. It launches
+a duplicate cluster of the application instances. So you need to have available
+DOUBLE capacity in your cluster to accommodate and upgrade.
+
+If your application is running 3 instances and you have a constraint to run
+an instance on a unique host, you're going to have additional 3 hosts available
+in your infrastructure to execute an upgrade:
+
+Upgrade is executed with PUT command (change a Docker image version):
+....
+PUT /v2/apps/app_id
+{
+  "id": "app_id",
+  ...
+}
+....
+
+== See it
 
 TIP: Now you can go a try to kill a running application - Mesos will notify
 Marathon about an instance loss and Marathon will reschedule the task. This
 "dance" ensures that your application instance will always be running.
+
+== Bonus
+
+* Read about http://minimesos.readthedocs.org/en/latest/[MiniMesos^] - environment
+for Mesos framework development and testing
+* https://mesosphere.github.io/marathon/docs/health-checks.html[Mesos Healthchecks^]
