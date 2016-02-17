@@ -5,7 +5,7 @@
 <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 1.5.4">
-<title>Microservices-Dojo</title>
+<title>Scheduling Application in Mesos with Marathon</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /* Asciidoctor default stylesheet | MIT License | http://asciidoctor.org */
@@ -416,148 +416,188 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 .hide-for-print{display:none!important}
 .show-for-print{display:inherit!important}}
 </style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
+<style>
+/* Stylesheet for CodeRay to match GitHub theme | MIT License | http://foundation.zurb.com */
+/*pre.CodeRay {background-color:#f7f7f8;}*/
+.CodeRay .line-numbers{border-right:1px solid #d8d8d8;padding:0 0.5em 0 .25em}
+.CodeRay span.line-numbers{display:inline-block;margin-right:.5em;color:rgba(0,0,0,.3)}
+.CodeRay .line-numbers strong{color:rgba(0,0,0,.4)}
+table.CodeRay{border-collapse:separate;border-spacing:0;margin-bottom:0;border:0;background:none}
+table.CodeRay td{vertical-align: top;line-height:1.45}
+table.CodeRay td.line-numbers{text-align:right}
+table.CodeRay td.line-numbers>pre{padding:0;color:rgba(0,0,0,.3)}
+table.CodeRay td.code{padding:0 0 0 .5em}
+table.CodeRay td.code>pre{padding:0}
+.CodeRay .debug{color:#fff !important;background:#000080 !important}
+.CodeRay .annotation{color:#007}
+.CodeRay .attribute-name{color:#000080}
+.CodeRay .attribute-value{color:#700}
+.CodeRay .binary{color:#509}
+.CodeRay .comment{color:#998;font-style:italic}
+.CodeRay .char{color:#04d}
+.CodeRay .char .content{color:#04d}
+.CodeRay .char .delimiter{color:#039}
+.CodeRay .class{color:#458;font-weight:bold}
+.CodeRay .complex{color:#a08}
+.CodeRay .constant,.CodeRay .predefined-constant{color:#008080}
+.CodeRay .color{color:#099}
+.CodeRay .class-variable{color:#369}
+.CodeRay .decorator{color:#b0b}
+.CodeRay .definition{color:#099}
+.CodeRay .delimiter{color:#000}
+.CodeRay .doc{color:#970}
+.CodeRay .doctype{color:#34b}
+.CodeRay .doc-string{color:#d42}
+.CodeRay .escape{color:#666}
+.CodeRay .entity{color:#800}
+.CodeRay .error{color:#808}
+.CodeRay .exception{color:inherit}
+.CodeRay .filename{color:#099}
+.CodeRay .function{color:#900;font-weight:bold}
+.CodeRay .global-variable{color:#008080}
+.CodeRay .hex{color:#058}
+.CodeRay .integer,.CodeRay .float{color:#099}
+.CodeRay .include{color:#555}
+.CodeRay .inline{color:#000}
+.CodeRay .inline .inline{background:#ccc}
+.CodeRay .inline .inline .inline{background:#bbb}
+.CodeRay .inline .inline-delimiter{color:#d14}
+.CodeRay .inline-delimiter{color:#d14}
+.CodeRay .important{color:#555;font-weight:bold}
+.CodeRay .interpreted{color:#b2b}
+.CodeRay .instance-variable{color:#008080}
+.CodeRay .label{color:#970}
+.CodeRay .local-variable{color:#963}
+.CodeRay .octal{color:#40e}
+.CodeRay .predefined{color:#369}
+.CodeRay .preprocessor{color:#579}
+.CodeRay .pseudo-class{color:#555}
+.CodeRay .directive{font-weight:bold}
+.CodeRay .type{font-weight:bold}
+.CodeRay .predefined-type{color:inherit}
+.CodeRay .reserved,.CodeRay .keyword {color:#000;font-weight:bold}
+.CodeRay .key{color:#808}
+.CodeRay .key .delimiter{color:#606}
+.CodeRay .key .char{color:#80f}
+.CodeRay .value{color:#088}
+.CodeRay .regexp .delimiter{color:#808}
+.CodeRay .regexp .content{color:#808}
+.CodeRay .regexp .modifier{color:#808}
+.CodeRay .regexp .char{color:#d14}
+.CodeRay .regexp .function{color:#404;font-weight:bold}
+.CodeRay .string{color:#d20}
+.CodeRay .string .string .string{background:#ffd0d0}
+.CodeRay .string .content{color:#d14}
+.CodeRay .string .char{color:#d14}
+.CodeRay .string .delimiter{color:#d14}
+.CodeRay .shell{color:#d14}
+.CodeRay .shell .delimiter{color:#d14}
+.CodeRay .symbol{color:#990073}
+.CodeRay .symbol .content{color:#a60}
+.CodeRay .symbol .delimiter{color:#630}
+.CodeRay .tag{color:#008080}
+.CodeRay .tag-special{color:#d70}
+.CodeRay .variable{color:#036}
+.CodeRay .insert{background:#afa}
+.CodeRay .delete{background:#faa}
+.CodeRay .change{color:#aaf;background:#007}
+.CodeRay .head{color:#f8f;background:#505}
+.CodeRay .insert .insert{color:#080}
+.CodeRay .delete .delete{color:#800}
+.CodeRay .change .change{color:#66f}
+.CodeRay .head .head{color:#f4f}
+</style>
 </head>
-<body class="article">
+<body class="article toc2 toc-left">
 <div id="header">
+<div id="toc" class="toc2">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_scheduling_application_in_mesos_with_marathon">Scheduling Application in Mesos with Marathon</a>
+<ul class="sectlevel2">
+<li><a href="#_launching_mesos_cluster_with_marathon_framework">Launching Mesos Cluster with Marathon framework</a></li>
+<li><a href="#_dashboards">Dashboards</a></li>
+<li><a href="#_scheduling_a_job_using_marathon">Scheduling a Job using Marathon</a></li>
+</ul>
+</li>
+</ul>
+</div>
 </div>
 <div id="content">
+<div class="paragraph">
+<p><a href="../index.html"><span class="icon"><i class="fa fa-home"></i></span> Home</a></p>
+</div>
 <div class="sect1">
-<h2 id="_microservices_dojo">Microservices-Dojo</h2>
+<h2 id="_scheduling_application_in_mesos_with_marathon">Scheduling Application in Mesos with Marathon</h2>
 <div class="sectionbody">
+<div class="sect2">
+<h3 id="_launching_mesos_cluster_with_marathon_framework">Launching Mesos Cluster with Marathon framework</h3>
 <div class="paragraph">
-<p>This is the comprehensive follow-step-by-step guide that will teach you to build
-12 Factor Cloud-native applications and get educated on the surrounding ecosystem.</p>
+<p>In the <code>kata-mesos/solution1</code> directory run:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>$ C:\Dev\accordance\microservice-dojo\kata-mesos\solution1&gt;docker_rack exec mesos:start
+Executing 'mesos:start'
+Starting: /kata-mesos/solution1/container_templates/mesos_master.erb.yml
+Starting: /kata-mesos/solution1/container_templates/zookeeper.yml
+Starting: /kata-mesos/solution1/container_templates/mesos_slave.erb.yml
+Starting: /kata-mesos/solution1/container_templates/mesos_marathon.erb.yml</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Validate that you have all the containers running:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>$ docker ps
+CONTAINER ID        IMAGE                          NAMES
+e8fa3e206f37        mesosphere/marathon:v0.11.1    mesos_marathon
+034b6f341ccf        redjack/mesos-slave:0.21.0     mesos_slave
+72cc80b78a75        redjack/mesos-master:0.21.0    mesos_master
+dd487551c190        jplock/zookeeper:3.4.6         zookeeper</pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_dashboards">Dashboards</h3>
+<div class="paragraph">
+<p>Mesos dashboard: <a href="http://dockerhost:5050/" class="bare">http://dockerhost:5050/</a></p>
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="images/dojo.jpg" alt="Dojo" width="300" height="200">
+<img src="mesos.png" alt="mesos">
 </div>
 </div>
 <div class="paragraph">
-<p>This Dojo is a play ground that helps to bootstrap teams and individuals to
-the point when they understand basics of the micro-services and operational
-complexity.</p>
-</div>
-<div class="paragraph">
-<p>This block of Katas (exercises) walk you through a Step-by-step process of
-connecting 2 web services and exposing their functionality to the rest of
-the world.</p>
-</div>
-<div class="paragraph">
-<p>Read the whole <a href="dojo_story.html">Dojo Story</a> for more details. This Story
-can be represented with this technology logo collage:</p>
+<p>Marathon dashboard: <a href="http://dockerhost:8282/ui/#/apps" class="bare">http://dockerhost:8282/ui/#/apps</a></p>
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="images/dojo-logo-collage.png" alt="Dojo Logo Collage">
+<img src="marathon.png" alt="marathon">
 </div>
 </div>
-<table class="tableblock frame-all grid-all spread">
-<colgroup>
-<col style="width: 33.3333%;">
-<col style="width: 33.3333%;">
-<col style="width: 33.3334%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Kata #</th>
-<th class="tableblock halign-left valign-top">Description</th>
-<th class="tableblock halign-left valign-top">Tech Stack</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="kata1/creating_basic_web_service.html">Creating Basic Web Service</a></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Spring Cloud</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="kata2/dockerizing_application.html">Dockerizing Application</a></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Docker</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">3</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="kata3/service_using_mysql_db.html">Microservice with personal DB and database migrations</a></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Flyway</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">4</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="kata4/externalizing_configuration.html">Externalizing configuration</a></p></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">5</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="kata5/service_using_mongo_db.html">Web Service using Mongo DB</a></p></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">6</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="kata6/service_talking_to_service.html">Service talking to another Service</a></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Eureka, Ribbon and Feign</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">7</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Circuit Breakers</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Hystrix</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">8</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="kata8/edge_service.html">Edge Service</a></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Zuul</p></td>
-</tr>
-</tbody>
-</table>
-<div class="paragraph">
-<p>Complimentary Katas:</p>
+<div class="videoblock">
+<div class="content">
+<iframe width="800" height="600" src="https://www.youtube.com/embed/OHf-NFVL1ps?rel=0" frameborder="0" allowfullscreen></iframe>
 </div>
-<table class="tableblock frame-all grid-all spread">
-<colgroup>
-<col style="width: 33.3333%;">
-<col style="width: 33.3333%;">
-<col style="width: 33.3334%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Kata #</th>
-<th class="tableblock halign-left valign-top">Description</th>
-<th class="tableblock halign-left valign-top">Tech Stack</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">a</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#kata-web-client/web-client-basics.adoc">Getting Started with Web client</a></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">covers beginning of AngularJS</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">b</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#kata-dev-environment/simple-orchestration.adoc">Simple Orchestration</a></p></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">c</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Distributed Logging</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">ELK Stack</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">d</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Distributed Tracing</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Zipkin</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">e</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#kata-mesos/scheduling_with_mesos.adoc">Mesos and Marathon framework</a></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Mesos, Marathon</p></td>
-</tr>
-</tbody>
-</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_scheduling_a_job_using_marathon">Scheduling a Job using Marathon</h3>
+<div class="videoblock">
+<div class="content">
+<iframe width="800" height="600" src="https://www.youtube.com/embed/gEgH96Wq034?rel=0" frameborder="0" allowfullscreen></iframe>
+</div>
+</div>
+</div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2016-02-16 20:36:20 Eastern Standard Time
+Last updated 2016-02-16 20:31:04 Eastern Standard Time
 </div>
 </div>
 </body>
