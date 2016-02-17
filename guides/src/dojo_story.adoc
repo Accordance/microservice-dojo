@@ -1,4 +1,11 @@
+:toc: left
+:icons: font
+[options="header"]
+<<index.adoc#,icon:home[] Home>>
+
+////
 include::https://raw.githubusercontent.com/Accordance/microservice-dojo/master/guides/docs/misc/macros.adoc[]
+////
 
 == Dojo Story
 

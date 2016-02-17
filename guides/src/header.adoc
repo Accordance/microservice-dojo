@@ -1,0 +1,6 @@
+:toc: left
+// :linkcss:
+:icons: font
+:source-highlighter: coderay
+[options="header"]
+<<../index.adoc#,icon:home[] Home>>

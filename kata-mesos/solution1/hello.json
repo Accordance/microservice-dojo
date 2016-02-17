@@ -1,0 +1,22 @@
+{
+  "id": "mysvcdojo/staging/hello",
+  "instances": 1,
+  "cpus": 0.1,
+  "mem": 256,
+  "constraints": [["hostname", "UNIQUE", ""]],
+  "container": {
+    "type": "DOCKER",
+    "docker": {
+      "image": "tutum/hello-world",
+      "network": "BRIDGE",
+      "portMappings": [
+        {
+          "containerPort": 80,
+          "hostPort": 0,
+          "servicePort": 0,
+          "protocol": "tcp"
+        }
+      ]
+    }
+  }
+}

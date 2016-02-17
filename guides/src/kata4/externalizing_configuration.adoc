@@ -139,6 +139,7 @@ $ curl http://localhost:8222/env
 ....
 
 The result will look like the following:
+[source,json,indent=0]
 ----
 include::env.json[]
 ----
