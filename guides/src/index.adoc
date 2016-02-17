@@ -35,9 +35,9 @@ Complimentary Katas:
 [options="header"]
 |=======================
 |Kata #|Description      |Tech Stack
-| a | <<kata-web-client/web-client-basics.adoc,Getting Started with Web client>> |covers beginning of AngularJS
-| b | <<kata-dev-environment/simple-orchestration.adoc,Simple Orchestration>> |
+| a | <<kata-web-client/web-client-basics.adoc#,Getting Started with Web client>> |covers beginning of AngularJS
+| b | <<kata-dev-environment/simple-orchestration.adoc#,Simple Orchestration>> |
 | c | Distributed Logging | ELK Stack
 | d | Distributed Tracing | Zipkin
-| e | <<kata-mesos/scheduling_with_mesos.adoc,Mesos and Marathon framework>> | Mesos, Marathon
+| e | <<kata-mesos/scheduling_with_mesos.adoc#,Mesos and Marathon framework>> | Mesos, Marathon
 |=======================

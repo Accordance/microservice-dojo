@@ -4,6 +4,11 @@ include::../header.adoc[]
 
 == Scheduling Application in Mesos with Marathon
 
+WARNING: In this Kata we're going to use single-machine Mesos deployment to
+learn about Mesos platform. This type of a deployment provides full Mesos
+functionality without resiliency for platform failures. Do not use single-machine
+deployment in production!
+
 === Launching Mesos Cluster with Marathon framework
 
 In the `kata-mesos/solution1` directory run:
@@ -41,3 +46,7 @@ video::OHf-NFVL1ps[youtube,height=600,width=800]
 === Scheduling a Job using Marathon
 
 video::gEgH96Wq034[youtube,height=600,width=800]
+
+TIP: Now you can go a try to kill a running application - Mesos will notify
+Marathon about an instance loss and Marathon will reschedule the task. This
+"dance" ensures that your application instance will always be running.
