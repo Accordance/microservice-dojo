@@ -38,6 +38,7 @@ REST Maturity Model http://martinfowler.com/articles/richardsonMaturityModel.htm
 . asciidoctor code snippets are generated using Spring Mvc Test, which in turn are plugged into adoc files
 . Guarantees that API documentation and implementation code are always in-sync.
 . Any updates to request, response payloads will fail Unit Tests, until documentation is updated to reflect the changes. Forces you to update documentation for any implementation changes.
+. Ability to document with different payloads and explain different test scenarios
 
 [spring-restdoc-implementation]
 = Spring REST Docs Implementation
