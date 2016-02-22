@@ -182,7 +182,7 @@ $ curl http://localhost:8111/accounts/accounts
 {
   "_embedded" : {
     "accounts" : [ {
-      "username" : "igor",
+      "username" : "john",
       "_links" : {
         "self" : {
           "href" : "http://localhost:8111/accounts/accounts/1"
