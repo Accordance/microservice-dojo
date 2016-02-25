@@ -35,10 +35,12 @@ dependencies {
 		exclude group: 'org.eclipse.jetty.websocket'
 	}
 // end::jetty[]
+// tag::actuator[]
 	compile('org.springframework.boot:spring-boot-starter-actuator')
 // tag::actuator-docs[]
 	compile('org.springframework.boot:spring-boot-actuator-docs')
 // end::actuator-docs[]
+// end::actuator[]
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 }
 
