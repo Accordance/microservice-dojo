@@ -690,7 +690,7 @@ and migrations.</p>
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-In real life you may want to mange DB migrations separately from the
+In real life you may want to manage DB migrations separately from the
 source code of the service. Mostly make sure that the DB migrations are not
 happening on the service launch but as a separate <strong>intentionnal</strong> process.
 </td>
@@ -928,11 +928,11 @@ Read more on HATEOAS in <a href="https://spring.io/understanding/HATEOAS" target
 </div>
 <div class="paragraph">
 <p>Now let&#8217;s, in fact, try to use this service for some real work by adding
-more records to the database:</p>
+more records to the database - you have to escape the double quotes in the echo command:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code data-lang="text">$ echo {&quot;username&quot; : &quot;dave&quot;} | curl -H &quot;Content-type:application/json&quot; -d @- http://localhost:8100/accounts</code></pre>
+<pre class="CodeRay highlight nowrap"><code data-lang="text">$ echo {\&quot;username\&quot; : \&quot;dave\&quot;} | curl -H &quot;Content-type:application/json&quot; -d @- http://localhost:8100/accounts</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1186,7 +1186,7 @@ $ docker build -t msvcdojo/accounts-service:0.0.1 build/docker</pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2016-02-04 07:39:15 Eastern Standard Time
+Last updated 2016-02-25 08:32:53 Eastern Standard Time
 </div>
 </div>
 </body>

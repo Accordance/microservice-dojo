@@ -526,7 +526,12 @@ table.CodeRay td.code>pre{padding:0}
 <li><a href="#_building_configuration_server">Building Configuration Server</a></li>
 </ul>
 </li>
-<li><a href="#_using_config_server_on_the_client_side">Using Config Server on the Client Side</a></li>
+<li><a href="#_using_config_server_on_the_client_side">Using Config Server on the Client Side</a>
+<ul class="sectlevel2">
+<li><a href="#_prepare_the_configuration_service">Prepare the Configuration Service</a></li>
+<li><a href="#_prepare_mysvc">Prepare MySvc</a></li>
+</ul>
+</li>
 <li><a href="#_running_config_server_in_docker">Running Config Server in Docker</a></li>
 <li><a href="#_bonus">Bonus</a></li>
 </ul>
@@ -700,10 +705,10 @@ Hello, World!</pre>
 <p>Now let&#8217;s up the game, shall we?</p>
 </div>
 <div class="paragraph">
-<p>Stop the service, set environment variable and start the service again:
-.Windows</p>
+<p>Stop the service, set environment variable and start the service again:</p>
 </div>
 <div class="literalblock">
+<div class="title">Windows</div>
 <div class="content">
 <pre>$ set name=John
 $ java -jar build/libs/mysvc-0.0.1.jar</pre>
@@ -734,7 +739,7 @@ Hello, John!</pre>
 </div>
 <div class="literalblock">
 <div class="content">
-<pre>$ java -DPORT=8200 -Dname=Alice -jar build/libs/mysvc-0.0.1.jar</pre>
+<pre>$ java -DPORT=8222 -Dname=Alice -jar build/libs/mysvc-0.0.1.jar</pre>
 </div>
 </div>
 <div class="paragraph">
@@ -742,7 +747,7 @@ Hello, John!</pre>
 </div>
 <div class="literalblock">
 <div class="content">
-<pre>$ curl http://localhost:822
+<pre>$ curl http://localhost:8222
 Hello, Alice!</pre>
 </div>
 </div>
@@ -842,12 +847,25 @@ instances of the service.</p>
 <p>Create an empty Spring Boot application.</p>
 </div>
 <div class="paragraph">
-<p>In the <strong>build.gradle</strong> add additional dependency:</p>
+<p>In the <strong>build.gradle</strong> file add the following project variables:</p>
 </div>
 <div class="listingblock">
 <div class="title">config-service/build.gradle</div>
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="groovy">compile(<span class="string"><span class="delimiter">&quot;</span><span class="content">org.springframework.cloud:spring-cloud-config-server:</span><span class="inline"><span class="inline-delimiter">$</span>springCloudVersion</span><span class="delimiter">&quot;</span></span>)</code></pre>
+<pre class="CodeRay highlight"><code data-lang="groovy">project.ext {
+    springBootVersion = <span class="string"><span class="delimiter">'</span><span class="content">1.3.1.RELEASE</span><span class="delimiter">'</span></span>
+    springCloudVersion = <span class="string"><span class="delimiter">'</span><span class="content">1.0.3.RELEASE</span><span class="delimiter">'</span></span>
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Update the spring-boot-starter-actuator dependency and add the spring-cloud-config-server dependency, so we get:</p>
+</div>
+<div class="listingblock">
+<div class="title">config-service/build.gradle</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy">compile(<span class="string"><span class="delimiter">&quot;</span><span class="content">org.springframework.boot:spring-boot-starter-actuator:</span><span class="inline"><span class="inline-delimiter">$</span>springBootVersion</span><span class="delimiter">&quot;</span></span>)
+compile(<span class="string"><span class="delimiter">&quot;</span><span class="content">org.springframework.cloud:spring-cloud-config-server:</span><span class="inline"><span class="inline-delimiter">$</span>springCloudVersion</span><span class="delimiter">&quot;</span></span>)</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -911,7 +929,7 @@ from <strong>mysvc</strong> service with the name <code>my-service.yml</code>:</
 </div>
 <div class="literalblock">
 <div class="content">
-<pre>$ java -jar build\libs\config-service-0.0.1.jar
+<pre>$ java -DPORT=8888 -jar build\libs\config-service-0.0.1.jar
 $ curl http://localhost:8888/my-service.yml</pre>
 </div>
 </div>
@@ -941,7 +959,10 @@ configurations can be found:</p>
 <div class="sect3">
 <h4 id="_operating_configuration_server_with_git">Operating Configuration Server (with Git)</h4>
 <div class="paragraph">
-<p>Create an empty GitHub repo. Clone it locally and move there the <code>application.yml</code>
+<p>For this exercise the uri in the application.yml file above has to be replaced with your GitHub repo&#8217;s uri.</p>
+</div>
+<div class="paragraph">
+<p>Create an empty GitHub repo. Clone it locally, and move there the <code>application.yml</code>
 configuration file from <strong>mysvc</strong> service with the name <code>my-service.yml</code>:</p>
 </div>
 <div class="listingblock">
@@ -963,11 +984,14 @@ configuration file from <strong>mysvc</strong> service with the name <code>my-se
 <p>Commit and push to the GitHub.</p>
 </div>
 <div class="paragraph">
+<p>Remember to set the uri in the config-service&#8217;s application.yml to your GitHub repo&#8217;s uri.</p>
+</div>
+<div class="paragraph">
 <p>Launch the config server and try to get the service configuration:</p>
 </div>
 <div class="literalblock">
 <div class="content">
-<pre>$ java -jar build\libs\config-service-0.0.1.jar
+<pre>$ java -DPORT=8888 -jar build\libs\config-service-0.0.1.jar
 $ curl http://localhost:8888/my-service.yml</pre>
 </div>
 </div>
@@ -982,11 +1006,45 @@ $ curl http://localhost:8888/my-service.yml</pre>
 <div class="sect1">
 <h2 id="_using_config_server_on_the_client_side">Using Config Server on the Client Side</h2>
 <div class="sectionbody">
+<div class="sect2">
+<h3 id="_prepare_the_configuration_service">Prepare the Configuration Service</h3>
 <div class="paragraph">
-<p>Delete <code>application.yml</code> file (it has been moved to the Config Server).</p>
+<p>Update the config-service <code>application.yml</code>.</p>
 </div>
 <div class="paragraph">
-<p>Create <code>bootstrap.yml</code> file, where you specify a service ID as well as the
+<p>First set the default port:</p>
+</div>
+<div class="listingblock">
+<div class="title">config-service/src/main/resources/application.yml</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yml"><span class="key">port</span>: <span class="string"><span class="content">${PORT:8888}</span></span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Then revert the uri to the standard GitHub location:</p>
+</div>
+<div class="listingblock">
+<div class="title">config-service/src/main/resources/application.yml</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yml"><span class="key">spring</span>:
+  <span class="key">cloud</span>:
+    <span class="key">config</span>:
+      <span class="key">server</span>:
+        <span class="key">git</span>:
+          <span class="key">uri</span>: <span class="string"><span class="content">${conf:https://github.com/Accordance/microservice-dojo-configuration}</span></span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>And launch the config server.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_prepare_mysvc">Prepare MySvc</h3>
+<div class="paragraph">
+<p>Delete the <code>mysvc/src/main/resources/application.yml</code> file (it has been moved to the Config Server).</p>
+</div>
+<div class="paragraph">
+<p>Create a <code>mysvc/src/main/resources/bootstrap.yml</code> file, where you specify a service ID as well as the
 location of the config server URI:</p>
 </div>
 <div class="listingblock">
@@ -1021,6 +1079,7 @@ Hello, World!</pre>
 </div>
 </div>
 </div>
+</div>
 <div class="sect1">
 <h2 id="_running_config_server_in_docker">Running Config Server in Docker</h2>
 <div class="sectionbody">
@@ -1039,8 +1098,11 @@ $ docker build -t msvcdojo/config-service:0.0.1 build/docker</pre>
 <div class="literalblock">
 <div class="content">
 <pre>$ docker run -d --name=config-service -p 8888:8888 msvcdojo/config-service:0.0.1
-$ curl http://dockerhost:8888/my-svc.yml</pre>
+$ curl http://dockerhost:8888/my-service.yml</pre>
 </div>
+</div>
+<div class="paragraph">
+<p>Remember that on Windows, the <code>mysvc/src/main/resources/bootstrap.yml</code> file has to be updated, so the URI now points to <code><a href="http://dockerhost:8888" class="bare">http://dockerhost:8888</a></code>.</p>
 </div>
 <div class="paragraph">
 <p>Optional: Push Config Server image to your Docker Registry and now you can always
@@ -1066,7 +1128,7 @@ get it with the docker run command.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2016-02-16 21:06:19 Eastern Standard Time
+Last updated 2016-02-25 08:51:18 Eastern Standard Time
 </div>
 </div>
 </body>

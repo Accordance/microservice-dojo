@@ -698,6 +698,16 @@ compile (<span class="string"><span class="delimiter">'</span><span class="conte
 }</code></pre>
 </div>
 </div>
+<div class="paragraph">
+<p>And add the Actuator and the Actuator Docs lines:</p>
+</div>
+<div class="listingblock">
+<div class="title">build.gradle</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy">compile(<span class="string"><span class="delimiter">'</span><span class="content">org.springframework.boot:spring-boot-starter-actuator</span><span class="delimiter">'</span></span>)
+compile(<span class="string"><span class="delimiter">'</span><span class="content">org.springframework.boot:spring-boot-actuator-docs</span><span class="delimiter">'</span></span>)</code></pre>
+</div>
+</div>
 </div>
 <div class="sect2">
 <h3 id="_what_about_tests">What about tests?</h3>
@@ -766,11 +776,18 @@ compile (<span class="string"><span class="delimiter">'</span><span class="conte
 <div class="listingblock">
 <div class="title">build.gradle</div>
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="groovy">compile(<span class="string"><span class="delimiter">&quot;</span><span class="content">org.springframework.boot:spring-boot-starter-web:</span><span class="inline"><span class="inline-delimiter">$</span>springBootVersion</span><span class="delimiter">&quot;</span></span>) {
-        exclude <span class="key">group</span>: <span class="string"><span class="delimiter">'</span><span class="content">org.springframework.boot</span><span class="delimiter">'</span></span>, <span class="key">module</span>: <span class="string"><span class="delimiter">'</span><span class="content">spring-boot-starter-tomcat</span><span class="delimiter">'</span></span>
-}
-compile (<span class="string"><span class="delimiter">'</span><span class="content">org.springframework.boot:spring-boot-starter-jetty</span><span class="delimiter">'</span></span>) {
-        exclude <span class="key">group</span>: <span class="string"><span class="delimiter">'</span><span class="content">org.eclipse.jetty.websocket</span><span class="delimiter">'</span></span>
+<pre class="CodeRay highlight"><code data-lang="groovy">test {
+    testLogging {
+        afterSuite { desc, result -&gt;
+            <span class="keyword">if</span> (!desc.parent) {
+                println <span class="string"><span class="delimiter">&quot;</span><span class="content">Results: </span><span class="inline"><span class="inline-delimiter">${</span>result.resultType<span class="inline-delimiter">}</span></span><span class="content"> (</span><span class="inline"><span class="inline-delimiter">${</span>result.testCount<span class="inline-delimiter">}</span></span><span class="content"> tests, </span><span class="inline"><span class="inline-delimiter">${</span>result.successfulTestCount<span class="inline-delimiter">}</span></span><span class="content"> successes, </span><span class="inline"><span class="inline-delimiter">${</span>result.failedTestCount<span class="inline-delimiter">}</span></span><span class="content"> failures, </span><span class="inline"><span class="inline-delimiter">${</span>result.skippedTestCount<span class="inline-delimiter">}</span></span><span class="content"> skipped)</span><span class="delimiter">&quot;</span></span>
+            }
+        }
+    }
+    reports {
+                junitXml.enabled = <span class="predefined-constant">false</span>
+                html.enabled = <span class="predefined-constant">true</span>
+        }
 }</code></pre>
 </div>
 </div>
@@ -999,7 +1016,7 @@ other actuator-provided end points.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2016-02-16 21:07:59 Eastern Standard Time
+Last updated 2016-02-25 08:51:18 Eastern Standard Time
 </div>
 </div>
 </body>
