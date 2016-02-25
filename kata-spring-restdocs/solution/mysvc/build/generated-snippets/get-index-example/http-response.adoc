@@ -1,0 +1,17 @@
+[source,http]
+----
+HTTP/1.1 200 OK
+Content-Type: application/hal+json
+Content-Length: 178
+
+{
+  "_links" : {
+    "accounts" : {
+      "href" : "http://localhost:8080/accounts"
+    },
+    "contacts" : {
+      "href" : "http://localhost:8080/contacts"
+    }
+  }
+}
+----

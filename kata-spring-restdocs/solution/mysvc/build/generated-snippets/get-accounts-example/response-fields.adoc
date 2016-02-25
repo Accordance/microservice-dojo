@@ -1,0 +1,12 @@
+|===
+|Path|Type|Description
+
+|_links.self
+|Object
+|Resource Self Link
+
+|_embedded.accountList
+|Array
+|An array of <<resources-account,Account resources>>
+
+|===

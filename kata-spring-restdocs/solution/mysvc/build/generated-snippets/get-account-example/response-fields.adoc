@@ -1,0 +1,20 @@
+|===
+|Path|Type|Description
+
+|id
+|Number
+|Account unique identifier
+
+|name
+|String
+|Account name
+
+|_links.self
+|Object
+|Account Resource Self Link
+
+|_links.account-contacts
+|Object
+|Contacts associated for given Account
+
+|===

@@ -1,30 +1,34 @@
-= Documenting RESTful APIs
+////
+== Documenting RESTful APIs
 :doctype: book
 :icons: font
 :source-highlighter: highlightjs
 :toc: left
+////
+
 :toclevels: 4
 :sectlinks:
 :kata_dir: kata-spring-restdocs
 ifndef::imagesdir[:imagesdir: images]
 :sourcedir: ../../../{kata_dir}
 :snippets: {sourcedir}/solution/mysvc/build/generated-snippets
+include::../header.adoc[]
 
 [spring-rest-docs]
-= Spring REST Docs
+== Spring REST Docs
 Document RESTful services by combining hand-written documentation with auto-generated snippets produced with Spring MVC Test.
 
 Source documentation http://docs.spring.io/spring-restdocs/docs/1.0.x/reference/html5
 
 [rest-maturity-model]
-= How RESTful is your API
+== How RESTful is your API
 [[img-rest-maturity-model]]
 image::rest-maturity-model.png[richardsonMaturityModel, link="http://martinfowler.com/articles/richardsonMaturityModel.html"]
 
 REST Maturity Model http://martinfowler.com/articles/richardsonMaturityModel.html
 
 [compare-with-swagger]
-= Comparison with Swagger
+== Comparison with Swagger
 . Swagger doesn't support hypermedia (Level 3 maturity model)
 . Swagger documentation is done through several annotations which are added in your implementation classes
 . API Implementation code overtime, gets overwhelmed with swagger annotations
@@ -32,7 +36,7 @@ REST Maturity Model http://martinfowler.com/articles/richardsonMaturityModel.htm
 . Documentation and API could be out-of-sync overtime as there are no validations in place to verify correctness of API
 
 [spring-restdocs-advantages]
-= Spring REST Docs Advantages
+== Spring REST Docs Advantages
 . API descriptions and explanation are done in separate .adoc files
 . Ability to structure your documentation based on domain model rather than by URI's
 . asciidoctor code snippets are generated using Spring Mvc Test, which in turn are plugged into adoc files
@@ -41,9 +45,9 @@ REST Maturity Model http://martinfowler.com/articles/richardsonMaturityModel.htm
 . Ability to document with different payloads and explain different test scenarios
 
 [spring-restdoc-implementation]
-= Spring REST Docs Implementation
+== Spring REST Docs Implementation
 
-== Add Dependency JARs
+=== Add Dependency JARs
 
 Add the following code to the build script:
 [source,groovy,indent=0]
@@ -52,7 +56,7 @@ Add the following code to the build script:
 include::{sourcedir}/solution/mysvc/build.gradle[tags=dependency-spring-restdocs]
 ----
 
-== Spring REST Docs configuration
+=== Spring REST Docs configuration
 
 [source, java, indent=0]
 .ApiDocumentation.java
@@ -65,7 +69,7 @@ include::{sourcedir}/solution/mysvc/src/test/java/msvcdojo/ApiDocumentation.java
 <4> Hook for linking Spring Mvc Test to Spring REST Docs
 <5> Generates asciidoc snippets for curl-request, http-request, http-response, response-fields adoc files
 
-== asciidoctor Configuration
+=== asciidoctor Configuration
 [source, groovy, indent=0]
 .build.gradle
 ----
@@ -75,7 +79,7 @@ include::{sourcedir}/solution/mysvc/build.gradle[tags=asciidoctor-config]
 <2> Add asciidoctor plugin to classpath
 <3> Apply asciidoctor plugin
 
-== Integrate Spring REST Docs with asciidoc
+=== Integrate Spring REST Docs with asciidoc
 [source, groovy, indent=0]
 .build.gradle
 ----
@@ -85,7 +89,7 @@ include::{sourcedir}/solution/mysvc/build.gradle[tags=asciidoctor-spring-restdoc
 <2> Teach test task about snippets directory for gradle to know that when tests are run, snippets are generated in this directory
 <3> Tell asciidoctor about the snippets directory for generating live documentation in the process of gradle continuous builds
 
-== Document APIs using Spring REST Docs
+=== Document APIs using Spring REST Docs
 [source, java, indent=0]
 .ApiDocumentation.java
 ----
@@ -94,93 +98,102 @@ include::{sourcedir}/solution/mysvc/src/test/java/msvcdojo/ApiDocumentation.java
 <1> Documenting Link Relationship
 <2> Documenting Response fields
 
+=== Generate documentation
+Running test target on the project generates the documentation:
+....
+$ gradlew test
+....
+
+The results of the run will generate documentation that can now be integrated
+and presented in a cohesive way. It may look like the one below ...
+
 [kata-spring-restdocs-api]
-= Service API Guide
+== Service API Guide
 
 [overview]
-= Overview
+== Overview
 A sample kata service with resources - Accounts and Contact. +
 Accounts can have many Contacts. A given contact can belong to many Accounts
 
 
 
 [[resources-index]]
-== Index
+=== Index
 The index provides the entry point into the service.
 
 [[resources-index-access]]
-=== Accessing the index
+==== Accessing the index
 A `GET` request is used to access the index
 
-==== Response structure
+===== Example request
+include::{snippets}/get-index-example/curl-request.adoc[]
+
+===== Response structure
 include::{snippets}/get-index-example/response-fields.adoc[]
 
-==== Example response
+===== Example response
 include::{snippets}/get-index-example/http-response.adoc[]
 
 [[resources-index-links]]
-==== Links
+===== Links
 include::{snippets}/get-index-example/links.adoc[]
 
 
 
 [[resources-account]]
-== Account
+=== Account
 The Account resources
 
 [[resources-account-list]]
-=== Listing Accounts
+==== Listing Accounts
 A `GET` request will list all of the service's accounts.
 
-==== Response structure
+===== Response structure
 include::{snippets}/get-accounts-example/response-fields.adoc[]
 
-==== Example request
+===== Example request
 include::{snippets}/get-accounts-example/curl-request.adoc[]
 
-==== Example response
+===== Example response
 include::{snippets}/get-accounts-example/http-response.adoc[]
 
 
 
 [[resources-account]]
-=== Retrieve a Account
+==== Retrieve a Account
 A `GET` request will retrieve the details of a Account
 
-==== Response structure
+===== Response structure
 include::{snippets}/get-account-example/response-fields.adoc[]
 
-==== Example request
+===== Example request
 include::{snippets}/get-account-example/curl-request.adoc[]
 
-==== Example response
+===== Example response
 include::{snippets}/get-account-example/http-response.adoc[]
 
 
-
 [[resources-contact]]
-== Contact
+=== Contact
 The Contact resource is used to provide contact information
 
 [[resources-note-retrieve]]
-=== Retrieve a Contact
+==== Retrieve a Contact
 A `GET` request will retrieve the details of a contact
 
-==== Response structure
+===== Response structure
 include::{snippets}/get-contact-example/response-fields.adoc[]
 
-==== Example request
+===== Example request
 include::{snippets}/get-contact-example/curl-request.adoc[]
 
-==== Example response
+===== Example response
 include::{snippets}/get-contact-example/http-response.adoc[]
 
 
 [references]
-= References
+== References
 
-Spring REST Docs http://docs.spring.io/spring-restdocs/docs/1.0.x/reference/html5
-
-REST Maturity Model http://martinfowler.com/articles/richardsonMaturityModel.html
-
-Spring REST Docs Talk at SpringOne2GX 2015 https://youtu.be/k5ncCJBarRI
+* Spring REST Docs http://docs.spring.io/spring-restdocs/docs/1.0.x/reference/html5
+* REST Maturity Model http://martinfowler.com/articles/richardsonMaturityModel.html
+* Spring REST Docs Talk at SpringOne2GX 2015 https://youtu.be/k5ncCJBarRI

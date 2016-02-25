@@ -41,3 +41,10 @@ Complimentary Katas:
 | d | Distributed Tracing | Zipkin
 | e | <<kata-mesos/scheduling_with_mesos.adoc#,Mesos and Marathon framework>> | Mesos, Marathon
 |=======================
+
+Contributed Katas:
+[options="header"]
+|=======================
+|Kata #|Description      |Tech Stack
+| a | <<kata-spring-restdocs/spring-restdocs-intro.adoc#,Documenting RESTful APIs with Spring REST Docs>> |Spring REST Docs
+|=======================
