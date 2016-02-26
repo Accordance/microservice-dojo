@@ -1,0 +1,7 @@
+
+[[intellij]]
+== IntelliJ
+
+All of the code is tested to work with the IntelliJ Community Edition.
+
+You can download and install it for free from here: https://www.jetbrains.com/idea/download/#section=windows

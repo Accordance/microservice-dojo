@@ -1,0 +1,15 @@
+
+[[ruby]]
+== Ruby
+
+=== Ruby for Windows
+
+Navigate to http://rubyinstaller.org/downloads/[Ruby downloads^] page and
+get the, right for you, x32/x64 package of the latest Ruby.
+
+NOTE: At the moment this article was written, latest Ruby package version
+was 2.2.4
+
+After Ruby is installed you need, from the same page, to download and
+install `Ruby Development Kit`. Follow the https://github.com/oneclick/rubyinstaller/wiki/Development-Kit#installation-instructions[installtion instructions for Ruby
+Development Kit^]

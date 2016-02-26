@@ -1,0 +1,8 @@
+
+[[git]]
+== Git
+
+Your machine should be configured with Git access.
+You can install Git from here: https://git-scm.com/downloads
+
+NOTE: On Windows configure Git to commit with Linux line endings

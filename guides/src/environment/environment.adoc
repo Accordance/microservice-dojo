@@ -1,0 +1,25 @@
+:sectanchors:
+:sectlinks:
+include::../header.adoc[]
+
+== Pre-requisits
+
+You need to have the following tools available on your machine:
+
+. <<intellij.adoc#intellij,IntelliJ Community Edition>>
+. <<git.adoc#git,Git>>
+. <<docker.adoc#docker,Docker toolbox>>
+. <<curl.adoc#curl,Curl>>
+. <<ruby.adoc#ruby,Ruby + Ruby DevKit>>
+. <<gradle.adoc#gradle,Gradle>>
+
+// ======================================================================================
+
+include::intellij.adoc[]
+include::git.adoc[]
+include::docker.adoc[]
+include::curl.adoc[]
+include::ruby.adoc[]
+include::gradle.adoc[]
+
+// ======================================================================================

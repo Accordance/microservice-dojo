@@ -1,3 +1,5 @@
+:icons: font
+
 == Microservices-Dojo
 
 This is the comprehensive follow-step-by-step guide that will teach you to build
@@ -18,7 +20,9 @@ can be represented with this technology logo collage:
 
 image::images/dojo-logo-collage.png[Dojo Logo Collage]
 
-[options="header"]
+IMPORTANT: Follow the <<environment/environment.adoc#,configuration instructions>> on how to prepare your machine for Katas.
+
+[%header%autowidth]
 |=======================
 |Kata #|Description      |Tech Stack
 | 1 | <<kata1/creating_basic_web_service.adoc#,Creating Basic Web Service>> | Spring Cloud
@@ -32,7 +36,7 @@ image::images/dojo-logo-collage.png[Dojo Logo Collage]
 |=======================
 
 Complimentary Katas:
-[options="header"]
+[%header%autowidth]
 |=======================
 |Kata #|Description      |Tech Stack
 | a | <<kata-web-client/web-client-basics.adoc#,Getting Started with Web client>> |covers beginning of AngularJS

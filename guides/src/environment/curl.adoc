@@ -1,0 +1,19 @@
+
+[[curl]]
+== Curl
+
+NOTE: This section is only for Windows users. Linux have Curl
+available out of the box.
+
+=== Curl for Windows
+
+Navigate to https://curl.haxx.se/download.html[Curl Downloads^] and pick the,
+right for you, x32/x64 package and follow the instructions.
+
+=== Curl for Mac
+
+Use `brew` to install curl
+
+....
+$ brew install curl
+....

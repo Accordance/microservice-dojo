@@ -1,0 +1,11 @@
+
+[[gradle]]
+== Gradle
+
+https://docs.gradle.org/current/userguide/installation.html[Gradle installation] instructions.
+
+=== Gradle for Windows
+
+Install Gradle from https://gradle.org/gradle-download/[Gradle downloads^] page.
+
+For running Gradle, add GRADLE_HOME/bin to your PATH environment variable. Usually, this is sufficient to run Gradle.

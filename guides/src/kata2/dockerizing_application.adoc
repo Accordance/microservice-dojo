@@ -105,7 +105,7 @@ $ curl http://localhost:8100
 Hello World!
 ----
 
-But on Windows we have to use the IP of docker-machine, which we find as follows:
+On Windows and MacOS we have to use the IP of docker-machine, which we find as follows:
 ----
 $ docker-machine ip default
 192.168.99.100
@@ -117,12 +117,7 @@ $ curl http://192.168.99.100:8100
 Hello World!
 ----
 
-If you edit the hosts file - as Administrator - typically, at C:\Windows\System32\drivers\etc and add the line:
-----
-192.168.99.100	dockerhost
-----
-
-Then you can use 'dockerhost':
+If you've defined `dockerhost` the command will look like this:
 ----
 $ curl http://dockerhost:8100
 Hello World!

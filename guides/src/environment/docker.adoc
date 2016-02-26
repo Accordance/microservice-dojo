@@ -1,0 +1,92 @@
+
+[[docker]]
+== Docker Toolbox
+
+Docker Toolbox works only on Windows and MacOS. On Linux operating systems
+you have Docker without additional layer of Docker Machine.
+
+=== Installation
+
+Install https://www.docker.com/docker-toolbox[Docker Toolbox^] following the
+instructions from the Docker site.
+
+.Installation instructions per Operating System
+* https://docs.docker.com/windows/step_one/[Docker Machine for Windows^]
+* https://docs.docker.com/mac/step_one/[Docker Machine for Mac OS X^]
+
+NOTE: https://www.virtualbox.org/wiki/Downloads[Virtual Box^] will be installed as part of the process.
+
+=== Preparing Developer's Docker Machine
+
+You may get more information from https://docs.docker.com/machine/get-started/[Docker Getting Started Guide],
+but we need only basic docker machine.
+
+Create your 'dev' machine with the following command:
+----
+docker-machine create --driver virtualbox dev
+----
+
+For large exercises you may need more CPUs and memory, so you can create you 'dev'
+machine with the following command:
+----
+docker-machine create --driver virtualbox --virtualbox-cpu-count 2 --virtualbox-memory "2048" dev
+----
+
+Run the following command
+----
+$ docker-machine ls
+NAME   ACTIVE   DRIVER       STATE     URL                         SWARM
+dev    *        virtualbox   Running   tcp://192.168.99.100:2376
+----
+
+Make sure that the status of the 'dev' machine is 'Running'.
+
+=== Configuring Docker command
+
+Now we need to configure the environment for the 'docker' command.
+
+.For Windows
+----
+C:\> docker-machine env --shell=cmd dev
+SET DOCKER_TLS_VERIFY=1
+SET DOCKER_HOST=tcp://192.168.99.100:2376
+SET DOCKER_CERT_PATH=C:\Users\user\.docker\machine\machines\dev
+SET DOCKER_MACHINE_NAME=dev
+REM Run this command to configure your shell:
+REM     FOR /f "tokens=*" %i IN ('docker-machine env --shell=cmd dev') DO %i
+
+C:\> FOR /f "tokens=*" %i IN ('docker-machine env --shell=cmd dev') DO %i
+----
+
+.For Mac OS
+----
+$ docker-machine env --shell=bash dev
+export DOCKER_TLS_VERIFY="1"
+export DOCKER_HOST="tcp://192.168.99.101:2376"
+export DOCKER_CERT_PATH="/Users/user/.docker/machine/machines/dev"
+export DOCKER_MACHINE_NAME="dev"
+# Run this command to configure your shell:
+# eval "$(docker-machine env default)"
+
+$ eval "$(docker-machine env dev)"
+----
+
+=== Setting Dockerhost
+
+Edit `hosts` file to simplify access to the docker machine.
+
+.Location of hosts file
+[%header%autowidth]
+|=======================
+|OS|Location of `hosts` file
+| Linux | /etc/hosts
+| MacOS | /etc/hosts
+| Windows (edit `as Administrator`) | C:\Windows\System32\drivers\etc
+|=======================
+
+You add the following line:
+----
+192.168.99.100	dockerhost
+----
+
+WARNING: From this point on we'll be referring to the IP of the Docker Machine as *dockerhost*.
