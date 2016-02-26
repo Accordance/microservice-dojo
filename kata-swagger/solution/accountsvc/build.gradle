@@ -16,9 +16,9 @@ apply plugin: 'idea'
 apply plugin: 'spring-boot'
 
 jar {
-	baseName = 'mysvc'
+	baseName = 'accountsvc'
 	version = '0.0.1'
-	group = 'svcdojo'
+	group = 'accountsvcdojo'
 }
 sourceCompatibility = 1.8
 targetCompatibility = 1.8

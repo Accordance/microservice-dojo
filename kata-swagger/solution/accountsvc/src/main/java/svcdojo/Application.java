@@ -1,4 +1,4 @@
-package msvcdojo;
+package svcdojo;
 
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
@@ -38,15 +38,15 @@ import java.util.List;
 // tag::code[]
 @SpringBootApplication
 @EnableSwagger2 //<1>
-public class MysvcApplication {
+public class Application {
 
   public static void main(String[] args) {
-    SpringApplication.run(MysvcApplication.class, args);
+    SpringApplication.run(Application.class, args);
   }
 
   @Bean //<2>
   public Docket api() {
-    return new Docket(DocumentationType.SWAGGER_2).apiInfo(apiInfo()).select().paths(regex("/mysvc.*")).build();
+    return new Docket(DocumentationType.SWAGGER_2).apiInfo(apiInfo()).select().paths(regex("/accountsvc.*")).build();
   }
 
   private ApiInfo apiInfo() {
@@ -61,8 +61,8 @@ public class MysvcApplication {
 // tag::controller[]
 @RestController
 // tag::api[]
-@Api(value = "mysvc", description = "Endpoint for account management") //<1>
-@RequestMapping(value = "/mysvc")
+@Api(value = "accountsvc", description = "Endpoint for account management") //<1>
+@RequestMapping(value = "/accountsvc")
 class AccountController {
   // end::api[]
 
@@ -115,7 +115,7 @@ class AccountController {
     if (id <= account.size()) {
       account.remove(id - 1);
     } else {
-      throw new MyException("Account not found");
+      throw new AccountException("Account not found");
     }
   }
   // end::doc[]

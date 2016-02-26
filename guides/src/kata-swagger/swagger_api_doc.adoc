@@ -2,7 +2,7 @@
 // :linkcss:
 :icons: font
 :source-highlighter: coderay
-:kata_dir: kata9
+:kata_dir: kata-swagger
 ifndef::imagesdir[:imagesdir: images]
 :sourcedir: ../../../{kata_dir}
 
@@ -33,18 +33,18 @@ Add the following code to the build script:
 [source,groovy,indent=0]
 .build.gradle
 ----
-include::{sourcedir}/solution/mysvc/build.gradle[tags=swagger]
+include::{sourcedir}/solution/accountsvc/build.gradle[tags=swagger]
 ----
 
 This script will add swagger dependency jars into the application.
 
 === Bean configuration
-The project contains an entry point in the _MysvcApplication.java_ file:
+The project contains an entry point in the _Application.java_ file:
 
 [source,java,indent=0]
-.MysvcApplication.java
+.Application.java
 ----
-include::{sourcedir}/solution/mysvc/src/main/java/msvcdojo/MysvcApplication.java[tags=code]
+include::{sourcedir}/solution/accountsvc/src/main/java/svcdojo/Application.java[tags=code]
 ----
 <1> We have added @EnableSwagger2 annotation to enable this application to use Swagger.
 
@@ -57,15 +57,15 @@ We're going to rename HomeController we created in Kata1 guide to AccountControl
 [source,java,indent=0]
 .AccountController.java
 ----
-include::{sourcedir}/solution/mysvc/src/main/java/msvcdojo/MysvcApplication.java[tags=api]
+include::{sourcedir}/solution/accountsvc/src/main/java/svcdojo/Application.java[tags=api]
 ----
 
 ----
-include::{sourcedir}/solution/mysvc/src/main/java/msvcdojo/MysvcApplication.java[tags=doc]
+include::{sourcedir}/solution/accountsvc/src/main/java/svcdojo/Application.java[tags=doc]
 ----
 
 ----
-include::{sourcedir}/solution/mysvc/src/main/java/msvcdojo/MysvcApplication.java[tags=model]
+include::{sourcedir}/solution/accountsvc/src/main/java/svcdojo/Application.java[tags=model]
 ----
 
 <1> @Api annotation describes a top-level api. In order to make Swagger aware of your endpoint, you need to annotate your class with @Api annotation.
@@ -83,14 +83,14 @@ include::{sourcedir}/solution/mysvc/src/main/java/msvcdojo/MysvcApplication.java
 [source,yaml,indent=0]
 .application.yml
 ----
-include::{sourcedir}/solution/mysvc/src/main/resources/application.yml[]
+include::{sourcedir}/solution/accountsvc/src/main/resources/application.yml[]
 ----
 
 == Build and launch
 Build the service:
 ----
-$ cd mysvc
-$ gradlew build
+$ cd accountsvc
+$ gradle build
 ----
 Note that this command will build the code, generate the jar and run all the necessary tests.
 
@@ -98,41 +98,41 @@ Note that this command will build the code, generate the jar and run all the nec
 
 Build the project and generate Dockerfile by run the following command:
 ----
-$ gradlew prepDocker
+$ gradle prepDocker
 ...
 :prepDocker
-Run command: docker build -t build/mysvc:0.0.1 build/docker
+Run command: docker build -t accountsvcdojo/accountsvc:0.0.1 build/docker
 
 BUILD SUCCESSFUL
 ----
 Everything was prepared for you, so you can just copy the suggested command from
 the console and run it:
 ----
-$ docker build -t msvcdojo/mysvc:0.0.1 build/docker
+$ docker build -t accountsvcdojo/accountsvc:0.0.1 build/docker
 Sending build context to Docker daemon 12.95 MB
 Step 1 : FROM java:8
 Step 2 : MAINTAINER Igor Moochnick "igor@igorshare.com"
 Step 3 : VOLUME /tmp
 Step 4 : EXPOSE 8100
-Step 5 : ADD mysvc-0.0.1.jar mysvc.jar
-Step 6 : ENTRYPOINT java -Djava.security.egd=file:/dev/./urandom -jar /mysvc.jar
+Step 5 : ADD accountsvc-0.0.1.jar accountsvc.jar
+Step 6 : ENTRYPOINT java -Djava.security.egd=file:/dev/./urandom -jar /accountsvc.jar
 Successfully built cb55f79088db
 ----
 
-This has created a Dockerimage with the tag *build/mysvc:0.0.1*. Now let's see
+This has created a Dockerimage with the tag *accountsvcdojo/accountsvc:0.0.1*. Now let's see
 it in the Docker repository:
 [source,text,options="nowrap"]
 ----
-C:\Dev\accordance\microservice-dojo\kata2\solution\mysvc>docker images
+C:\Dev\accordance\microservice-dojo\kata2\solution\accountsvc>docker images
 REPOSITORY                  TAG                 IMAGE ID            CREATED             VIRTUAL SIZE
-build/mysvc              	0.0.1               fdb0ace78a40        2 minutes ago       660.6 MB
+accountsvcdojo/accountsvc   0.0.1               fdb0ace78a40        2 minutes ago       660.6 MB
 ----
 
 == Start container
 
 Let's start the container and map the service port to the external world by running command:
 ----
-$ docker run -it --name=mysvc -p 8100:8100 build/mysvc:0.0.1
+$ docker run -it --name=accountsvc -p 8100:8100 accountsvcdojo/accountsvc:0.0.1
 ----
 The following output you'll see on the screen.
 
@@ -141,7 +141,6 @@ The following output you'll see on the screen.
 include::bootRun.txt[]
 ----
 <1> Listening port of the web service
-<2> List of available end-points that Actuator provides for you for free.
 
 == Play time
 
@@ -168,13 +167,13 @@ The output of this CURL command will look like this:
 "host": "localhost:8100",
 "basePath": "/",
 "tags": [{
-    "name": "mysvc",
+    "name": "accountsvc",
     "description": "Endpoint for account management"
 }
 "paths": {
-    "/mysvc/delete/{id}": {
+    "/accountsvc/delete/{id}": {
 		"delete": {
-			"tags": ["mysvc"],
+			"tags": ["accountsvc"],
 			"summary": "delete Account By Id",
 			"description": "Deletes an account by passing accountId",
 			"operationId": "deleteUsingDELETE",
@@ -201,16 +200,3 @@ The output of this CURL command will look like this:
 [.thumb]
 image::swagger-ui.jpg[scaledwidth=75%]
 
-=== Shutdown
-
-Actuator is not enabling a couple of "dangerous" end-points. One of them is the
-one that the automation infrastructure may use to shutdown the service.
-
-You can send an empty POST request to this endpoint for the service gracefully
-shutdown itself.
-
-----
-$ curl -d {} http://localhost:8080/shutdown
-----
-== Bonus
-You can read more about all this in http://swagger.io/.

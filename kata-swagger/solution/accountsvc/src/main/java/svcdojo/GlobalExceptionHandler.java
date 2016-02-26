@@ -1,4 +1,4 @@
-package msvcdojo;
+package svcdojo;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +12,7 @@ public class GlobalExceptionHandler {
 
   @ExceptionHandler
   @ResponseBody
-  ResponseEntity handleValidationException(MyException ex) {
+  ResponseEntity handleValidationException(AccountException ex) {
     return new ResponseEntity(ex.getMessage(), HttpStatus.BAD_REQUEST);
   }
 
