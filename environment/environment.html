@@ -5,7 +5,7 @@
 <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 1.5.4">
-<title>"Dockerizing" application</title>
+<title>Pre-requisits</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /* Asciidoctor default stylesheet | MIT License | http://asciidoctor.org */
@@ -514,22 +514,250 @@ table.CodeRay td.code>pre{padding:0}
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#__dockerizing_application">"Dockerizing" application</a>
+<li><a href="#_pre_requisits">Pre-requisits</a></li>
+<li><a href="#intellij">IntelliJ</a></li>
+<li><a href="#git">Git</a></li>
+<li><a href="#docker">Docker Toolbox</a>
 <ul class="sectlevel2">
-<li><a href="#_preparing_the_build_automation">Preparing the build automation</a></li>
-<li><a href="#_building_a_docker_image">Building a Docker image</a></li>
+<li><a href="#_installation">Installation</a></li>
+<li><a href="#_preparing_developer_s_docker_machine">Preparing Developer&#8217;s Docker Machine</a></li>
+<li><a href="#_configuring_docker_command">Configuring Docker command</a></li>
+<li><a href="#_setting_dockerhost">Setting Dockerhost</a></li>
 </ul>
 </li>
-<li><a href="#_start_container">Start container</a></li>
-<li><a href="#_clean_up">Clean up</a></li>
-<li><a href="#_bonus">Bonus</a></li>
+<li><a href="#curl">Curl</a>
+<ul class="sectlevel2">
+<li><a href="#_curl_for_windows">Curl for Windows</a></li>
+<li><a href="#_curl_for_mac">Curl for Mac</a></li>
+</ul>
+</li>
+<li><a href="#ruby">Ruby</a>
+<ul class="sectlevel2">
+<li><a href="#_ruby_for_windows">Ruby for Windows</a></li>
+</ul>
+</li>
+<li><a href="#gradle">Gradle</a>
+<ul class="sectlevel2">
+<li><a href="#_gradle_for_windows">Gradle for Windows</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
 <div id="content">
+<div class="paragraph">
+<p><a href="../index.html"><span class="icon"><i class="fa fa-home"></i></span> Home</a></p>
+</div>
 <div class="sect1">
-<h2 id="__dockerizing_application">"Dockerizing" application</h2>
+<h2 id="_pre_requisits"><a class="anchor" href="#_pre_requisits"></a>Pre-requisits</h2>
 <div class="sectionbody">
+<div class="paragraph">
+<p>You need to have the following tools available on your machine:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><a href="#intellij">IntelliJ Community Edition</a></p>
+</li>
+<li>
+<p><a href="#git">Git</a></p>
+</li>
+<li>
+<p><a href="#docker">Docker toolbox</a></p>
+</li>
+<li>
+<p><a href="#curl">Curl</a></p>
+</li>
+<li>
+<p><a href="#ruby">Ruby + Ruby DevKit</a></p>
+</li>
+<li>
+<p><a href="#gradle">Gradle</a></p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="intellij"><a class="anchor" href="#intellij"></a>IntelliJ</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>All of the code is tested to work with the IntelliJ Community Edition.</p>
+</div>
+<div class="paragraph">
+<p>You can download and install it for free from here: <a href="https://www.jetbrains.com/idea/download/#section=windows" class="bare">https://www.jetbrains.com/idea/download/#section=windows</a></p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="git"><a class="anchor" href="#git"></a>Git</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Your machine should be configured with Git access.
+You can install Git from here: <a href="https://git-scm.com/downloads" class="bare">https://git-scm.com/downloads</a></p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+On Windows configure Git to commit with Linux line endings
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="docker"><a class="anchor" href="#docker"></a>Docker Toolbox</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Docker Toolbox works only on Windows and MacOS. On Linux operating systems
+you have Docker without additional layer of Docker Machine.</p>
+</div>
+<div class="sect2">
+<h3 id="_installation"><a class="anchor" href="#_installation"></a>Installation</h3>
+<div class="paragraph">
+<p>Install <a href="https://www.docker.com/docker-toolbox" target="_blank">Docker Toolbox</a> following the
+instructions from the Docker site.</p>
+</div>
+<div class="ulist">
+<div class="title">Installation instructions per Operating System</div>
+<ul>
+<li>
+<p><a href="https://docs.docker.com/windows/step_one/" target="_blank">Docker Machine for Windows</a></p>
+</li>
+<li>
+<p><a href="https://docs.docker.com/mac/step_one/" target="_blank">Docker Machine for Mac OS X</a></p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<a href="https://www.virtualbox.org/wiki/Downloads" target="_blank">Virtual Box</a> will be installed as part of the process.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_preparing_developer_s_docker_machine"><a class="anchor" href="#_preparing_developer_s_docker_machine"></a>Preparing Developer&#8217;s Docker Machine</h3>
+<div class="paragraph">
+<p>You may get more information from <a href="https://docs.docker.com/machine/get-started/">Docker Getting Started Guide</a>,
+but we need only basic docker machine.</p>
+</div>
+<div class="paragraph">
+<p>Create your 'dev' machine with the following command:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>docker-machine create --driver virtualbox dev</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>For large exercises you may need more CPUs and memory, so you can create you 'dev'
+machine with the following command:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>docker-machine create --driver virtualbox --virtualbox-cpu-count 2 --virtualbox-memory "2048" dev</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Run the following command</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>$ docker-machine ls
+NAME   ACTIVE   DRIVER       STATE     URL                         SWARM
+dev    *        virtualbox   Running   tcp://192.168.99.100:2376</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Make sure that the status of the 'dev' machine is 'Running'.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_configuring_docker_command"><a class="anchor" href="#_configuring_docker_command"></a>Configuring Docker command</h3>
+<div class="paragraph">
+<p>Now we need to configure the environment for the 'docker' command.</p>
+</div>
+<div class="listingblock">
+<div class="title">For Windows</div>
+<div class="content">
+<pre>C:\&gt; docker-machine env --shell=cmd dev
+SET DOCKER_TLS_VERIFY=1
+SET DOCKER_HOST=tcp://192.168.99.100:2376
+SET DOCKER_CERT_PATH=C:\Users\user\.docker\machine\machines\dev
+SET DOCKER_MACHINE_NAME=dev
+REM Run this command to configure your shell:
+REM     FOR /f "tokens=*" %i IN ('docker-machine env --shell=cmd dev') DO %i
+
+C:\&gt; FOR /f "tokens=*" %i IN ('docker-machine env --shell=cmd dev') DO %i</pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">For Mac OS</div>
+<div class="content">
+<pre>$ docker-machine env --shell=bash dev
+export DOCKER_TLS_VERIFY="1"
+export DOCKER_HOST="tcp://192.168.99.101:2376"
+export DOCKER_CERT_PATH="/Users/user/.docker/machine/machines/dev"
+export DOCKER_MACHINE_NAME="dev"
+# Run this command to configure your shell:
+# eval "$(docker-machine env default)"
+
+$ eval "$(docker-machine env dev)"</pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_setting_dockerhost"><a class="anchor" href="#_setting_dockerhost"></a>Setting Dockerhost</h3>
+<div class="paragraph">
+<p>Edit <code>hosts</code> file to simplify access to the docker machine.</p>
+</div>
+<table class="tableblock frame-all grid-all">
+<caption class="title">Table 1. Location of hosts file</caption>
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">OS</th>
+<th class="tableblock halign-left valign-top">Location of <code>hosts</code> file</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Linux</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">/etc/hosts</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">MacOS</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">/etc/hosts</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Windows (edit <code>as Administrator</code>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">C:\Windows\System32\drivers\etc</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>You add the following line:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>192.168.99.100	dockerhost</pre>
+</div>
+</div>
 <div class="admonitionblock warning">
 <table>
 <tr>
@@ -537,230 +765,101 @@ table.CodeRay td.code>pre{padding:0}
 <i class="fa icon-warning" title="Warning"></i>
 </td>
 <td class="content">
-Make sure you have Dev Docker-machine running and your session configured
-properly.
+From this point on we&#8217;ll be referring to the IP of the Docker Machine as <strong>dockerhost</strong>.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="curl"><a class="anchor" href="#curl"></a>Curl</h2>
+<div class="sectionbody">
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+This section is only for Windows users. Linux have Curl
+available out of the box.
+</td>
+</tr>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_curl_for_windows"><a class="anchor" href="#_curl_for_windows"></a>Curl for Windows</h3>
+<div class="paragraph">
+<p>Navigate to <a href="https://curl.haxx.se/download.html" target="_blank">Curl Downloads</a> and pick the,
+right for you, x32/x64 package and follow the instructions.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_curl_for_mac"><a class="anchor" href="#_curl_for_mac"></a>Curl for Mac</h3>
+<div class="paragraph">
+<p>Use <code>brew</code> to install curl</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>$ brew install curl</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="ruby"><a class="anchor" href="#ruby"></a>Ruby</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_ruby_for_windows"><a class="anchor" href="#_ruby_for_windows"></a>Ruby for Windows</h3>
+<div class="paragraph">
+<p>Navigate to <a href="http://rubyinstaller.org/downloads/" target="_blank">Ruby downloads</a> page and
+get the, right for you, x32/x64 package of the latest Ruby.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+At the moment this article was written, latest Ruby package version
+was 2.2.4
 </td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
-<p>In this exercise we&#8217;re going to learn how to create a Docker image of our REST
-microservice and launch it as a container.</p>
+<p>After Ruby is installed you need, from the same page, to download and
+install <code>Ruby Development Kit</code>. Follow the <a href="https://github.com/oneclick/rubyinstaller/wiki/Development-Kit#installation-instructions" target="_blank">installtion instructions for Ruby
+Development Kit</a></p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="gradle"><a class="anchor" href="#gradle"></a>Gradle</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><a href="https://docs.gradle.org/current/userguide/installation.html">Gradle installation</a> instructions.</p>
 </div>
 <div class="sect2">
-<h3 id="_preparing_the_build_automation">Preparing the build automation</h3>
+<h3 id="_gradle_for_windows"><a class="anchor" href="#_gradle_for_windows"></a>Gradle for Windows</h3>
 <div class="paragraph">
-<p>We&#8217;re going to define our new convention: the Dockerfile, needed to build a
-Docker image, will be located in the <strong>docker</strong> folder and will be versioned
-the same way as the microservice itself.</p>
+<p>Install Gradle from <a href="https://gradle.org/gradle-download/" target="_blank">Gradle downloads</a> page.</p>
 </div>
 <div class="paragraph">
-<p>Such convention helps tremendously to manage versions of the Docker images: one
-version of a microservice correlates one-to-one to the one (same) version of
-a Docker container.</p>
+<p>For running Gradle, add GRADLE_HOME/bin to your PATH environment variable. Usually, this is sufficient to run Gradle.</p>
 </div>
-<div class="paragraph">
-<p>Create a <strong>docker</strong> folder and create there a template Dockerfile:</p>
-</div>
-<div class="listingblock">
-<div class="title">docker/Dockerfile.template</div>
-<div class="content">
-<pre class="CodeRay highlight"><code>FROM java:8
-MAINTAINER Igor Moochnick "igor@igorshare.com"
-VOLUME /tmp
-EXPOSE 8100
-ADD ${jar.baseName}-${jar.version}.jar ${project.name}.jar
-# RUN bash -c 'touch /${project.name}.jar'
-ENTRYPOINT ["java", "-Djava.security.egd=file:/dev/./urandom" ,"-jar", "/${project.name}.jar" ]</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Add the following code to the build script:</p>
-</div>
-<div class="listingblock">
-<div class="title">build.gradle</div>
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="groovy">task prepDocker(<span class="key">type</span>: Copy, <span class="key">dependsOn</span>: assemble) {
-        from <span class="string"><span class="delimiter">'</span><span class="content">docker</span><span class="delimiter">'</span></span>
-        into <span class="string"><span class="delimiter">&quot;</span><span class="inline"><span class="inline-delimiter">$</span>buildDir</span><span class="content">/docker</span><span class="delimiter">&quot;</span></span>
-        include <span class="string"><span class="delimiter">'</span><span class="content">Dockerfile.template</span><span class="delimiter">'</span></span>
-        rename { file -&gt; <span class="string"><span class="delimiter">'</span><span class="content">Dockerfile</span><span class="delimiter">'</span></span> }
-        expand(<span class="key">project</span>: project, <span class="key">jar</span>: jar )
-        doFirst {
-                copy {
-                        from jar
-                        into <span class="string"><span class="delimiter">&quot;</span><span class="inline"><span class="inline-delimiter">$</span>buildDir</span><span class="content">/docker</span><span class="delimiter">&quot;</span></span>
-                }
-        }
-  doLast {
-      println <span class="string"><span class="delimiter">&quot;</span><span class="content">Docker command: docker build -t </span><span class="inline"><span class="inline-delimiter">${</span>jar.group<span class="inline-delimiter">}</span></span><span class="content">/</span><span class="inline"><span class="inline-delimiter">${</span>jar.baseName<span class="inline-delimiter">}</span></span><span class="content">:</span><span class="inline"><span class="inline-delimiter">${</span>jar.version<span class="inline-delimiter">}</span></span><span class="content"> build/docker</span><span class="delimiter">&quot;</span></span>
-  }
-}</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>This script will generate a final Dockerfile in the build folder.</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_building_a_docker_image">Building a Docker image</h3>
-<div class="paragraph">
-<p>Build the project and generate Dockerfile by run the following command:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>$ gradlew prepDocker
-...
-:prepDocker
-Run command: docker build -t build/mysvc:0.0.1 build/docker
-
-BUILD SUCCESSFUL</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Everything was prepared for you, so you can just copy the suggested command from
-the console and run it:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>$ docker build -t msvcdojo/mysvc:0.0.1 build/docker
-Sending build context to Docker daemon 12.95 MB
-Step 1 : FROM java:8
-Step 2 : MAINTAINER Igor Moochnick "igor@igorshare.com"
-Step 3 : VOLUME /tmp
-Step 4 : EXPOSE 8100
-Step 5 : ADD mysvc-0.0.1.jar mysvc.jar
-Step 6 : ENTRYPOINT java -Djava.security.egd=file:/dev/./urandom -jar /mysvc.jar
-Successfully built cb55f79088db</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>This has created a Dockerimage with the tag <strong>msvcdojo/mysvc:0.0.1</strong>. Now let&#8217;s see
-it in the Docker repository:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight nowrap"><code data-lang="text">C:\Dev\accordance\microservice-dojo\kata2\solution\mysvc&gt;docker images
-REPOSITORY                  TAG                 IMAGE ID            CREATED             VIRTUAL SIZE
-msvcdojo/mysvc              0.0.1               cb55f79088db        2 minutes ago       655.2 MB</code></pre>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_start_container">Start container</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>Let&#8217;s start the container and map the service port to the external world by running command:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>$ docker run -d --name=mysvc -p 8100:8100 msvcdojo/mysvc:0.0.1</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Let&#8217;s see if the container is running:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight nowrap"><code data-lang="text">C:\Dev\accordance\microservice-dojo\kata2\solution\mysvc&gt;docker ps
-CONTAINER ID        IMAGE                  COMMAND                  CREATED             STATUS              PORTS                    NAMES
-f309e203c200        msvcdojo/mysvc:0.0.1   &quot;java -Djava.security&quot;   9 seconds ago       Up 10 seconds       0.0.0.0:8100-&gt;8100/tcp   mysvc</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>You can see what is happening inside the container by asking for its logs:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight nowrap"><code data-lang="text">$ docker logs mysvc
-...
-2016-01-25 [...] .s.b.c.e.j.JettyEmbeddedServletContainer : Jetty started on port(s) 8100 (http/1.1)
-2016-01-25 [...] msvcdojo.MysvcApplication                : Started MysvcApplication in 9.289 seconds (JVM running for 10.635)</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Now it&#8217;s time to hit our service REST endpoint:</p>
-</div>
-<div class="paragraph">
-<p>On Linux, we get:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>$ curl http://localhost:8100
-Hello World!</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>On Windows and MacOS we have to use the IP of docker-machine, which we find as follows:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>$ docker-machine ip default
-192.168.99.100</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>So, we get:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>$ curl http://192.168.99.100:8100
-Hello World!</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>If you&#8217;ve defined <code>dockerhost</code> the command will look like this:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>$ curl http://dockerhost:8100
-Hello World!</pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_clean_up">Clean up</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>Stop the container:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>$ docker stop mysvc</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Delete image:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>$ docker rmi -f msvcdojo/mysvc:0.0.1</pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_bonus">Bonus</h2>
-<div class="sectionbody">
-<div class="ulist">
-<ul>
-<li>
-<p>Read more about Docker architecture, commands and ecosystem on the <a href="https://docs.docker.com/" target="_blank">Docker website</a>.</p>
-</li>
-<li>
-<p><a href="https://spring.io/guides/gs/spring-boot-docker/" target="_blank">Spring Boot with Docker</a></p>
-</li>
-</ul>
 </div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2016-02-26 08:37:38 Eastern Standard Time
+Last updated 2016-02-26 09:00:03 Eastern Standard Time
 </div>
 </div>
 </body>
