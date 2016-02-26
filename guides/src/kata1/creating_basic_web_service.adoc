@@ -2,8 +2,6 @@
 :sourcedir: ../../../{kata_dir}
 include::../header.adoc[]
 
-// include::../header.adoc[]
-
 == Building Simple Web Service with Spring Boot
 
 WARNING: Make sure you have your development environment configured.
