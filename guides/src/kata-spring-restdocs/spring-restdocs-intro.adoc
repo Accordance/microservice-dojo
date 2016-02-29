@@ -1,0 +1,206 @@
+= Documenting RESTful APIs
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 4
+:sectlinks:
+:kata_dir: kata-spring-restdocs
+ifndef::imagesdir[:imagesdir: images]
+:sourcedir: ../../../{kata_dir}
+:snippets: {sourcedir}/solution/mysvc/build/generated-snippets
+
+[spring-rest-docs]
+= Spring REST Docs
+Document RESTful services by combining hand-written documentation with auto-generated snippets produced with Spring MVC Test.
+
+Source documentation http://docs.spring.io/spring-restdocs/docs/1.0.x/reference/html5
+
+[rest-maturity-model]
+= How RESTful is your API
+[[img-rest-maturity-model]]
+image::rest-maturity-model.png[richardsonMaturityModel, link="http://martinfowler.com/articles/richardsonMaturityModel.html"]
+
+REST Maturity Model http://martinfowler.com/articles/richardsonMaturityModel.html
+
+[Swagger vs Spring-restdocs]
+= Swagger vs Spring-restdocs
+== Swagger Advantages
+. Documentation of methods, parameters and models are tightly integrated into the server code, allowing APIs to always stay in sync.
+. Deploying, managing and using APIs with Swagger is easy.
+. Provides a Web UI which makes it easy to interact with API's.
+. Provides a quick way to edit the schema of the payload and an easy way to display and alter query parameter (when required).
+. Supports different types of authentication and endpoint resource grouping.
+. Many plugins for integrating Swagger with your language/framework of choice.Swagger implementation is available in Scala, Java and HTML5.
+. Client code generators are available for Scala, Java, Javascript, Ruby, PHP, and Actionscript 3.
+. Provides intuitive editors with a live console preview allowing you to see exactly what the end product will look like as you are creating and editing your file.
+. Good community support, active swagger google group.
+. Adding dependency jars in build script is enough.
+
+== Swagger Disadvantages
+. Swagger doesn't support hypermedia (Level 3 maturity model)
+. Swagger documentation does not capture all scenarios for an API.
+. Documentation is a bit lacking, errors are difficult to interperate. This leads to a larger learning curve than some other tools.
+. Swagger documentation is done through several annotations which are added in your implementation classes.
+. API Implementation code overtime, gets overwhelmed with swagger annotations.
+. Documentation is URI centric.
+. Documentation and API could be out-of-sync overtime as there are no validations in place to verify correctness of API.
+
+== Spring REST Docs Advantages
+. API descriptions and explanation are done in separate .adoc files
+. Ability to structure your documentation based on domain model rather than by URI's
+. asciidoctor code snippets are generated using Spring Mvc Test, which in turn are plugged into adoc files
+. Guarantees that API documentation and implementation code are always in-sync.
+. Any updates to request, response payloads will fail Unit Tests, until documentation is updated to reflect the changes. Forces you to update documentation for any implementation changes.
+. Ability to document with different payloads and explain different test scenarios
+.
+
+== Spring REST Docs Disadvantages
+. Doesn't have built-in client to interact with API's.
+. Apart from adding dependency jars, need to configure where snippets should be generated and tell asciidoctor about the snippets directory in build script.
+
+
+[spring-restdoc-implementation]
+= Spring REST Docs Implementation
+
+== Add Dependency JARs
+
+Add the following code to the build script:
+[source,groovy,indent=0]
+.build.gradle
+----
+include::{sourcedir}/solution/mysvc/build.gradle[tags=dependency-spring-restdocs]
+----
+
+== Spring REST Docs configuration
+
+[source, java, indent=0]
+.ApiDocumentation.java
+----
+include::{sourcedir}/solution/mysvc/src/test/java/msvcdojo/ApiDocumentation.java[tags=rest-docs-config]
+----
+<1> Hook for linking JUnit and Spring REST Docs for generating snippets
+<2> REST Docs snippet Result Handler for formatting result to tables
+<3> Configuration for _RestDocumentationResultHandler_
+<4> Hook for linking Spring Mvc Test to Spring REST Docs
+<5> Generates asciidoc snippets for curl-request, http-request, http-response, response-fields adoc files
+
+== asciidoctor Configuration
+[source, groovy, indent=0]
+.build.gradle
+----
+include::{sourcedir}/solution/mysvc/build.gradle[tags=asciidoctor-config]
+----
+<1> Repository for asciidoctor plugin
+<2> Add asciidoctor plugin to classpath
+<3> Apply asciidoctor plugin
+
+== Integrate Spring REST Docs with asciidoc
+[source, groovy, indent=0]
+.build.gradle
+----
+include::{sourcedir}/solution/mysvc/build.gradle[tags=asciidoctor-spring-restdoc-int]
+----
+<1> Define where snippets would be generated
+<2> Teach test task about snippets directory for gradle to know that when tests are run, snippets are generated in this directory
+<3> Tell asciidoctor about the snippets directory for generating live documentation in the process of gradle continuous builds
+
+== Document APIs using Spring REST Docs
+[source, java, indent=0]
+.ApiDocumentation.java
+----
+include::{sourcedir}/solution/mysvc/src/test/java/msvcdojo/ApiDocumentation.java[tags=rest-docs-impl]
+----
+<1> Documenting Link Relationship
+<2> Documenting Response fields
+
+[kata-spring-restdocs-api]
+= Service API Guide
+
+[overview]
+= Overview
+A sample kata service with resources - Accounts and Contact. +
+Accounts can have many Contacts. A given contact can belong to many Accounts
+
+
+
+[[resources-index]]
+== Index
+The index provides the entry point into the service.
+
+[[resources-index-access]]
+=== Accessing the index
+A `GET` request is used to access the index
+
+==== Response structure
+include::{snippets}/get-index-example/response-fields.adoc[]
+
+==== Example response
+include::{snippets}/get-index-example/http-response.adoc[]
+
+[[resources-index-links]]
+==== Links
+include::{snippets}/get-index-example/links.adoc[]
+
+
+
+[[resources-account]]
+== Account
+The Account resources
+
+[[resources-account-list]]
+=== Listing Accounts
+A `GET` request will list all of the service's accounts.
+
+==== Response structure
+include::{snippets}/get-accounts-example/response-fields.adoc[]
+
+==== Example request
+include::{snippets}/get-accounts-example/curl-request.adoc[]
+
+==== Example response
+include::{snippets}/get-accounts-example/http-response.adoc[]
+
+
+
+[[resources-account]]
+=== Retrieve a Account
+A `GET` request will retrieve the details of a Account
+
+==== Response structure
+include::{snippets}/get-account-example/response-fields.adoc[]
+
+==== Example request
+include::{snippets}/get-account-example/curl-request.adoc[]
+
+==== Example response
+include::{snippets}/get-account-example/http-response.adoc[]
+
+
+
+[[resources-contact]]
+== Contact
+The Contact resource is used to provide contact information
+
+[[resources-note-retrieve]]
+=== Retrieve a Contact
+A `GET` request will retrieve the details of a contact
+
+==== Response structure
+include::{snippets}/get-contact-example/response-fields.adoc[]
+
+==== Example request
+include::{snippets}/get-contact-example/curl-request.adoc[]
+
+==== Example response
+include::{snippets}/get-contact-example/http-response.adoc[]
+
+
+[references]
+= References
+
+Spring REST Docs http://docs.spring.io/spring-restdocs/docs/1.0.x/reference/html5
+
+REST Maturity Model http://martinfowler.com/articles/richardsonMaturityModel.html
+
+Spring REST Docs Talk at SpringOne2GX 2015 https://youtu.be/k5ncCJBarRI
