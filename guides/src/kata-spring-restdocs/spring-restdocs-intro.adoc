@@ -23,22 +23,42 @@ image::rest-maturity-model.png[richardsonMaturityModel, link="http://martinfowle
 
 REST Maturity Model http://martinfowler.com/articles/richardsonMaturityModel.html
 
-[compare-with-swagger]
-= Comparison with Swagger
-. Swagger doesn't support hypermedia (Level 3 maturity model)
-. Swagger documentation is done through several annotations which are added in your implementation classes
-. API Implementation code overtime, gets overwhelmed with swagger annotations
-. Documentation is URI centric
-. Documentation and API could be out-of-sync overtime as there are no validations in place to verify correctness of API
+[Swagger vs Spring-restdocs]
+= Swagger vs Spring-restdocs
+== Swagger Advantages
+. Documentation of methods, parameters and models are tightly integrated into the server code, allowing APIs to always stay in sync.
+. Deploying, managing and using APIs with Swagger is easy.
+. Provides a Web UI which makes it easy to interact with API's.
+. Provides a quick way to edit the schema of the payload and an easy way to display and alter query parameter (when required).
+. Supports different types of authentication and endpoint resource grouping.
+. Many plugins for integrating Swagger with your language/framework of choice.Swagger implementation is available in Scala, Java and HTML5.
+. Client code generators are available for Scala, Java, Javascript, Ruby, PHP, and Actionscript 3.
+. Provides intuitive editors with a live console preview allowing you to see exactly what the end product will look like as you are creating and editing your file.
+. Good community support, active swagger google group.
+. Adding dependency jars in build script is enough.
 
-[spring-restdocs-advantages]
-= Spring REST Docs Advantages
+== Swagger Disadvantages
+. Swagger doesn't support hypermedia (Level 3 maturity model)
+. Swagger documentation does not capture all scenarios for an API.
+. Documentation is a bit lacking, errors are difficult to interperate. This leads to a larger learning curve than some other tools.
+. Swagger documentation is done through several annotations which are added in your implementation classes.
+. API Implementation code overtime, gets overwhelmed with swagger annotations.
+. Documentation is URI centric.
+. Documentation and API could be out-of-sync overtime as there are no validations in place to verify correctness of API.
+
+== Spring REST Docs Advantages
 . API descriptions and explanation are done in separate .adoc files
 . Ability to structure your documentation based on domain model rather than by URI's
 . asciidoctor code snippets are generated using Spring Mvc Test, which in turn are plugged into adoc files
 . Guarantees that API documentation and implementation code are always in-sync.
 . Any updates to request, response payloads will fail Unit Tests, until documentation is updated to reflect the changes. Forces you to update documentation for any implementation changes.
 . Ability to document with different payloads and explain different test scenarios
+.
+
+== Spring REST Docs Disadvantages
+. Doesn't have built-in client to interact with API's.
+. Apart from adding dependency jars, need to configure where snippets should be generated and tell asciidoctor about the snippets directory in build script.
+
 
 [spring-restdoc-implementation]
 = Spring REST Docs Implementation
