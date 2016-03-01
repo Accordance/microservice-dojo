@@ -22,7 +22,7 @@ image::images/dojo-logo-collage.png[Dojo Logo Collage]
 
 IMPORTANT: Follow the <<environment/environment.adoc#,configuration instructions>> on how to prepare your machine for Katas.
 
-[%header%autowidth]
+[%header,cols="10%,45%,45%"]
 |=======================
 |Kata #|Description      |Tech Stack
 | 1 | <<kata1/creating_basic_web_service.adoc#,Creating Basic Web Service>> | Spring Cloud
@@ -36,7 +36,7 @@ IMPORTANT: Follow the <<environment/environment.adoc#,configuration instructions
 |=======================
 
 Complimentary Katas:
-[%header%autowidth]
+[%header,cols="10%,45%,45%"]
 |=======================
 |Kata #|Description      |Tech Stack
 | a | <<kata-web-client/web-client-basics.adoc#,Getting Started with Web client>> |covers beginning of AngularJS
@@ -47,7 +47,7 @@ Complimentary Katas:
 |=======================
 
 Contributed Katas:
-[options="header"]
+[%header,cols="10%,45%,45%"]
 |=======================
 |Kata #|Description      |Tech Stack
 | a | <<kata-spring-restdocs/spring-restdocs-intro.adoc#,Documenting RESTful APIs with Spring REST Docs>> |Spring REST Docs
