@@ -1,0 +1,10 @@
+|===
+|Relation|Description
+
+|accounts
+|The <<resources-accounts,Account Resource>>
+
+|contacts
+|The <<resources-contacts,Contact Resource>>
+
+|===

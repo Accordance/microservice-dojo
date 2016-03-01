@@ -1,0 +1,87 @@
+//tag::asciidoctor-config[]
+buildscript {
+  repositories {
+    mavenCentral()
+    jcenter() //<1>
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:1.2.7.RELEASE")
+    classpath 'org.asciidoctor:asciidoctor-gradle-plugin:1.5.3' //<2>
+	}
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+apply plugin: 'spring-boot'
+apply plugin: 'org.asciidoctor.convert' //<3>
+
+repositories {
+	mavenLocal()
+	maven { url 'https://repo.spring.io/libs-snapshot' }
+	mavenCentral()
+}
+//end::asciidoctor-config[]
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+dependencies {
+	compile('org.springframework.boot:spring-boot-starter-hateoas')
+	compile group: 'com.google.guava', name: 'guava', version: '12.0'
+	testCompile 'com.jayway.jsonpath:json-path'
+	testCompile 'org.springframework.boot:spring-boot-starter-test'
+	// tag::dependency-spring-restdocs[]
+	testCompile "org.springframework.restdocs:spring-restdocs-mockmvc:1.1.0.BUILD-SNAPSHOT"
+	// end::dependency-spring-restdocs[]
+}
+
+//tag::asciidoctor-spring-restdoc-int[]
+ext { //<1>
+  snippetsDir = file('build/generated-snippets')
+}
+
+test { //<2>
+	outputs.dir snippetsDir
+}
+
+asciidoctor { //<3>
+	sourceDir '../../../guides/src/kata-spring-restdocs'
+	attributes 'snippets': snippetsDir
+	inputs.dir snippetsDir
+	dependsOn test
+}
+//end::asciidoctor-spring-restdoc-int[]
+
+jar {
+	baseName = 'mysvc'
+	version = '0.0.1-SNAPSHOT'
+	dependsOn asciidoctor
+	from ("${asciidoctor.outputDir}/html5") {
+		into 'static/docs'
+	}
+}
+
+task prepDocker(type: Copy, dependsOn: assemble) {
+  from 'docker'
+  into "$buildDir/docker"
+  include 'Dockerfile.template'
+  rename { file -> 'Dockerfile' }
+  expand(project: project, jar: jar )
+  doFirst {
+    copy {
+      from jar
+      into "$buildDir/docker"
+    }
+  }
+  doLast {
+    println "Docker command: docker build -t ${jar.group}/${jar.baseName}:${jar.version} build/docker"
+  }
+}
+
+task wrapper(type: Wrapper) {
+  gradleVersion = '2.9'
+}
+
+eclipseJdt.onlyIf { false }
+cleanEclipseJdt.onlyIf { false }

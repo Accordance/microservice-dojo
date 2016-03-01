@@ -1,0 +1,8 @@
+|===
+|Path|Type|Description
+
+|_embedded.contactList
+|Array
+|An array of <<resources-contact,Contact resources>>
+
+|===

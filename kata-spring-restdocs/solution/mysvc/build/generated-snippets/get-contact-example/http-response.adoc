@@ -1,0 +1,34 @@
+[source,http]
+----
+HTTP/1.1 200 OK
+Content-Type: application/json
+Content-Length: 619
+
+{
+  "_embedded" : {
+    "contactList" : [ {
+      "id" : 1,
+      "address" : "Waltham, MA",
+      "_links" : {
+        "self" : {
+          "href" : "http://localhost:8080/contacts/1"
+        },
+        "contact-accounts" : {
+          "href" : "http://localhost:8080/contacts/1/accounts"
+        }
+      }
+    }, {
+      "id" : 2,
+      "address" : "Boston, MA",
+      "_links" : {
+        "self" : {
+          "href" : "http://localhost:8080/contacts/2"
+        },
+        "contact-accounts" : {
+          "href" : "http://localhost:8080/contacts/2/accounts"
+        }
+      }
+    } ]
+  }
+}
+----
