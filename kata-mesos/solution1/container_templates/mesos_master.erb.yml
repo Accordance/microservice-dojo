@@ -1,5 +1,5 @@
 mesos_master:
-  image: redjack/mesos-master:0.21.0
+  image: msvcdojo/mesos_master:0.27.0-0.2.190.ubuntu1404
   net: host
   ports:
     - 5050

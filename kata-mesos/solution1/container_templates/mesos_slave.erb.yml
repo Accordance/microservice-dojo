@@ -1,5 +1,5 @@
 mesos_slave:
-  image: redjack/mesos-slave:0.21.0
+  image: msvcdojo/mesos_slave:0.27.0-0.2.190.ubuntu1404
   net: host
   privileged: true
   pid: host
@@ -8,7 +8,7 @@ mesos_slave:
   environment:
     MESOS_CONTAINERIZERS: docker,mesos
     MESOS_DOCKER_SOCK: /var/run/docker.sock
-    MESOS_DOCKER_MESOS_IMAGE: redjack/mesos-slave:0.21.0
+    MESOS_DOCKER_MESOS_IMAGE: msvcdojo/mesos_slave:0.27.0-0.2.190.ubuntu1404
     MESOS_EXECUTOR_REGISTRATION_TIMEOUT: 10mins
     MESOS_ISOLATOR: cgroups/cpu,cgroups/mem
     MESOS_LOG_DIR: /var/log/mesos/slave
