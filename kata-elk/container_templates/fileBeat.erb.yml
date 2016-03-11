@@ -1,0 +1,12 @@
+fileBeat:
+    image: filebeat
+    environment:
+        TZ: UTC
+    volumes_from:
+        - logData
+    volumes:
+        - /conf:/conf
+    command: /usr/bin/filebeat -e -v -c /filebeat.yml
+    environment:
+        LOGSTASH_HOST: <%= dockerhost %>
+        LOGSTASH_PORT: 5044

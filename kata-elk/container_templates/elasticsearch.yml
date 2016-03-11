@@ -1,0 +1,8 @@
+elasticsearch:
+  image: elasticsearch:2.1.1
+  volumes_from:
+    - elasticSearchData
+  ports:
+    - 9200:9200
+  depends:
+    - logstash
