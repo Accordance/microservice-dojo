@@ -2,4 +2,4 @@
 // :linkcss:
 :icons: font
 :source-highlighter: coderay
-<<../index.adoc#,icon:home[] Home>>
+<<../index.adoc#,icon:home[] Home>> | https://github.com/Accordance/microservice-dojo/tree/master/{kata_dir}[icon:github[] Source for Kata]

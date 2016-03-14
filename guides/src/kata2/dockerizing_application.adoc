@@ -1,8 +1,6 @@
-:toc: left
-:icons: font
-:source-highlighter: coderay
 :kata_dir: kata2
 :sourcedir: ../../../{kata_dir}
+include::../header.adoc[]
 
 == "Dockerizing" application
 
