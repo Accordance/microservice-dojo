@@ -5,7 +5,7 @@
 <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 1.5.4">
-<title>Spring REST Docs</title>
+<title>Embedding live service contracts documentation with Swagger</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /* Asciidoctor default stylesheet | MIT License | http://asciidoctor.org */
@@ -514,349 +514,212 @@ table.CodeRay td.code>pre{padding:0}
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#_spring_rest_docs">Spring REST Docs</a></li>
-<li><a href="#_how_restful_is_your_api">How RESTful is your API</a></li>
-<li><a href="#_comparison_with_swagger">Comparison with Swagger</a></li>
-<li><a href="#_spring_rest_docs_advantages">Spring REST Docs Advantages</a></li>
-<li><a href="#_spring_rest_docs_implementation">Spring REST Docs Implementation</a>
+<li><a href="#_embedding_live_service_contracts_documentation_with_swagger">Embedding live service contracts documentation with Swagger</a></li>
+<li><a href="#_step_by_step_instructions_to_bootstrap_the_project">Step-by-step instructions to bootstrap the project</a></li>
+<li><a href="#_swagger_implementation">Swagger Implementation</a>
 <ul class="sectlevel2">
-<li><a href="#_add_dependency_jars">Add Dependency JARs</a></li>
-<li><a href="#_spring_rest_docs_configuration">Spring REST Docs configuration</a></li>
-<li><a href="#_asciidoctor_configuration">asciidoctor Configuration</a></li>
-<li><a href="#_integrate_spring_rest_docs_with_asciidoc">Integrate Spring REST Docs with asciidoc</a></li>
-<li><a href="#_document_apis_using_spring_rest_docs">Document APIs using Spring REST Docs</a></li>
-<li><a href="#_generate_documentation">Generate documentation</a></li>
+<li><a href="#_add_dependency_jars">Add dependency jars</a></li>
+<li><a href="#_bean_configuration">Bean configuration</a></li>
+<li><a href="#_swagger_annotation">Swagger annotation</a></li>
 </ul>
 </li>
-<li><a href="#_service_api_guide">Service API Guide</a></li>
-<li><a href="#_overview">Overview</a>
+<li><a href="#_build_and_launch">Build and launch</a>
 <ul class="sectlevel2">
-<li><a href="#resources-index">Index</a>
-<ul class="sectlevel3">
-<li><a href="#resources-index-access">Accessing the index</a>
-<ul class="sectlevel4">
-<li><a href="#_example_request">Example request</a></li>
-<li><a href="#_response_structure">Response structure</a></li>
-<li><a href="#_example_response">Example response</a></li>
-<li><a href="#resources-index-links">Links</a></li>
+<li><a href="#_building_a_docker_image">Building a Docker image</a></li>
 </ul>
 </li>
+<li><a href="#_start_container">Start container</a></li>
+<li><a href="#_play_time">Play time</a>
+<ul class="sectlevel2">
+<li><a href="#_swagger_endpoint_resource_listing">Swagger Endpoint Resource Listing</a></li>
+<li><a href="#_running_it_with_swagger_ui">Running it with Swagger UI</a></li>
 </ul>
 </li>
-<li><a href="#resources-account">Account</a>
-<ul class="sectlevel3">
-<li><a href="#resources-account-list">Listing Accounts</a>
-<ul class="sectlevel4">
-<li><a href="#_response_structure_2">Response structure</a></li>
-<li><a href="#_example_request_2">Example request</a></li>
-<li><a href="#_example_response_2">Example response</a></li>
-</ul>
-</li>
-<li><a href="#resources-account">Retrieve a Account</a>
-<ul class="sectlevel4">
-<li><a href="#_response_structure_3">Response structure</a></li>
-<li><a href="#_example_request_3">Example request</a></li>
-<li><a href="#_example_response_3">Example response</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><a href="#resources-contact">Contact</a>
-<ul class="sectlevel3">
-<li><a href="#resources-note-retrieve">Retrieve a Contact</a>
-<ul class="sectlevel4">
-<li><a href="#_response_structure_4">Response structure</a></li>
-<li><a href="#_example_request_4">Example request</a></li>
-<li><a href="#_example_response_4">Example response</a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><a href="#_references">References</a></li>
 </ul>
 </div>
 </div>
 <div id="content">
 <div class="paragraph">
-<p><a href="../index.html"><span class="icon"><i class="fa fa-home"></i></span> Home</a> | <a href="https://github.com/Accordance/microservice-dojo/tree/master/kata-spring-restdocs"><span class="icon"><i class="fa fa-github"></i></span> Source for Kata</a></p>
+<p><a href="../index.html"><span class="icon"><i class="fa fa-home"></i></span> Home</a> | <a href="https://github.com/Accordance/microservice-dojo/tree/master/kata-swagger"><span class="icon"><i class="fa fa-github"></i></span> Source for Kata</a></p>
 </div>
 <div class="sect1">
-<h2 id="_spring_rest_docs"><a class="link" href="#_spring_rest_docs">Spring REST Docs</a></h2>
+<h2 id="_embedding_live_service_contracts_documentation_with_swagger">Embedding live service contracts documentation with Swagger</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Document RESTful services by combining hand-written documentation with auto-generated snippets produced with Spring MVC Test.</p>
+<p>Swagger is a REST specification that allows you to generate interactive API documentation.</p>
 </div>
-<div class="paragraph">
-<p>Source documentation <a href="http://docs.spring.io/spring-restdocs/docs/1.0.x/reference/html5" class="bare">http://docs.spring.io/spring-restdocs/docs/1.0.x/reference/html5</a></p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_how_restful_is_your_api"><a class="link" href="#_how_restful_is_your_api">How RESTful is your API</a></h2>
-<div class="sectionbody">
-<div id="img-rest-maturity-model" class="imageblock">
-<div class="content">
-<a class="image" href="http://martinfowler.com/articles/richardsonMaturityModel.html"><img src="images/rest-maturity-model.png" alt="richardsonMaturityModel"></a>
-</div>
-</div>
-<div class="paragraph">
-<p>REST Maturity Model <a href="http://martinfowler.com/articles/richardsonMaturityModel.html" class="bare">http://martinfowler.com/articles/richardsonMaturityModel.html</a></p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_comparison_with_swagger"><a class="link" href="#_comparison_with_swagger">Comparison with Swagger</a></h2>
-<div class="sectionbody">
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Swagger doesn&#8217;t support hypermedia (Level 3 maturity model)</p>
+<p>Swagger generates an interactive API console to quickly learn and try the API.</p>
 </li>
 <li>
-<p>Swagger documentation is done through several annotations which are added in your implementation classes</p>
+<p>Swagger generates the client SDK code needed for implementations on various platforms.</p>
 </li>
 <li>
-<p>API Implementation code overtime, gets overwhelmed with swagger annotations</p>
+<p>Swagger allows to generate client code on a lot of different platforms.</p>
 </li>
 <li>
-<p>Documentation is URI centric</p>
-</li>
-<li>
-<p>Documentation and API could be out-of-sync overtime as there are no validations in place to verify correctness of API</p>
+<p>Swagger has a strong community with helpful contributors.</p>
 </li>
 </ol>
+</div>
+<div class="paragraph">
+<p>In this exercise you are going to create simple REST web service using Swagger API Documentation.</p>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+The API documentation generated by the Swagger file is minimal. It shows the resources, parameters, requests, and responses. However, it&#8217;s not going to provide any other detail about how your API works.
+</td>
+</tr>
+</table>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_spring_rest_docs_advantages"><a class="link" href="#_spring_rest_docs_advantages">Spring REST Docs Advantages</a></h2>
+<h2 id="_step_by_step_instructions_to_bootstrap_the_project">Step-by-step instructions to bootstrap the project</h2>
 <div class="sectionbody">
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p>API descriptions and explanation are done in separate .adoc files</p>
-</li>
-<li>
-<p>Ability to structure your documentation based on domain model rather than by URI&#8217;s</p>
-</li>
-<li>
-<p>asciidoctor code snippets are generated using Spring Mvc Test, which in turn are plugged into adoc files</p>
-</li>
-<li>
-<p>Guarantees that API documentation and implementation code are always in-sync.</p>
-</li>
-<li>
-<p>Any updates to request, response payloads will fail Unit Tests, until documentation is updated to reflect the changes. Forces you to update documentation for any implementation changes.</p>
-</li>
-<li>
-<p>Ability to document with different payloads and explain different test scenarios</p>
-</li>
-</ol>
+<div class="paragraph">
+<p>Follow Kata1 guide to setup a basic service: <a href="../kata1/creating_basic_web_service.html">Creating Basic Web Service</a></p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_spring_rest_docs_implementation"><a class="link" href="#_spring_rest_docs_implementation">Spring REST Docs Implementation</a></h2>
+<h2 id="_swagger_implementation">Swagger Implementation</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_add_dependency_jars"><a class="link" href="#_add_dependency_jars">Add Dependency JARs</a></h3>
+<h3 id="_add_dependency_jars">Add dependency jars</h3>
 <div class="paragraph">
 <p>Add the following code to the build script:</p>
 </div>
 <div class="listingblock">
 <div class="title">build.gradle</div>
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="groovy">testCompile <span class="string"><span class="delimiter">&quot;</span><span class="content">org.springframework.restdocs:spring-restdocs-mockmvc:1.1.0.BUILD-SNAPSHOT</span><span class="delimiter">&quot;</span></span></code></pre>
+<pre class="CodeRay highlight"><code data-lang="groovy">compile(<span class="string"><span class="delimiter">&quot;</span><span class="content">io.springfox:springfox-swagger2:2.2.2</span><span class="delimiter">&quot;</span></span>)
+compile(<span class="string"><span class="delimiter">&quot;</span><span class="content">io.springfox:springfox-swagger-ui:2.2.2</span><span class="delimiter">&quot;</span></span>)</code></pre>
 </div>
 </div>
-</div>
-<div class="sect2">
-<h3 id="_spring_rest_docs_configuration"><a class="link" href="#_spring_rest_docs_configuration">Spring REST Docs configuration</a></h3>
-<div class="listingblock">
-<div class="title">ApiDocumentation.java</div>
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="java"><span class="annotation">@Rule</span>
-<span class="directive">public</span> <span class="directive">final</span> JUnitRestDocumentation restDocumentation = <span class="keyword">new</span> JUnitRestDocumentation(<span class="string"><span class="delimiter">&quot;</span><span class="content">build/generated-snippets</span><span class="delimiter">&quot;</span></span>); <i class="conum" data-value="1"></i><b>(1)</b>
-<span class="directive">private</span> RestDocumentationResultHandler document; <i class="conum" data-value="2"></i><b>(2)</b>
-<span class="annotation">@Autowired</span>
-<span class="directive">private</span> WebApplicationContext context;
-<span class="directive">private</span> MockMvc mockMvc;
-
-<span class="annotation">@Before</span>
-<span class="directive">public</span> <span class="type">void</span> setUp() {
-  <span class="local-variable">this</span>.document = document(<span class="string"><span class="delimiter">&quot;</span><span class="content">{method-name}/</span><span class="delimiter">&quot;</span></span>,
-      preprocessRequest(prettyPrint()),
-      preprocessResponse(prettyPrint())); <i class="conum" data-value="3"></i><b>(3)</b>
-
-  <span class="local-variable">this</span>.mockMvc = MockMvcBuilders.webAppContextSetup(<span class="local-variable">this</span>.context)
-      .apply(documentationConfiguration(<span class="local-variable">this</span>.restDocumentation)) <i class="conum" data-value="4"></i><b>(4)</b>
-      .alwaysDo(<span class="local-variable">this</span>.document)
-      .build();
-}
-
-<span class="annotation">@Test</span>
-<span class="directive">public</span> <span class="type">void</span> getAccountsSimpleDoc() <span class="directive">throws</span> <span class="exception">Exception</span> {
-  <span class="local-variable">this</span>.mockMvc.perform(get(<span class="string"><span class="delimiter">&quot;</span><span class="content">/accounts</span><span class="delimiter">&quot;</span></span>))
-      .andExpect(status().isOk())
-      .andDo(<span class="local-variable">this</span>.document); <i class="conum" data-value="5"></i><b>(5)</b>
-}</code></pre>
-</div>
-</div>
-<div class="colist arabic">
-<table>
-<tr>
-<td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Hook for linking JUnit and Spring REST Docs for generating snippets</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>REST Docs snippet Result Handler for formatting result to tables</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="3"></i><b>3</b></td>
-<td>Configuration for <em>RestDocumentationResultHandler</em></td>
-</tr>
-<tr>
-<td><i class="conum" data-value="4"></i><b>4</b></td>
-<td>Hook for linking Spring Mvc Test to Spring REST Docs</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="5"></i><b>5</b></td>
-<td>Generates asciidoc snippets for curl-request, http-request, http-response, response-fields adoc files</td>
-</tr>
-</table>
+<div class="paragraph">
+<p>This script will add swagger dependency jars into the application.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_asciidoctor_configuration"><a class="link" href="#_asciidoctor_configuration">asciidoctor Configuration</a></h3>
+<h3 id="_bean_configuration">Bean configuration</h3>
+<div class="paragraph">
+<p>The project contains an entry point in the <em>Application.java</em> file:</p>
+</div>
 <div class="listingblock">
-<div class="title">build.gradle</div>
+<div class="title">Application.java</div>
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="groovy">buildscript {
-  repositories {
-    mavenCentral()
-    jcenter() <i class="conum" data-value="1"></i><b>(1)</b>
-        }
-        dependencies {
-                classpath(<span class="string"><span class="delimiter">&quot;</span><span class="content">org.springframework.boot:spring-boot-gradle-plugin:1.2.7.RELEASE</span><span class="delimiter">&quot;</span></span>)
-    classpath <span class="string"><span class="delimiter">'</span><span class="content">org.asciidoctor:asciidoctor-gradle-plugin:1.5.3</span><span class="delimiter">'</span></span> <i class="conum" data-value="2"></i><b>(2)</b>
-        }
-}
+<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="annotation">@SpringBootApplication</span>
+<span class="annotation">@EnableSwagger2</span> <i class="conum" data-value="1"></i><b>(1)</b>
+<span class="directive">public</span> <span class="type">class</span> <span class="class">Application</span> {
 
-apply <span class="key">plugin</span>: <span class="string"><span class="delimiter">'</span><span class="content">java</span><span class="delimiter">'</span></span>
-apply <span class="key">plugin</span>: <span class="string"><span class="delimiter">'</span><span class="content">eclipse</span><span class="delimiter">'</span></span>
-apply <span class="key">plugin</span>: <span class="string"><span class="delimiter">'</span><span class="content">idea</span><span class="delimiter">'</span></span>
-apply <span class="key">plugin</span>: <span class="string"><span class="delimiter">'</span><span class="content">spring-boot</span><span class="delimiter">'</span></span>
-apply <span class="key">plugin</span>: <span class="string"><span class="delimiter">'</span><span class="content">org.asciidoctor.convert</span><span class="delimiter">'</span></span> <i class="conum" data-value="3"></i><b>(3)</b>
-
-repositories {
-        mavenLocal()
-        maven { url <span class="string"><span class="delimiter">'</span><span class="content">https://repo.spring.io/libs-snapshot</span><span class="delimiter">'</span></span> }
-        mavenCentral()
-}</code></pre>
-</div>
-</div>
-<div class="colist arabic">
-<table>
-<tr>
-<td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Repository for asciidoctor plugin</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>Add asciidoctor plugin to classpath</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="3"></i><b>3</b></td>
-<td>Apply asciidoctor plugin</td>
-</tr>
-</table>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_integrate_spring_rest_docs_with_asciidoc"><a class="link" href="#_integrate_spring_rest_docs_with_asciidoc">Integrate Spring REST Docs with asciidoc</a></h3>
-<div class="listingblock">
-<div class="title">build.gradle</div>
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="groovy">ext { <i class="conum" data-value="1"></i><b>(1)</b>
-  snippetsDir = file(<span class="string"><span class="delimiter">'</span><span class="content">build/generated-snippets</span><span class="delimiter">'</span></span>)
-}
-
-test { <i class="conum" data-value="2"></i><b>(2)</b>
-        outputs.dir snippetsDir
-}
-
-asciidoctor { <i class="conum" data-value="3"></i><b>(3)</b>
-        sourceDir <span class="string"><span class="delimiter">'</span><span class="content">../../../guides/src/kata-spring-restdocs</span><span class="delimiter">'</span></span>
-        attributes <span class="string"><span class="delimiter">'</span><span class="content">snippets</span><span class="delimiter">'</span></span>: snippetsDir
-        inputs.dir snippetsDir
-        dependsOn test
-}</code></pre>
-</div>
-</div>
-<div class="colist arabic">
-<table>
-<tr>
-<td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Define where snippets would be generated</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>Teach test task about snippets directory for gradle to know that when tests are run, snippets are generated in this directory</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="3"></i><b>3</b></td>
-<td>Tell asciidoctor about the snippets directory for generating live documentation in the process of gradle continuous builds</td>
-</tr>
-</table>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_document_apis_using_spring_rest_docs"><a class="link" href="#_document_apis_using_spring_rest_docs">Document APIs using Spring REST Docs</a></h3>
-<div class="listingblock">
-<div class="title">ApiDocumentation.java</div>
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="java">  <span class="annotation">@Test</span>
-  <span class="directive">public</span> <span class="type">void</span> getIndexExample() <span class="directive">throws</span> <span class="exception">Exception</span> {
-    <span class="local-variable">this</span>.document.snippets(
-        links( <i class="conum" data-value="1"></i><b>(1)</b>
-            linkWithRel(<span class="string"><span class="delimiter">&quot;</span><span class="content">accounts</span><span class="delimiter">&quot;</span></span>).description(<span class="string"><span class="delimiter">&quot;</span><span class="content">The &lt;&lt;resources-accounts,Account Resource&gt;&gt;</span><span class="delimiter">&quot;</span></span>),
-            linkWithRel(<span class="string"><span class="delimiter">&quot;</span><span class="content">contacts</span><span class="delimiter">&quot;</span></span>).description(<span class="string"><span class="delimiter">&quot;</span><span class="content">The &lt;&lt;resources-contacts,Contact Resource&gt;&gt;</span><span class="delimiter">&quot;</span></span>)),
-        responseFields( <i class="conum" data-value="2"></i><b>(2)</b>
-            fieldWithPath(<span class="string"><span class="delimiter">&quot;</span><span class="content">_links</span><span class="delimiter">&quot;</span></span>).description(<span class="string"><span class="delimiter">&quot;</span><span class="content">&lt;&lt;resources-index-links,Links&gt;&gt; to other resources</span><span class="delimiter">&quot;</span></span>)));
-
-    <span class="local-variable">this</span>.mockMvc.perform(get(<span class="string"><span class="delimiter">&quot;</span><span class="content">/</span><span class="delimiter">&quot;</span></span>))
-        .andExpect(status().isOk());
+  <span class="directive">public</span> <span class="directive">static</span> <span class="type">void</span> main(<span class="predefined-type">String</span><span class="type">[]</span> args) {
+    SpringApplication.run(Application.class, args);
   }
 
-  <span class="annotation">@Test</span>
-  <span class="directive">public</span> <span class="type">void</span> getAccountsExample() <span class="directive">throws</span> <span class="exception">Exception</span> {
-    <span class="local-variable">this</span>.document.snippets(
-        responseFields(
-            fieldWithPath(<span class="string"><span class="delimiter">&quot;</span><span class="content">_links.self</span><span class="delimiter">&quot;</span></span>).description(<span class="string"><span class="delimiter">&quot;</span><span class="content">Resource Self Link</span><span class="delimiter">&quot;</span></span>),
-            fieldWithPath(<span class="string"><span class="delimiter">&quot;</span><span class="content">_embedded.accountList</span><span class="delimiter">&quot;</span></span>).description(<span class="string"><span class="delimiter">&quot;</span><span class="content">An array of &lt;&lt;resources-account,Account resources&gt;&gt;</span><span class="delimiter">&quot;</span></span>)));
-
-    <span class="local-variable">this</span>.mockMvc.perform(get(<span class="string"><span class="delimiter">&quot;</span><span class="content">/accounts</span><span class="delimiter">&quot;</span></span>))
-        .andExpect(status().isOk());
+  <span class="annotation">@Bean</span> <i class="conum" data-value="2"></i><b>(2)</b>
+  <span class="directive">public</span> Docket api() {
+    <span class="keyword">return</span> <span class="keyword">new</span> Docket(DocumentationType.SWAGGER_2).apiInfo(apiInfo()).select().paths(regex(<span class="string"><span class="delimiter">&quot;</span><span class="content">/accountsvc.*</span><span class="delimiter">&quot;</span></span>)).build();
   }
 
-  <span class="annotation">@Test</span>
-  <span class="directive">public</span> <span class="type">void</span> getAccountExample() <span class="directive">throws</span> <span class="exception">Exception</span> {
-    <span class="local-variable">this</span>.document.snippets(
-        responseFields(
-            fieldWithPath(<span class="string"><span class="delimiter">&quot;</span><span class="content">id</span><span class="delimiter">&quot;</span></span>).description(<span class="string"><span class="delimiter">&quot;</span><span class="content">Account unique identifier</span><span class="delimiter">&quot;</span></span>),
-            fieldWithPath(<span class="string"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span>).description(<span class="string"><span class="delimiter">&quot;</span><span class="content">Account name</span><span class="delimiter">&quot;</span></span>),
-            fieldWithPath(<span class="string"><span class="delimiter">&quot;</span><span class="content">_links.self</span><span class="delimiter">&quot;</span></span>).description(<span class="string"><span class="delimiter">&quot;</span><span class="content">Account Resource Self Link</span><span class="delimiter">&quot;</span></span>),
-            fieldWithPath(<span class="string"><span class="delimiter">&quot;</span><span class="content">_links.account-contacts</span><span class="delimiter">&quot;</span></span>).description(<span class="string"><span class="delimiter">&quot;</span><span class="content">Contacts associated for given Account</span><span class="delimiter">&quot;</span></span>)));
+  <span class="directive">private</span> ApiInfo apiInfo() {
+    <span class="keyword">return</span> <span class="keyword">new</span> ApiInfoBuilder().title(<span class="string"><span class="delimiter">&quot;</span><span class="content">Spring REST Sample with Swagger</span><span class="delimiter">&quot;</span></span>).description(<span class="string"><span class="delimiter">&quot;</span><span class="content">Spring REST Sample with Swagger</span><span class="delimiter">&quot;</span></span>)
+        .termsOfServiceUrl(<span class="string"><span class="delimiter">&quot;</span><span class="content">http://dockerhost:8100/termsofservice</span><span class="delimiter">&quot;</span></span>).contact(<span class="string"><span class="delimiter">&quot;</span><span class="content">service@ericsson.com</span><span class="delimiter">&quot;</span></span>)
+        .license(<span class="string"><span class="delimiter">&quot;</span><span class="content">Apache License Version 2.0</span><span class="delimiter">&quot;</span></span>).licenseUrl(<span class="string"><span class="delimiter">&quot;</span><span class="content">http://dockerhost:8100/LICENSE</span><span class="delimiter">&quot;</span></span>).version(<span class="string"><span class="delimiter">&quot;</span><span class="content">2.0</span><span class="delimiter">&quot;</span></span>).build();
+  }
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>We have added @EnableSwagger2 annotation to enable this application to use Swagger.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>The api() method creates a bean which contains the general information about the API and an inventory of the available resources.</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>We&#8217;re going to rename HomeController we created in Kata1 guide to AccountController and add a get API and describe it with swagger annotation.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_swagger_annotation">Swagger annotation</h3>
+<div class="listingblock">
+<div class="title">AccountController.java</div>
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="annotation">@Api</span>(value = <span class="string"><span class="delimiter">&quot;</span><span class="content">accountsvc</span><span class="delimiter">&quot;</span></span>, description = <span class="string"><span class="delimiter">&quot;</span><span class="content">Endpoint for account management</span><span class="delimiter">&quot;</span></span>) <i class="conum" data-value="1"></i><b>(1)</b>
+<span class="annotation">@RequestMapping</span>(value = <span class="string"><span class="delimiter">&quot;</span><span class="content">/accountsvc</span><span class="delimiter">&quot;</span></span>)
+<span class="type">class</span> <span class="class">AccountController</span> {
+  <span class="annotation">@ApiOperation</span>(value = <span class="string"><span class="delimiter">&quot;</span><span class="content">list accounts</span><span class="delimiter">&quot;</span></span>, notes = <span class="string"><span class="delimiter">&quot;</span><span class="content">Lists all accounts. Account informtion contains id, name and email.</span><span class="delimiter">&quot;</span></span>,
+          produces = <span class="string"><span class="delimiter">&quot;</span><span class="content">application/json</span><span class="delimiter">&quot;</span></span>) <i class="conum" data-value="2"></i><b>(2)</b>
+  <span class="annotation">@ApiResponses</span>(value = { <span class="annotation">@ApiResponse</span>(code = <span class="integer">200</span>, message = <span class="string"><span class="delimiter">&quot;</span><span class="content">Success</span><span class="delimiter">&quot;</span></span>, response = Account.class) }) <i class="conum" data-value="3"></i><b>(3)</b>
+  <span class="annotation">@RequestMapping</span>(method = GET, path = <span class="string"><span class="delimiter">&quot;</span><span class="content">/accounts</span><span class="delimiter">&quot;</span></span>, produces = <span class="string"><span class="delimiter">&quot;</span><span class="content">application/json</span><span class="delimiter">&quot;</span></span>)
+  ResponseEntity&lt;<span class="predefined-type">List</span>&lt;Account&gt;&gt; get() {
+    <span class="keyword">return</span> <span class="keyword">new</span> ResponseEntity&lt;<span class="predefined-type">List</span>&lt;Account&gt;&gt;(account, OK);
+  }
 
-    <span class="local-variable">this</span>.mockMvc.perform(get(<span class="string"><span class="delimiter">&quot;</span><span class="content">/accounts/1</span><span class="delimiter">&quot;</span></span>))
-        .andExpect(status().isOk());
-<span class="comment">//        .andExpect(jsonPath(&quot;id&quot;, is(notNullValue())))</span>
-<span class="comment">//        .andExpect(jsonPath(&quot;name&quot;, is(notNullValue())))</span>
-<span class="comment">//        .andExpect(jsonPath(&quot;_links.self&quot;, is(notNullValue())))</span>
-<span class="comment">//        .andExpect(jsonPath(&quot;_links.account-contacts&quot;, is(notNullValue())));</span>
+  <span class="annotation">@ApiOperation</span>(value = <span class="string"><span class="delimiter">&quot;</span><span class="content">look up  account by id</span><span class="delimiter">&quot;</span></span>, notes = <span class="string"><span class="delimiter">&quot;</span><span class="content">Looks up account by id.</span><span class="delimiter">&quot;</span></span>)
+  <span class="annotation">@ApiImplicitParams</span>({ <span class="annotation">@ApiImplicitParam</span>(name = <span class="string"><span class="delimiter">&quot;</span><span class="content">id</span><span class="delimiter">&quot;</span></span>, value = <span class="string"><span class="delimiter">&quot;</span><span class="content">Account id</span><span class="delimiter">&quot;</span></span>, required = <span class="predefined-constant">true</span>, dataType = <span class="string"><span class="delimiter">&quot;</span><span class="content">int</span><span class="delimiter">&quot;</span></span>,
+          paramType = <span class="string"><span class="delimiter">&quot;</span><span class="content">path</span><span class="delimiter">&quot;</span></span>, defaultValue = <span class="string"><span class="delimiter">&quot;</span><span class="content">1</span><span class="delimiter">&quot;</span></span>) }) <i class="conum" data-value="4"></i><b>(4)</b>
+  <span class="annotation">@ApiResponses</span>(value = { <span class="annotation">@ApiResponse</span>(code = <span class="integer">200</span>, message = <span class="string"><span class="delimiter">&quot;</span><span class="content">Success</span><span class="delimiter">&quot;</span></span>, response = Account.class) })
+  <span class="annotation">@RequestMapping</span>(method = GET, path = <span class="string"><span class="delimiter">&quot;</span><span class="content">/accounts/{id}</span><span class="delimiter">&quot;</span></span>, produces = <span class="string"><span class="delimiter">&quot;</span><span class="content">application/json</span><span class="delimiter">&quot;</span></span>)
+  ResponseEntity&lt;Account&gt; getById(<span class="annotation">@PathVariable</span> <span class="type">int</span> id) <span class="directive">throws</span> <span class="exception">Exception</span> {
+    <span class="keyword">return</span> <span class="keyword">new</span> ResponseEntity&lt;Account&gt;(account.get(id - <span class="integer">1</span>), OK);
+  }
+
+  <span class="annotation">@ApiOperation</span>(value = <span class="string"><span class="delimiter">&quot;</span><span class="content">add new account</span><span class="delimiter">&quot;</span></span>, nickname = <span class="string"><span class="delimiter">&quot;</span><span class="content">Add a new account</span><span class="delimiter">&quot;</span></span>, response = <span class="predefined-type">Void</span>.class)
+  <span class="annotation">@ApiResponses</span>(value = { <span class="annotation">@ApiResponse</span>(code = <span class="integer">201</span>, message = <span class="string"><span class="delimiter">&quot;</span><span class="content">Success</span><span class="delimiter">&quot;</span></span>, response = Account.class) })
+  <span class="annotation">@RequestMapping</span>(value = <span class="string"><span class="delimiter">&quot;</span><span class="content">/accounts</span><span class="delimiter">&quot;</span></span>, method = POST, produces = <span class="string"><span class="delimiter">&quot;</span><span class="content">application/json</span><span class="delimiter">&quot;</span></span>, consumes = <span class="string"><span class="delimiter">&quot;</span><span class="content">application/json</span><span class="delimiter">&quot;</span></span>)
+  ResponseEntity&lt;Account&gt; post(<span class="annotation">@ApiParam</span>(value = <span class="string"><span class="delimiter">&quot;</span><span class="content">Created Account object</span><span class="delimiter">&quot;</span></span>)
+                               <span class="annotation">@RequestBody</span> Account body) { <i class="conum" data-value="5"></i><b>(5)</b>
+    account.add(body);
+    <span class="keyword">return</span> <span class="keyword">new</span> ResponseEntity&lt;Account&gt;(body, CREATED);
+  }
+
+  <span class="annotation">@ApiOperation</span>(value = <span class="string"><span class="delimiter">&quot;</span><span class="content">update an Account</span><span class="delimiter">&quot;</span></span>, nickname = <span class="string"><span class="delimiter">&quot;</span><span class="content">Updates existing account with new name and/or email</span><span class="delimiter">&quot;</span></span>,
+          response = <span class="predefined-type">Void</span>.class)
+  <span class="annotation">@ApiResponses</span>(value = { <span class="annotation">@ApiResponse</span>(code = <span class="integer">201</span>, message = <span class="string"><span class="delimiter">&quot;</span><span class="content">Success</span><span class="delimiter">&quot;</span></span>, response = Account.class) })
+  <span class="annotation">@RequestMapping</span>(value = <span class="string"><span class="delimiter">&quot;</span><span class="content">/accounts/{id}</span><span class="delimiter">&quot;</span></span>, method = PUT, produces = <span class="string"><span class="delimiter">&quot;</span><span class="content">application/json</span><span class="delimiter">&quot;</span></span>, consumes = <span class="string"><span class="delimiter">&quot;</span><span class="content">application/json</span><span class="delimiter">&quot;</span></span>)
+  ResponseEntity&lt;Account&gt; put(<span class="annotation">@PathVariable</span> <span class="type">int</span> id,
+      <span class="annotation">@ApiParam</span>(value = <span class="string"><span class="delimiter">&quot;</span><span class="content">Updated Account object</span><span class="delimiter">&quot;</span></span>) <span class="annotation">@RequestBody</span> Account body) {
+    account.remove(id - <span class="integer">1</span>);
+    account.add(body);
+    <span class="keyword">return</span> <span class="keyword">new</span> ResponseEntity&lt;Account&gt;(body, OK);
+  }
+
+  <span class="annotation">@ApiOperation</span>(value = <span class="string"><span class="delimiter">&quot;</span><span class="content">delete account</span><span class="delimiter">&quot;</span></span>, notes = <span class="string"><span class="delimiter">&quot;</span><span class="content">Deletes account by id</span><span class="delimiter">&quot;</span></span>)
+  <span class="annotation">@RequestMapping</span>(value = <span class="string"><span class="delimiter">&quot;</span><span class="content">/accounts/{id}</span><span class="delimiter">&quot;</span></span>, method = DELETE)
+  <span class="annotation">@ApiResponses</span>(value = { <span class="annotation">@ApiResponse</span>(code = <span class="integer">400</span>, message = <span class="string"><span class="delimiter">&quot;</span><span class="content">Account not found</span><span class="delimiter">&quot;</span></span>, response = <span class="type">void</span>.class) })
+  <span class="type">void</span> delete(<span class="annotation">@PathVariable</span> <span class="type">int</span> id) <span class="directive">throws</span> <span class="exception">Exception</span> {
+    <span class="keyword">if</span> (id &lt;= account.size()) {
+      account.remove(id - <span class="integer">1</span>);
+    } <span class="keyword">else</span> {
+      <span class="keyword">throw</span> <span class="keyword">new</span> <span class="exception">AccountException</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">Account not found</span><span class="delimiter">&quot;</span></span>);
+    }
+  }
+<span class="annotation">@ApiModel</span>( value = <span class="string"><span class="delimiter">&quot;</span><span class="content">Account</span><span class="delimiter">&quot;</span></span>, description = <span class="string"><span class="delimiter">&quot;</span><span class="content">Account resource representation</span><span class="delimiter">&quot;</span></span> ) <i class="conum" data-value="6"></i><b>(6)</b>
+<span class="type">class</span> <span class="class">Account</span> {
+  <span class="annotation">@ApiModelProperty</span>( value = <span class="string"><span class="delimiter">&quot;</span><span class="content">Account id</span><span class="delimiter">&quot;</span></span>, required = <span class="predefined-constant">true</span> )
+  <span class="directive">private</span> <span class="type">int</span> id;
+
+  <span class="annotation">@ApiModelProperty</span>( value = <span class="string"><span class="delimiter">&quot;</span><span class="content">Account name</span><span class="delimiter">&quot;</span></span>, required = <span class="predefined-constant">true</span> )
+  <span class="directive">private</span> <span class="predefined-type">String</span> name;
+
+  <span class="annotation">@ApiModelProperty</span>( value = <span class="string"><span class="delimiter">&quot;</span><span class="content">Account email</span><span class="delimiter">&quot;</span></span>, required = <span class="predefined-constant">false</span> )
+  <span class="directive">private</span> <span class="predefined-type">String</span> email;
+
+  <span class="directive">public</span> Account() {
   }</code></pre>
 </div>
 </div>
@@ -864,420 +727,239 @@ asciidoctor { <i class="conum" data-value="3"></i><b>(3)</b>
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Documenting Link Relationship</td>
+<td>@Api annotation describes a top-level api. In order to make Swagger aware of your endpoint, you need to annotate your class with @Api annotation.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>Documenting Response fields</td>
+<td>@ApiOperation annotation provides detailed description of what a certain method does.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>@ApiResponses annotation represents a type of response from a server. This can be used to describe both success codes as well as errors. If your Api has different response classes, you can describe them here by associating a response class with a response code.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>@ApiImplicitParams annotation represents a single parameter in an API Operation.This allows you to manually define a parameter in a fine-tuned manner.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="5"></i><b>5</b></td>
+<td>@ApiParam annotation represents a single parameter in an Api Operation. A parameter is an input to the operation.When working with path or query parameter, you should always provide clarification of what this parameter represents.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="6"></i><b>6</b></td>
+<td>@ApiModel annotation models classes to provide the model schema, which helps in understanding/documenting the request response structure using the specific annotation using @ApiModel annotations.</td>
 </tr>
 </table>
 </div>
-</div>
-<div class="sect2">
-<h3 id="_generate_documentation"><a class="link" href="#_generate_documentation">Generate documentation</a></h3>
-<div class="paragraph">
-<p>Running test target on the project generates the documentation:</p>
-</div>
-<div class="literalblock">
+<div class="listingblock">
+<div class="title">application.yml</div>
 <div class="content">
-<pre>$ gradlew test</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>The results of the run will generate documentation that can now be integrated
-and presented in a cohesive way. It may look like the one below &#8230;&#8203;</p>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_service_api_guide"><a class="link" href="#_service_api_guide">Service API Guide</a></h2>
-<div class="sectionbody">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">server</span>:
+  <span class="key">port</span>: <span class="string"><span class="content">8100</span></span>
 
-</div>
-</div>
-<div class="sect1">
-<h2 id="_overview"><a class="link" href="#_overview">Overview</a></h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>A sample kata service with resources - Accounts and Contact.<br>
-Accounts can have many Contacts. A given contact can belong to many Accounts</p>
-</div>
-<div class="sect2">
-<h3 id="resources-index"><a class="link" href="#resources-index">Index</a></h3>
-<div class="paragraph">
-<p>The index provides the entry point into the service.</p>
-</div>
-<div class="sect3">
-<h4 id="resources-index-access"><a class="link" href="#resources-index-access">Accessing the index</a></h4>
-<div class="paragraph">
-<p>A <code>GET</code> request is used to access the index</p>
-</div>
-<div class="sect4">
-<h5 id="_example_request"><a class="link" href="#_example_request">Example request</a></h5>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="bash">$ curl 'http://localhost:8080/' -i</code></pre>
-</div>
-</div>
-</div>
-<div class="sect4">
-<h5 id="_response_structure"><a class="link" href="#_response_structure">Response structure</a></h5>
-<table class="tableblock frame-all grid-all spread">
-<colgroup>
-<col style="width: 33.3333%;">
-<col style="width: 33.3333%;">
-<col style="width: 33.3334%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Path</th>
-<th class="tableblock halign-left valign-top">Type</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">_links</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Object</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#resources-index-links">Links</a> to other resources</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="sect4">
-<h5 id="_example_response"><a class="link" href="#_example_response">Example response</a></h5>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="http">HTTP/1.1 200 OK
-Content-Type: application/hal+json
-Content-Length: 178
-
-{
-  &quot;_links&quot; : {
-    &quot;accounts&quot; : {
-      &quot;href&quot; : &quot;http://localhost:8080/accounts&quot;
-    },
-    &quot;contacts&quot; : {
-      &quot;href&quot; : &quot;http://localhost:8080/contacts&quot;
-    }
-  }
-}</code></pre>
-</div>
-</div>
-</div>
-<div class="sect4">
-<h5 id="resources-index-links"><a class="link" href="#resources-index-links">Links</a></h5>
-<table class="tableblock frame-all grid-all spread">
-<colgroup>
-<col style="width: 50%;">
-<col style="width: 50%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Relation</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">accounts</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">The <a href="#resources-accounts">Account Resource</a></p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">contacts</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">The <a href="#resources-contacts">Contact Resource</a></p></td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="resources-account"><a class="link" href="#resources-account">Account</a></h3>
-<div class="paragraph">
-<p>The Account resources</p>
-</div>
-<div class="sect3">
-<h4 id="resources-account-list"><a class="link" href="#resources-account-list">Listing Accounts</a></h4>
-<div class="paragraph">
-<p>A <code>GET</code> request will list all of the service&#8217;s accounts.</p>
-</div>
-<div class="sect4">
-<h5 id="_response_structure_2"><a class="link" href="#_response_structure_2">Response structure</a></h5>
-<table class="tableblock frame-all grid-all spread">
-<colgroup>
-<col style="width: 33.3333%;">
-<col style="width: 33.3333%;">
-<col style="width: 33.3334%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Path</th>
-<th class="tableblock halign-left valign-top">Type</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">_links.self</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Object</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Resource Self Link</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">_embedded.accountList</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Array</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">An array of <a href="#resources-account">Account resources</a></p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="sect4">
-<h5 id="_example_request_2"><a class="link" href="#_example_request_2">Example request</a></h5>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="bash">$ curl 'http://localhost:8080/accounts' -i</code></pre>
-</div>
-</div>
-</div>
-<div class="sect4">
-<h5 id="_example_response_2"><a class="link" href="#_example_response_2">Example response</a></h5>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="http">HTTP/1.1 200 OK
-Content-Type: application/json
-Content-Length: 967
-
-{
-  &quot;_embedded&quot; : {
-    &quot;accountList&quot; : [ {
-      &quot;id&quot; : 1,
-      &quot;name&quot; : &quot;John&quot;,
-      &quot;_links&quot; : {
-        &quot;self&quot; : {
-          &quot;href&quot; : &quot;http://localhost:8080/accounts/1&quot;
-        },
-        &quot;account-contacts&quot; : {
-          &quot;href&quot; : &quot;http://localhost:8080/accounts/1/contacts&quot;
-        }
-      }
-    }, {
-      &quot;id&quot; : 2,
-      &quot;name&quot; : &quot;Tim&quot;,
-      &quot;_links&quot; : {
-        &quot;self&quot; : {
-          &quot;href&quot; : &quot;http://localhost:8080/accounts/2&quot;
-        },
-        &quot;account-contacts&quot; : {
-          &quot;href&quot; : &quot;http://localhost:8080/accounts/2/contacts&quot;
-        }
-      }
-    }, {
-      &quot;id&quot; : 3,
-      &quot;name&quot; : &quot;Mike&quot;,
-      &quot;_links&quot; : {
-        &quot;self&quot; : {
-          &quot;href&quot; : &quot;http://localhost:8080/accounts/3&quot;
-        },
-        &quot;account-contacts&quot; : {
-          &quot;href&quot; : &quot;http://localhost:8080/accounts/3/contacts&quot;
-        }
-      }
-    } ]
-  },
-  &quot;_links&quot; : {
-    &quot;self&quot; : {
-      &quot;href&quot; : &quot;http://localhost:8080/accounts&quot;
-    }
-  }
-}</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="resources-account"><a class="link" href="#resources-account">Retrieve a Account</a></h4>
-<div class="paragraph">
-<p>A <code>GET</code> request will retrieve the details of a Account</p>
-</div>
-<div class="sect4">
-<h5 id="_response_structure_3"><a class="link" href="#_response_structure_3">Response structure</a></h5>
-<table class="tableblock frame-all grid-all spread">
-<colgroup>
-<col style="width: 33.3333%;">
-<col style="width: 33.3333%;">
-<col style="width: 33.3334%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Path</th>
-<th class="tableblock halign-left valign-top">Type</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">id</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Number</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Account unique identifier</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">name</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">String</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Account name</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">_links.self</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Object</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Account Resource Self Link</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">_links.account-contacts</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Object</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Contacts associated for given Account</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="sect4">
-<h5 id="_example_request_3"><a class="link" href="#_example_request_3">Example request</a></h5>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="bash">$ curl 'http://localhost:8080/accounts/1' -i</code></pre>
-</div>
-</div>
-</div>
-<div class="sect4">
-<h5 id="_example_response_3"><a class="link" href="#_example_response_3">Example response</a></h5>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="http">HTTP/1.1 200 OK
-Content-Type: application/json
-Content-Length: 228
-
-{
-  &quot;id&quot; : 1,
-  &quot;name&quot; : &quot;John&quot;,
-  &quot;_links&quot; : {
-    &quot;self&quot; : {
-      &quot;href&quot; : &quot;http://localhost:8080/accounts/1&quot;
-    },
-    &quot;account-contacts&quot; : {
-      &quot;href&quot; : &quot;http://localhost:8080/accounts/1/contacts&quot;
-    }
-  }
-}</code></pre>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="resources-contact"><a class="link" href="#resources-contact">Contact</a></h3>
-<div class="paragraph">
-<p>The Contact resource is used to provide contact information</p>
-</div>
-<div class="sect3">
-<h4 id="resources-note-retrieve"><a class="link" href="#resources-note-retrieve">Retrieve a Contact</a></h4>
-<div class="paragraph">
-<p>A <code>GET</code> request will retrieve the details of a contact</p>
-</div>
-<div class="sect4">
-<h5 id="_response_structure_4"><a class="link" href="#_response_structure_4">Response structure</a></h5>
-<table class="tableblock frame-all grid-all spread">
-<colgroup>
-<col style="width: 33.3333%;">
-<col style="width: 33.3333%;">
-<col style="width: 33.3334%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Path</th>
-<th class="tableblock halign-left valign-top">Type</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">_embedded.contactList</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Array</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">An array of <a href="#resources-contact">Contact resources</a></p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="sect4">
-<h5 id="_example_request_4"><a class="link" href="#_example_request_4">Example request</a></h5>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="bash">$ curl 'http://localhost:8080/accounts/1/contacts' -i</code></pre>
-</div>
-</div>
-</div>
-<div class="sect4">
-<h5 id="_example_response_4"><a class="link" href="#_example_response_4">Example response</a></h5>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="http">HTTP/1.1 200 OK
-Content-Type: application/json
-Content-Length: 619
-
-{
-  &quot;_embedded&quot; : {
-    &quot;contactList&quot; : [ {
-      &quot;id&quot; : 1,
-      &quot;address&quot; : &quot;Waltham, MA&quot;,
-      &quot;_links&quot; : {
-        &quot;self&quot; : {
-          &quot;href&quot; : &quot;http://localhost:8080/contacts/1&quot;
-        },
-        &quot;contact-accounts&quot; : {
-          &quot;href&quot; : &quot;http://localhost:8080/contacts/1/accounts&quot;
-        }
-      }
-    }, {
-      &quot;id&quot; : 2,
-      &quot;address&quot; : &quot;Boston, MA&quot;,
-      &quot;_links&quot; : {
-        &quot;self&quot; : {
-          &quot;href&quot; : &quot;http://localhost:8080/contacts/2&quot;
-        },
-        &quot;contact-accounts&quot; : {
-          &quot;href&quot; : &quot;http://localhost:8080/contacts/2/accounts&quot;
-        }
-      }
-    } ]
-  }
-}</code></pre>
-</div>
-</div>
+<span class="key">endpoints</span>:
+  <span class="key">health</span>:
+    <span class="key">sensitive</span>: <span class="string"><span class="content">false</span></span>
+  <span class="key">shutdown</span>:
+    <span class="key">enabled</span>: <span class="string"><span class="content">true</span></span></code></pre>
 </div>
 </div>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_references"><a class="link" href="#_references">References</a></h2>
+<h2 id="_build_and_launch">Build and launch</h2>
 <div class="sectionbody">
-<div class="ulist">
-<ul>
-<li>
-<p>Spring REST Docs <a href="http://docs.spring.io/spring-restdocs/docs/1.0.x/reference/html5" class="bare">http://docs.spring.io/spring-restdocs/docs/1.0.x/reference/html5</a></p>
-</li>
-<li>
-<p>REST Maturity Model <a href="http://martinfowler.com/articles/richardsonMaturityModel.html" class="bare">http://martinfowler.com/articles/richardsonMaturityModel.html</a></p>
-</li>
-<li>
-<p>Spring REST Docs Talk at SpringOne2GX 2015 <a href="https://youtu.be/k5ncCJBarRI" class="bare">https://youtu.be/k5ncCJBarRI</a></p>
-</li>
-</ul>
+<div class="paragraph">
+<p>Build the service:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>$ cd accountsvc
+$ gradle build</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Note that this command will build the code, generate the jar and run all the necessary tests.</p>
+</div>
+<div class="sect2">
+<h3 id="_building_a_docker_image">Building a Docker image</h3>
+<div class="paragraph">
+<p>Build the project and generate Dockerfile by run the following command:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>$ gradle prepDocker
+...
+:prepDocker
+Run command: docker build -t msvcdojo/accounts-service:0.0.1 build/docker
+
+BUILD SUCCESSFUL</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Everything was prepared for you, so you can just copy the suggested command from
+the console and run it:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>$ docker build -t msvcdojo/accounts-service:0.0.1 build/docker
+Sending build context to Docker daemon 12.95 MB
+Step 1 : FROM java:8
+Step 2 : MAINTAINER Igor Moochnick "igor@igorshare.com"
+Step 3 : VOLUME /tmp
+Step 4 : EXPOSE 8100
+Step 5 : ADD accountsvc-0.0.1.jar accountsvc.jar
+Step 6 : ENTRYPOINT java -Djava.security.egd=file:/dev/./urandom -jar /accounts-service.jar
+Successfully built cb55f79088db</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This has created a Dockerimage with the tag <strong>msvcdojo/accounts-service:0.0.1</strong>. Now let&#8217;s see
+it in the Docker repository:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code data-lang="text">$ docker images
+REPOSITORY                  TAG                 IMAGE ID            CREATED             VIRTUAL SIZE
+msvcdojo/accounts-service   0.0.1               fdb0ace78a40        2 minutes ago       660.6 MB</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_start_container">Start container</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Let&#8217;s start the container and map the service port to the external world by running command:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>$ docker run -it --name=accountsvc -p 8100:8100 msvcdojo/accounts-service:0.0.1</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The following output you&#8217;ll see on the screen.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code data-lang="text">  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::        (v1.3.2.RELEASE)
+
+2016-02-26 20:35:16.875  INFO 1 --- [           main] svcdojo.Application                      : Starting Application on 013471f370b4 with PID 1 (/accountsvc.jar started by root in /)
+2016-02-26 20:35:16.882  INFO 1 --- [           main] svcdojo.Application                      : No active profile set, falling back to default profiles: default
+2016-02-26 20:35:17.065  INFO 1 --- [           main] ationConfigEmbeddedWebApplicationContext : Refreshing org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@2b3bb14b: startup date [Fri Feb 26 20:35:17 UTC 2016]; root of context hierarchy
+2016-02-26 20:35:19.908  INFO 1 --- [           main] o.s.b.f.s.DefaultListableBeanFactory     : Overriding bean definition for bean 'beanNameViewResolver' with a different definition: replacing [Root bean: class [null]; scope=; abstract=false; lazyInit=false; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=org.springframework.boot.autoconfigure.web.ErrorMvcAutoConfiguration$WhitelabelErrorViewConfiguration; factoryMethodName=beanNameViewResolver; initMethodName=null; destroyMethodName=(inferred); defined in class path resource [org/springframework/boot/autoconfigure/web/ErrorMvcAutoConfiguration$WhitelabelErrorViewConfiguration.class]] with [Root bean: class [null]; scope=; abstract=false; lazyInit=false; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=org.springframework.boot.autoconfigure.web.WebMvcAutoConfiguration$WebMvcAutoConfigurationAdapter; factoryMethodName=beanNameViewResolver; initMethodName=null; destroyMethodName=(inferred); defined in class path resource [org/springframework/boot/autoconfigure/web/WebMvcAutoConfiguration$WebMvcAutoConfigurationAdapter.class]]
+2016-02-26 20:35:20.252  INFO 1 --- [           main] o.s.b.f.s.DefaultListableBeanFactory     : Overriding bean definition for bean 'managementServletContext' with a different definition: replacing [Root bean: class [null]; scope=; abstract=false; lazyInit=false; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=org.springframework.boot.actuate.autoconfigure.EndpointWebMvcHypermediaManagementContextConfiguration; factoryMethodName=managementServletContext; initMethodName=null; destroyMethodName=(inferred); defined in class path resource [org/springframework/boot/actuate/autoconfigure/EndpointWebMvcHypermediaManagementContextConfiguration.class]] with [Root bean: class [null]; scope=; abstract=false; lazyInit=false; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=org.springframework.boot.actuate.autoconfigure.EndpointWebMvcAutoConfiguration; factoryMethodName=managementServletContext; initMethodName=null; destroyMethodName=(inferred); defined in class path resource [org/springframework/boot/actuate/autoconfigure/EndpointWebMvcAutoConfiguration.class]]
+2016-02-26 20:35:22.289  INFO 1 --- [           main] org.eclipse.jetty.util.log               : Logging initialized @8055ms
+2016-02-26 20:35:22.437  INFO 1 --- [           main] e.j.JettyEmbeddedServletContainerFactory : Server initialized with port: 8100
+2016-02-26 20:35:22.448  INFO 1 --- [           main] org.eclipse.jetty.server.Server          : jetty-9.2.14.v20151106
+2016-02-26 20:35:22.539  INFO 1 --- [           main] application                              : Initializing Spring embedded WebApplicationContext
+..
+2016-02-26 20:35:29.295  INFO 1 --- [           main] s.w.ClassOrApiAnnotationResourceGrouping : Group for method put was accountsvc
+2016-02-26 20:35:29.313  INFO 1 --- [           main] s.w.ClassOrApiAnnotationResourceGrouping : Group for method put was accountsvc
+2016-02-26 20:35:29.489  INFO 1 --- [           main] application                              : Initializing Spring FrameworkServlet 'dispatcherServlet'
+2016-02-26 20:35:29.489  INFO 1 --- [           main] o.s.web.servlet.DispatcherServlet        : FrameworkServlet 'dispatcherServlet': initialization started
+2016-02-26 20:35:29.554  INFO 1 --- [           main] o.s.web.servlet.DispatcherServlet        : FrameworkServlet 'dispatcherServlet': initialization completed in 62 ms
+<i class="conum" data-value="1"></i><b>(1)</b>
+2016-02-26 20:35:29.602  INFO 1 --- [           main] o.eclipse.jetty.server.ServerConnector   : Started ServerConnector@1d857713{HTTP/1.1}{0.0.0.0:8100}
+2016-02-26 20:35:29.607  INFO 1 --- [           main] .s.b.c.e.j.JettyEmbeddedServletContainer : Jetty started on port(s) 8100 (http/1.1)
+2016-02-26 20:35:29.638  INFO 1 --- [           main] svcdojo.Application                      : Started Application in 14.14 seconds (JVM running for 15.407)</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Listening port of the web service</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_play_time">Play time</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_swagger_endpoint_resource_listing">Swagger Endpoint Resource Listing</h3>
+<div class="paragraph">
+<p>The Resource Listing serves as the root document for the API description. It contains general information about the API and an inventory of the available resources.</p>
+</div>
+<div class="paragraph">
+<p>By default, this document SHOULD be served at the /api-docs path.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>$ curl http://localhost:8100/v2/api-docs</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The output of this CURL command will look like this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="json">{
+    <span class="key"><span class="delimiter">&quot;</span><span class="content">swagger</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">2.0</span><span class="delimiter">&quot;</span></span>,
+    <span class="key"><span class="delimiter">&quot;</span><span class="content">info</span><span class="delimiter">&quot;</span></span>: {
+    <span class="key"><span class="delimiter">&quot;</span><span class="content">description</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Spring REST Sample with Swagger</span><span class="delimiter">&quot;</span></span>,
+    <span class="key"><span class="delimiter">&quot;</span><span class="content">version</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">2.0</span><span class="delimiter">&quot;</span></span>,
+    <span class="key"><span class="delimiter">&quot;</span><span class="content">title</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Spring REST Sample with Swagger</span><span class="delimiter">&quot;</span></span>,
+        <span class="error">.</span><span class="error">.</span><span class="error">.</span>
+        },
+<span class="key"><span class="delimiter">&quot;</span><span class="content">host</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">localhost:8100</span><span class="delimiter">&quot;</span></span>,
+<span class="key"><span class="delimiter">&quot;</span><span class="content">basePath</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">/</span><span class="delimiter">&quot;</span></span>,
+<span class="key"><span class="delimiter">&quot;</span><span class="content">tags</span><span class="delimiter">&quot;</span></span>: [{
+    <span class="key"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">accountsvc</span><span class="delimiter">&quot;</span></span>,
+    <span class="key"><span class="delimiter">&quot;</span><span class="content">description</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Endpoint for account management</span><span class="delimiter">&quot;</span></span>
+}
+<span class="key"><span class="delimiter">&quot;</span><span class="content">paths</span><span class="delimiter">&quot;</span></span>: {
+    <span class="key"><span class="delimiter">&quot;</span><span class="content">/accountsvc/delete/{id}</span><span class="delimiter">&quot;</span></span>: {
+                <span class="key"><span class="delimiter">&quot;</span><span class="content">delete</span><span class="delimiter">&quot;</span></span>: {
+                        <span class="key"><span class="delimiter">&quot;</span><span class="content">tags</span><span class="delimiter">&quot;</span></span>: [<span class="string"><span class="delimiter">&quot;</span><span class="content">accountsvc</span><span class="delimiter">&quot;</span></span>],
+                        <span class="key"><span class="delimiter">&quot;</span><span class="content">summary</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">delete Account By Id</span><span class="delimiter">&quot;</span></span>,
+                        <span class="key"><span class="delimiter">&quot;</span><span class="content">description</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Deletes an account by passing accountId</span><span class="delimiter">&quot;</span></span>,
+                        <span class="key"><span class="delimiter">&quot;</span><span class="content">operationId</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">deleteUsingDELETE</span><span class="delimiter">&quot;</span></span>,
+                        <span class="key"><span class="delimiter">&quot;</span><span class="content">consumes</span><span class="delimiter">&quot;</span></span>: [<span class="string"><span class="delimiter">&quot;</span><span class="content">application/json</span><span class="delimiter">&quot;</span></span>],
+                        <span class="key"><span class="delimiter">&quot;</span><span class="content">produces</span><span class="delimiter">&quot;</span></span>: [<span class="string"><span class="delimiter">&quot;</span><span class="content">*/*</span><span class="delimiter">&quot;</span></span>],
+                        <span class="error">.</span><span class="error">.</span><span class="error">.</span>
+                        }
+                }
+        }
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_running_it_with_swagger_ui">Running it with Swagger UI</h3>
+<div class="paragraph">
+<p>Swagger UI takes Swagger specification files, presents them visually and allows you to execute operations.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>$ curl http://localhost:8100/swagger-ui.html</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The output of this CURL command will look like this:</p>
+</div>
+<div class="imageblock thumb">
+<div class="content">
+<img src="swagger-ui.jpg" alt="swagger ui">
+</div>
+</div>
 </div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2016-03-14 16:25:04 Eastern Daylight Time
+Last updated 2016-03-14 17:45:24 Eastern Daylight Time
 </div>
 </div>
 </body>
