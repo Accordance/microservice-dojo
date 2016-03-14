@@ -1,4 +1,4 @@
-package svcdojo;
+package msvcdojo;
 
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
@@ -11,11 +11,9 @@ import static springfox.documentation.builders.PathSelectors.regex;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.service.ApiInfo;
@@ -55,7 +53,6 @@ public class Application {
         .license("Apache License Version 2.0").licenseUrl("http://dockerhost:8100/LICENSE").version("2.0").build();
   }
 }
-
 // end::code[]
 
 // tag::controller[]
@@ -75,7 +72,8 @@ class AccountController {
   }
 
   // tag::doc[]
-  @ApiOperation(value = "list accounts", notes = "Lists all accounts. Account informtion contains id, name and email.", produces = "application/json") //<2>
+  @ApiOperation(value = "list accounts", notes = "Lists all accounts. Account informtion contains id, name and email.",
+          produces = "application/json") //<2>
   @ApiResponses(value = { @ApiResponse(code = 200, message = "Success", response = Account.class) }) //<3>
   @RequestMapping(method = GET, path = "/accounts", produces = "application/json")
   ResponseEntity<List<Account>> get() {
@@ -83,7 +81,8 @@ class AccountController {
   }
 
   @ApiOperation(value = "look up  account by id", notes = "Looks up account by id.")
-  @ApiImplicitParams({ @ApiImplicitParam(name = "id", value = "Account id", required = true, dataType = "int", paramType = "path", defaultValue = "1") }) //<4>
+  @ApiImplicitParams({ @ApiImplicitParam(name = "id", value = "Account id", required = true, dataType = "int",
+          paramType = "path", defaultValue = "1") }) //<4>
   @ApiResponses(value = { @ApiResponse(code = 200, message = "Success", response = Account.class) })
   @RequestMapping(method = GET, path = "/accounts/{id}", produces = "application/json")
   ResponseEntity<Account> getById(@PathVariable int id) throws Exception {
@@ -93,12 +92,14 @@ class AccountController {
   @ApiOperation(value = "add new account", nickname = "Add a new account", response = Void.class)
   @ApiResponses(value = { @ApiResponse(code = 201, message = "Success", response = Account.class) })
   @RequestMapping(value = "/accounts", method = POST, produces = "application/json", consumes = "application/json")
-  ResponseEntity<Account> post(@ApiParam(value = "Created Account object") @RequestBody Account body) { //<5>
+  ResponseEntity<Account> post(@ApiParam(value = "Created Account object")
+                               @RequestBody Account body) { //<5>
     account.add(body);
     return new ResponseEntity<Account>(body, CREATED);
   }
 
-  @ApiOperation(value = "update an Account", nickname = "Updates existing account with new name and/or email", response = Void.class)
+  @ApiOperation(value = "update an Account", nickname = "Updates existing account with new name and/or email",
+          response = Void.class)
   @ApiResponses(value = { @ApiResponse(code = 201, message = "Success", response = Account.class) })
   @RequestMapping(value = "/accounts/{id}", method = PUT, produces = "application/json", consumes = "application/json")
   ResponseEntity<Account> put(@PathVariable int id,
@@ -190,5 +191,13 @@ class Account {
       return false;
     return true;
   }
+
+}
+
+class AccountException extends RuntimeException {
+
+    public AccountException(String string) {
+        super(string);
+    }
 
 }
