@@ -15,13 +15,13 @@ apply plugin: 'idea'
 apply plugin: 'spring-boot'
 
 jar {
-	baseName = 'mysvc'
-	version = '0.0.1'
-    group = "msvcdojo"
+	baseName = Name
+	version = Version
+    group = Group
 }
 
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
+sourceCompatibility = SourceCompatibility
+targetCompatibility = SourceCompatibility
 
 repositories {
 	mavenCentral()
