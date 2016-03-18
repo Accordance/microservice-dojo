@@ -12,7 +12,7 @@ using the ELK stack https://www.elastic.co/videos/introduction-to-the-elk-stack[
 stack]. The ELK stack can be useful for viewing logs aggregated from
 hosts and applications distributed using multiple containers.
 
-Bleow components make up the ELK logging stack:
+Below components make up the ELK logging stack:
 
 * https://www.elastic.co/products/elasticsearch[Elasticsearch]: an object store where all logs are stored.
 * https://www.elastic.co/products/beats/filebeat[Filebeat]: gathers logs from nodes and feeds them to Elasticsearch.
@@ -24,7 +24,7 @@ logs that they have access to.
 
 image::Logging_ELK.png[]
 
-==== Pre-deployment Configuration
+=== Pre-deployment Configuration
 
 Deploying the ELK stack requires:
 
@@ -34,17 +34,17 @@ Deploying the ELK stack requires:
 * Ruby Gem Rake installed
 * Rake gen installed
 * asciidoctor installed for modification of documentation
-* Instal Docker Rack ( gem install docker_rack)
+* Install Docker Rack ( gem install docker_rack)
 
-==== Cloning the Git Repository for ELK Stack
+=== Cloning the Git Repository for ELK Stack
 
 NOTE: installation of Docker and Docker Rack is out of scope of this tutorial
 
-==== Launching the ELK Cluster
+=== Launching the ELK Cluster
 
 TIP: Make sure that the Docker machine / Host has enough resources to run all the containers
 
-==== Building the Docker images
+=== Building the Docker images
 
 In the `kata-elk/baseos` directory run:
 [source,text,options="nowrap"]
@@ -52,7 +52,7 @@ In the `kata-elk/baseos` directory run:
 docker build -t baseos .
 
 ....
-Validate that the baseos docker image create successfully
+Validate that the `baseos` docker image create successfully
 [source,text,options="nowrap"]
 ....
 $ docker images
@@ -89,7 +89,7 @@ logstash            latest              54c53f34852c        15 minutes ago      
 logstash            2.1.1               9dc10e4d1616        4 weeks ago         447.4 MB
 ....
 
-==== Stating the docker container for ELK Stack
+=== Starting the docker container for ELK Stack
 
 In the `kata-elk/` directory run:
 [source,text,options="nowrap"]
@@ -116,15 +116,15 @@ CONTAINER ID        IMAGE                 NAMES
 ec9d3f836b4a        elasticsearch:2.1.1   elasticsearch
 ....
 
-==== Launching the Kibana UI
+=== Launching the Kibana UI
 
 Kibana dashboard: http://dockerhost::5601/
 
-[NOTE] `if there are no logs stream to logstash and elastic search kibana will not be able to fetch the mapping and allow to configure the index.``
+[NOTE] `if there are no logs stream to `logstash` and elastic search `kibana` will not be able to fetch the mapping and allow to configure the index.``
 
 image::kibana.png[]
 
-==== Generate some logs
+=== Generate some logs
 
 [source,text,options="nowrap"]
 ....
@@ -137,7 +137,7 @@ Add some log lines and save the file using !wq command
 
 ....
 
-Configuring Index patten to kibana
+Configuring Index pattern to kibana
 
 Navigate to http://dockerhost::5601/
 
