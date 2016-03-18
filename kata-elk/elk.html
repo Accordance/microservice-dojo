@@ -516,17 +516,14 @@ table.CodeRay td.code>pre{padding:0}
 <ul class="sectlevel1">
 <li><a href="#_aggregating_container_logs_using_elasticsearch_logbeat_and_kibana">Aggregating Container Logs using Elasticsearch, Logbeat and Kibana</a>
 <ul class="sectlevel2">
-<li><a href="#_overview">Overview</a>
-<ul class="sectlevel3">
+<li><a href="#_overview">Overview</a></li>
 <li><a href="#_pre_deployment_configuration">Pre-deployment Configuration</a></li>
 <li><a href="#_cloning_the_git_repository_for_elk_stack">Cloning the Git Repository for ELK Stack</a></li>
 <li><a href="#_launching_the_elk_cluster">Launching the ELK Cluster</a></li>
 <li><a href="#_building_the_docker_images">Building the Docker images</a></li>
-<li><a href="#_stating_the_docker_container_for_elk_stack">Stating the docker container for ELK Stack</a></li>
+<li><a href="#_starting_the_docker_container_for_elk_stack">Starting the docker container for ELK Stack</a></li>
 <li><a href="#_launching_the_kibana_ui">Launching the Kibana UI</a></li>
 <li><a href="#_generate_some_logs">Generate some logs</a></li>
-</ul>
-</li>
 </ul>
 </li>
 </ul>
@@ -549,7 +546,7 @@ stack</a>. The ELK stack can be useful for viewing logs aggregated from
 hosts and applications distributed using multiple containers.</p>
 </div>
 <div class="paragraph">
-<p>Bleow components make up the ELK logging stack:</p>
+<p>Below components make up the ELK logging stack:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -574,8 +571,9 @@ logs that they have access to.</p>
 <img src="Logging_ELK.png" alt="Logging ELK">
 </div>
 </div>
-<div class="sect3">
-<h4 id="_pre_deployment_configuration">Pre-deployment Configuration</h4>
+</div>
+<div class="sect2">
+<h3 id="_pre_deployment_configuration">Pre-deployment Configuration</h3>
 <div class="paragraph">
 <p>Deploying the ELK stack requires:</p>
 </div>
@@ -600,13 +598,13 @@ logs that they have access to.</p>
 <p>asciidoctor installed for modification of documentation</p>
 </li>
 <li>
-<p>Instal Docker Rack ( gem install docker_rack)</p>
+<p>Install Docker Rack ( gem install docker_rack)</p>
 </li>
 </ul>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_cloning_the_git_repository_for_elk_stack">Cloning the Git Repository for ELK Stack</h4>
+<div class="sect2">
+<h3 id="_cloning_the_git_repository_for_elk_stack">Cloning the Git Repository for ELK Stack</h3>
 <div class="admonitionblock note">
 <table>
 <tr>
@@ -620,8 +618,8 @@ installation of Docker and Docker Rack is out of scope of this tutorial
 </table>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_launching_the_elk_cluster">Launching the ELK Cluster</h4>
+<div class="sect2">
+<h3 id="_launching_the_elk_cluster">Launching the ELK Cluster</h3>
 <div class="admonitionblock tip">
 <table>
 <tr>
@@ -635,8 +633,8 @@ Make sure that the Docker machine / Host has enough resources to run all the con
 </table>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_building_the_docker_images">Building the Docker images</h4>
+<div class="sect2">
+<h3 id="_building_the_docker_images">Building the Docker images</h3>
 <div class="paragraph">
 <p>In the <code>kata-elk/baseos</code> directory run:</p>
 </div>
@@ -646,7 +644,7 @@ Make sure that the Docker machine / Host has enough resources to run all the con
 </div>
 </div>
 <div class="paragraph">
-<p>Validate that the baseos docker image create successfully</p>
+<p>Validate that the <code>baseos</code> docker image create successfully</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -693,8 +691,8 @@ logstash            2.1.1               9dc10e4d1616        4 weeks ago         
 </div>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_stating_the_docker_container_for_elk_stack">Stating the docker container for ELK Stack</h4>
+<div class="sect2">
+<h3 id="_starting_the_docker_container_for_elk_stack">Starting the docker container for ELK Stack</h3>
 <div class="paragraph">
 <p>In the <code>kata-elk/</code> directory run:</p>
 </div>
@@ -724,13 +722,13 @@ ec9d3f836b4a        elasticsearch:2.1.1   elasticsearch</code></pre>
 </div>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_launching_the_kibana_ui">Launching the Kibana UI</h4>
+<div class="sect2">
+<h3 id="_launching_the_kibana_ui">Launching the Kibana UI</h3>
 <div class="paragraph">
 <p>Kibana dashboard: <a href="http://dockerhost::5601/" class="bare">http://dockerhost::5601/</a></p>
 </div>
 <div class="paragraph">
-<p>[NOTE] <code>if there are no logs stream to logstash and elastic search kibana will not be able to fetch the mapping and allow to configure the index.`</code></p>
+<p>[NOTE] <code>if there are no logs stream to `logstash</code> and elastic search <code>kibana</code> will not be able to fetch the mapping and allow to configure the index.``</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -738,8 +736,8 @@ ec9d3f836b4a        elasticsearch:2.1.1   elasticsearch</code></pre>
 </div>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_generate_some_logs">Generate some logs</h4>
+<div class="sect2">
+<h3 id="_generate_some_logs">Generate some logs</h3>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight nowrap"><code data-lang="text">$ docker exec -it fileBeat bash
@@ -750,7 +748,7 @@ Add some log lines and save the file using !wq command</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Configuring Index patten to kibana</p>
+<p>Configuring Index pattern to kibana</p>
 </div>
 <div class="paragraph">
 <p>Navigate to <a href="http://dockerhost::5601/" class="bare">http://dockerhost::5601/</a></p>
@@ -770,10 +768,9 @@ Add some log lines and save the file using !wq command</code></pre>
 </div>
 </div>
 </div>
-</div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2016-03-18 11:46:57 Eastern Daylight Time
+Last updated 2016-03-18 11:52:55 Eastern Daylight Time
 </div>
 </div>
 </body>
