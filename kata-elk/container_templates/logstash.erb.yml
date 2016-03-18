@@ -1,0 +1,15 @@
+logstash:
+    image: logstash
+    environment:
+        TZ: UTC
+    expose:
+        - 12201
+        - 5044
+    ports:
+        - "12201:12201"
+        - "5044:5044"
+        - "12201:12201/udp"
+    command: logstash -f /logstash.conf
+    environment:
+        ELASTICSEARCH_HOST: <%= dockerhost %>
+        ELASTICSEARCH_PORT: 9200

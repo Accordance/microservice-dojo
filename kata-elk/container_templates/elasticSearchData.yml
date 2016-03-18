@@ -1,0 +1,5 @@
+elasticSearchData:
+  image: busybox
+  command: true
+  volumes:
+    - /usr/share/elasticsearch/data

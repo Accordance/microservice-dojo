@@ -1,0 +1,5 @@
+zookeeper:
+  image: zookeeper
+  container_name: zk
+  ports:
+        - 2181

@@ -1,0 +1,7 @@
+logData:
+  image: busybox
+  command: /bin/sh -c 'mkdir -p /log/app'
+  name: logData2
+  volumes:
+    - /log/app
+
