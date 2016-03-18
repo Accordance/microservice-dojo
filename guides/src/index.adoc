@@ -52,4 +52,5 @@ Contributed Katas:
 |Kata #|Description      |Tech Stack
 | a | <<kata-spring-restdocs/spring-restdocs-intro.adoc#,Documenting RESTful APIs with Spring REST Docs>> |Spring REST Docs
 | b | <<kata-swagger/swagger_api_doc.adoc#,Embedding live service contracts documentation with Swagger>> |Swagger
+| c | <<kata-elk/elk.adoc#,Aggregating Container Logs using Elasticsearch, Logbeat and Kibana>> |ELK Stack
 |=======================

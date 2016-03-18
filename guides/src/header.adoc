@@ -1,5 +1,12 @@
 :toc: left
+:toclevels: 4
 // :linkcss:
+// :data-uri:
+// :icons:
+:experimental:
+// :toc: macro
+// :toc-title:
+:prewrap!:
 :icons: font
 :source-highlighter: coderay
 <<../index.adoc#,icon:home[] Home>> | https://github.com/Accordance/microservice-dojo/tree/master/{kata_dir}[icon:github[] Source for Kata]
