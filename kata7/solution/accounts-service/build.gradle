@@ -52,13 +52,17 @@ dependencies {
     compile ('org.springframework.boot:spring-boot-starter-jetty') {
         exclude group: 'org.eclipse.jetty.websocket'
     }
+// tag::enable-actuator[]
     compile("org.springframework.boot:spring-boot-starter-actuator:$springBootVersion")
+// end::enable-actuator[]
     compile("org.springframework.boot:spring-boot-starter-data-jpa:$springBootVersion")
     compile("org.springframework.boot:spring-boot-starter-data-rest:$springBootVersion")
     compile("org.springframework.cloud:spring-cloud-config-client:$springCloudVersion")
     compile("org.springframework.cloud:spring-cloud-starter-eureka:$springCloudVersion")
     compile("org.springframework.cloud:spring-cloud-starter-feign:$springCloudVersion")
+// tag::enable-hystrix[]
     compile("org.springframework.cloud:spring-cloud-starter-hystrix:$springCloudVersion")
+// end::enable-hystrix[]
     compile("org.flywaydb:flyway-core:3.2.1")
     runtime("mysql:mysql-connector-java:5.1.38")
     testCompile('org.springframework.boot:spring-boot-starter-test')
@@ -81,6 +85,9 @@ task prepDocker(type: Copy, dependsOn: assemble) {
             from jar
             into "$buildDir/docker"
         }
+    }
+    doLast {
+        println "Docker command: docker build -t ${jar.group}/${jar.baseName}:${jar.version} build/docker"
     }
 }
 

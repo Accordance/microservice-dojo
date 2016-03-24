@@ -1,5 +1,5 @@
 accounts-service:
-  image: msvcdojo/accounts-service:0.0.2
+  image: msvcdojo/accounts-service:0.0.3
   ports:
     - 8100
   environment:

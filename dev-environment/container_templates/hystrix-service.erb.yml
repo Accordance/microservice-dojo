@@ -11,3 +11,4 @@ hystrix-service:
       retry: 15
   depends:
     - config-service
+    - eureka-service

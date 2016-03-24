@@ -39,7 +39,6 @@ import java.util.List;
 @EnableFeignClients
 // tag::enable-hystrix[]
 @EnableHystrix
-//@EnableCircuitBreaker
 public class AccountsServiceApplication {
 
     public static void main(String[] args) {

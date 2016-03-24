@@ -31,7 +31,7 @@ IMPORTANT: Follow the <<environment/environment.adoc#,configuration instructions
 | 4 | <<kata4/externalizing_configuration.adoc#,Externalizing configuration>> |
 | 5 | <<kata5/service_using_mongo_db.adoc#,Web Service using Mongo DB>> |
 | 6 | <<kata6/service_talking_to_service.html#,Service talking to another Service>> | Eureka, Ribbon and Feign
-| 7 | Circuit Breakers | Hystrix
+| 7 | <<kata7/circuit_breakers.adoc#,Circuit Breaker pattern>> | Hystrix
 | 8 | <<kata8/edge_service.adoc#,Edge Service>> | Zuul
 |=======================
 
