@@ -77,7 +77,7 @@ filebeat            latest              a1c12df7e62d        23 minutes ago      
 In the `kata-elk/logstash` directory run:
 [source,text,options="nowrap"]
 ....
-docker build -t logsatsh .
+docker build -t logstash .
 
 ....
 Validate that the filebeat docker image create successfully
